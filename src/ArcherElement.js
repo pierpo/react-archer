@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export class DrawSvgArrow extends React.Component {
+export class ArcherElement extends React.Component {
   componentDidMount() {
     if (!this.context.registerTransition || !this.context.registerChild) {
       return;
@@ -22,7 +22,7 @@ export class DrawSvgArrow extends React.Component {
   }
 }
 
-DrawSvgArrow.contextTypes = {
+ArcherElement.contextTypes = {
   registerChild: PropTypes.func,
   registerTransition: PropTypes.func,
   refresh: PropTypes.func,
@@ -30,7 +30,7 @@ DrawSvgArrow.contextTypes = {
 
 const anchorType = PropTypes.oneOf(['top', 'bottom', 'left', 'right']);
 
-DrawSvgArrow.propTypes = {
+ArcherElement.propTypes = {
   id: PropTypes.string,
   relations: PropTypes.arrayOf(PropTypes.shape({
     from: PropTypes.shape({
@@ -43,4 +43,4 @@ DrawSvgArrow.propTypes = {
   })),
 };
 
-export default DrawSvgArrow;
+export default ArcherElement;
