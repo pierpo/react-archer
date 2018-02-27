@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ResizeObserver from 'resize-observer-polyfill';
 import Point from './Point';
 
 import SvgArrow from './SvgArrow';
@@ -100,6 +101,10 @@ export class SvgGraphContainer extends React.Component {
   registerChild(id) {
     return (ref) => {
       if (!this.state.refs[id]) {
+        const ro = new ResizeObserver(() => {
+          this.updateDimensions();
+        });
+        ro.observe(ref);
         this.setState(currentState => {
           return { ...this.currentState, refs: { ...currentState.refs, [id]: ref } };
         });
