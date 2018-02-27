@@ -38,21 +38,21 @@ export class SvgGraphContainer extends React.Component {
     this.registerTransition = this.registerTransition.bind(this);
     this.registerChild = this.registerChild.bind(this);
     this.storeParent = this.storeParent.bind(this);
-    this.updateDimensions = this.updateDimensions.bind(this);
+    this.refreshScreen = this.refreshScreen.bind(this);
     this.state = {
       refs: {},
       fromTo: [],
     };
   }
   componentDidMount() {
-    window.addEventListener('resize', this.updateDimensions);
+    window.addEventListener('resize', this.refreshScreen);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.updateDimensions);
+    window.removeEventListener('resize', this.refreshScreen);
   }
 
-  updateDimensions() {
+  refreshScreen() {
     this.setState({...this.state});
   }
 
@@ -102,7 +102,7 @@ export class SvgGraphContainer extends React.Component {
     return (ref) => {
       if (!this.state.refs[id]) {
         const ro = new ResizeObserver(() => {
-          this.updateDimensions();
+          this.refreshScreen();
         });
         ro.observe(ref);
         this.setState(currentState => {
