@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebPackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const path = require('path')
 const examplePath = path.resolve(__dirname, 'example')
 
@@ -32,11 +31,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './example/index.template.ejs',
       inject: 'body',
-      filename: 'index.html',
-      alwaysWriteToDisk: true,
-    }),
-    new HtmlWebPackHarddiskPlugin({
-      outputPath: './example'
     }),
   ],
   devServer: {
