@@ -1,14 +1,24 @@
-import React from 'react';
-import ArcherContainer from '../src/ArcherContainer';
-import ArcherElement from '../src/ArcherElement'
+# react-archer
+🏹 Draw arrows between DOM elements in React 🖋
+
+## Installation
+
+`npm install react-archer --save` or `yarn add react-archer`
+
+## Example
+
+![Example](https://raw.githubusercontent.com/pierpo/react-archer/master/example.png)
+
+```jsx
+import { ArcherContainer, ArcherElement } from 'react-archer';
 
 const rootStyle = { display: 'flex', justifyContent: 'center' };
-const rowStyle = { margin: '200px 0', display: 'flex', justifyContent: 'space-between' };
-const boxStyle = { padding: '10px', border: '1px solid black' };
+const rowStyle = { margin: '200px 0', display: 'flex', justifyContent: 'space-between', }
+const boxStyle = { padding: '10px', border: '1px solid black', };
 
 const App = () => {
   return (
-    <div style={{ height: '500px', margin: '50px', position: 'relative' }}>
+    <div>
 
       <ArcherContainer strokeColor='red' >
         <div style={rootStyle}>
@@ -55,3 +65,42 @@ const App = () => {
 }
 
 export default App;
+```
+
+## API
+
+### `ArcherContainer`
+
+#### `strokeColor`: PropTypes.string
+
+A color string `'#ff0000'`
+
+#### `arrowLength`: PropTypes.number
+
+A size in `px`
+
+#### `arrowThickness`: PropTypes.number
+
+A size in `px`
+
+#### `children`: PropTypes.node
+
+### `ArcherElement`
+
+#### `id`: PropTypes.string
+
+#### `relations`: PropTypes.arrayOf(relation)
+
+The `relation` object has the following shape:
+
+```javascript
+{
+  from: {
+    anchor: PropTypes.arrayOf([ 'top', 'bottom', 'left', 'right' ])
+  },
+  to: {
+    anchor: PropTypes.arrayOf([ 'top', 'bottom', 'left', 'right' ])
+    id: PropTypes.string
+  }
+}
+```
