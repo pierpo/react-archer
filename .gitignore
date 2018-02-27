@@ -1,2 +1,4 @@
 bundle.js
 node_modules
+dist
+lib

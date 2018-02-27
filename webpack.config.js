@@ -4,27 +4,6 @@ const HtmlWebPackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const path = require('path')
 const examplePath = path.resolve(__dirname, 'example')
 
-const externals = {
-  react: {
-    root: 'React',
-    commonjs2: 'react',
-    commonjs: 'react',
-    amd: 'react',
-  },
-  'react-dom': {
-    root: 'ReactDOM',
-    commonjs2: 'react-dom',
-    commonjs: 'react-dom',
-    amd: 'react-dom',
-  },
-  'prop-types': {
-    root: 'PropTypes',
-    commonjs2: 'prop-types',
-    commonjs: 'prop-types',
-    amd: 'prop-types',
-  },
-}
-
 module.exports = {
   entry: path.resolve(examplePath, 'index.js'),
   output: {
