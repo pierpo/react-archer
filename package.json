@@ -1,0 +1,28 @@
+{
+  "name": "graph",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "16.2.0",
+    "react-dom": "16.2.0",
+    "react-scripts": "1.1.1"
+  },
+  "scripts": {
+    "dev": "webpack-dev-server --hot --progress --colors --config ./webpack.config.js",
+    "lint": "eslint --ext .js,.jsx src/"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-class-properties": "6.24.1",
+    "babel-plugin-transform-export-extensions": "6.22.0",
+    "babel-plugin-transform-object-rest-spread": "6.26.0",
+    "babel-preset-env": "1.6.1",
+    "babel-preset-react": "6.24.1",
+    "css-loader": "0.28.10",
+    "eslint": "4.18.1",
+    "eslint-plugin-react": "7.7.0",
+    "html-webpack-harddisk-plugin": "0.1.0",
+    "html-webpack-plugin": "2.30.1",
+    "prettier": "1.10.2",
+    "style-loader": "0.20.2"
+  }
+}
