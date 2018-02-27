@@ -170,6 +170,7 @@ ArcherContainer.propTypes = {
   arrowLength: PropTypes.number,
   arrowThickness: PropTypes.number,
   strokeColor: PropTypes.string,
+  children: PropTypes.node,
 };
 
 ArcherContainer.defaultProps = {
