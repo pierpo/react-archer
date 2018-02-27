@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import SvgGraphContainer from '../src/SvgGraphContainer';
+import ArcherContainer from '../src/ArcherContainer';
 import DrawSvgArrow from '../src/DrawSvgArrow'
 
 class App extends Component {
@@ -8,7 +8,7 @@ class App extends Component {
     return (
       <div className="App">
 
-        <SvgGraphContainer
+        <ArcherContainer
           strokeColor='red'
         >
           <div className="root">
@@ -54,7 +54,7 @@ class App extends Component {
               <div className="box">Element 9</div>
             </DrawSvgArrow>
           </div>
-        </SvgGraphContainer>
+        </ArcherContainer>
       </div>
     );
   }

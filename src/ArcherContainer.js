@@ -32,7 +32,7 @@ function computeCoordinatesFromAnchorPosition (anchorPosition, rect) {
   }
 }
 
-export class SvgGraphContainer extends React.Component {
+export class ArcherContainer extends React.Component {
   constructor(props) {
     super(props);
     this.registerTransition = this.registerTransition.bind(this);
@@ -166,21 +166,21 @@ export class SvgGraphContainer extends React.Component {
   }
 }
 
-SvgGraphContainer.propTypes = {
+ArcherContainer.propTypes = {
   arrowLength: PropTypes.number,
   arrowThickness: PropTypes.number,
   strokeColor: PropTypes.string,
 };
 
-SvgGraphContainer.defaultProps = {
+ArcherContainer.defaultProps = {
   arrowLength: 10,
   arrowThickness: 6,
   strokeColor: '#f00',
 };
 
-SvgGraphContainer.childContextTypes = {
+ArcherContainer.childContextTypes = {
   registerChild: PropTypes.func,
   registerTransition: PropTypes.func,
 };
 
-export default SvgGraphContainer;
+export default ArcherContainer;
