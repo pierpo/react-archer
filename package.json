@@ -1,5 +1,6 @@
 {
   "name": "react-archer",
+  "description": "Draw arrows between DOM elements in React",
   "module": "lib/react-archer.js",
   "version": "0.1.0",
   "license": "MIT",
@@ -7,6 +8,14 @@
     "react": "16.2.0",
     "react-dom": "16.2.0",
     "react-scripts": "1.1.1"
+  },
+  "homepage": "https://github.com/pierpo/react-archer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pierpo/react-archer"
+  },
+  "bugs": {
+    "url": "https://github.com/pierpo/react-archer"
   },
   "scripts": {
     "dev": "webpack-dev-server --hot --progress --colors --config ./webpack.config.js",
