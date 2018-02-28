@@ -1,6 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
-var TARGET = process.env.TARGET || null
+var isProd = process.env.NODE_ENV === 'production' || null
 
 const externals = {
   react: {
@@ -48,9 +48,10 @@ var config = {
   externals: externals,
 };
 
-if (TARGET === 'minify') {
+if (isProd) {
   config.output.filename = 'react-archer.min.js';
   config.output.sourceMapFilename = 'react-archer.min.js';
+  config.plugins = config.plugins ? config.plugins : [];
   config.plugins.push(
     new webpack.optimize.UglifyJsPlugin({
       compress: {
@@ -60,7 +61,7 @@ if (TARGET === 'minify') {
         except: ['React', 'ReactDOM', 'Archer', 'ReactArcher'],
       },
     })
-  )
+  );
 };
 
 module.exports = config
