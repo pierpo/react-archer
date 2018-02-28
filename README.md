@@ -75,6 +75,10 @@ export default App;
 
 A color string `'#ff0000'`
 
+#### `strokeWidth`: PropTypes.number
+
+A size in `px`
+
 #### `arrowLength`: PropTypes.number
 
 A size in `px`
