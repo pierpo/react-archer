@@ -16,11 +16,11 @@ function computeEndingArrowDirectionVector(endingAnchor) {
   }
 }
 
-function computeEndingPointAccordingToArrow(xEnd, yEnd, arrowLength, endingAnchor) {
+function computeEndingPointAccordingToArrow(xEnd, yEnd, arrowLength, strokeWidth, endingAnchor) {
   const { arrowX, arrowY } = computeEndingArrowDirectionVector(endingAnchor);
 
-  const xe = xEnd + arrowX * arrowLength;
-  const ye = yEnd + arrowY * arrowLength;
+  const xe = xEnd + arrowX * arrowLength * strokeWidth / 2;
+  const ye = yEnd + arrowY * arrowLength * strokeWidth / 2;
 
   return { xe, ye };
 }
@@ -65,14 +65,15 @@ const SvgArrow = ({
   endingPoint,
   endingAnchor,
   strokeColor,
-  arrowLength
+  arrowLength,
+  strokeWidth
 }) => {
   const actualArrowLength = arrowLength * 2;
 
   const xs = startingPoint.x;
   const ys = startingPoint.y;
 
-  const { xe, ye } = computeEndingPointAccordingToArrow(endingPoint.x, endingPoint.y, actualArrowLength, endingAnchor);
+  const { xe, ye } = computeEndingPointAccordingToArrow(endingPoint.x, endingPoint.y, actualArrowLength, strokeWidth, endingAnchor);
 
   const { xa1, ya1 } = computeStartingAnchorPosition(xs, ys, xe, ye, startingAnchor);
   const { xa2, ya2 } = computeEndingAnchorPosition(xs, ys, xe, ye, endingAnchor);
@@ -84,7 +85,7 @@ const SvgArrow = ({
   return (
     <path
       d={pathString}
-      style={{ fill: 'none', stroke: strokeColor, strokeWidth: 2 }}
+      style={{ fill: 'none', stroke: strokeColor, strokeWidth }}
       markerEnd="url(#arrow)"
     />
   );
@@ -104,6 +105,7 @@ SvgArrow.propTypes = {
   endingAnchor: anchorType,
   strokeColor: PropTypes.string,
   arrowLength: PropTypes.number,
+  strokeWidth: PropTypes.number,
 };
 
 export default SvgArrow;

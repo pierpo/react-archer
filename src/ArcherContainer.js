@@ -130,6 +130,7 @@ export class ArcherContainer extends React.Component {
           endingAnchor={endingAnchor}
           strokeColor={this.props.strokeColor}
           arrowLength={this.props.arrowLength}
+          strokeWidth={this.props.strokeWidth}
         />
       );}
     );
@@ -172,6 +173,7 @@ ArcherContainer.propTypes = {
   arrowLength: PropTypes.number,
   arrowThickness: PropTypes.number,
   strokeColor: PropTypes.string,
+  strokeWidth: PropTypes.number,
   children: PropTypes.node,
 };
 
@@ -179,6 +181,7 @@ ArcherContainer.defaultProps = {
   arrowLength: 10,
   arrowThickness: 6,
   strokeColor: '#f00',
+  strokeWidth: 2,
 };
 
 ArcherContainer.childContextTypes = {
