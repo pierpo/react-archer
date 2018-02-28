@@ -8,7 +8,7 @@ const boxStyle = { padding: '10px', border: '1px solid black' };
 
 const App = () => {
   return (
-    <div style={{ height: '500px', margin: '50px', position: 'relative' }}>
+    <div style={{ height: '500px', margin: '50px' }}>
 
       <ArcherContainer strokeColor='red' >
         <div style={rootStyle}>

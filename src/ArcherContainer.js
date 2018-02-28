@@ -5,7 +5,7 @@ import Point from './Point';
 
 import SvgArrow from './SvgArrow';
 
-const style = {
+const svgContainerStyle = {
   position: 'absolute',
   width: '100%',
   height: '100%',
@@ -138,8 +138,8 @@ export class ArcherContainer extends React.Component {
     const arrowPath = `M0,0 L0,${this.props.arrowThickness} L${this.props.arrowLength - 1},${this.props.arrowThickness / 2} z`;
 
     return (
-      <React.Fragment>
-        <svg style={style}>
+      <div style={{ position: 'relative' }}>
+        <svg style={svgContainerStyle}>
           <defs>
             <marker
               id="arrow"
@@ -158,10 +158,10 @@ export class ArcherContainer extends React.Component {
           {SvgArrows}
         </svg>
 
-        <div ref={this.storeParent} style={style}>
+        <div ref={this.storeParent}>
           {this.props.children}
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }
