@@ -15,7 +15,7 @@
     "url": "https://github.com/pierpo/react-archer"
   },
   "bugs": {
-    "url": "https://github.com/pierpo/react-archer"
+    "url": "https://github.com/pierpo/react-archer/issues"
   },
   "scripts": {
     "dev": "webpack-dev-server --hot --progress --colors --config ./webpack.config.js",
