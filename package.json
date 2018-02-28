@@ -2,9 +2,10 @@
   "name": "react-archer",
   "description": "Draw arrows between DOM elements in React",
   "module": "lib/react-archer.js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "dependencies": {
+    "resize-observer-polyfill": "1.5.0",
     "react": "16.2.0",
     "react-dom": "16.2.0",
     "react-scripts": "1.1.1"
@@ -36,7 +37,6 @@
     "eslint-plugin-react": "7.7.0",
     "html-webpack-plugin": "2.30.1",
     "prettier": "1.10.2",
-    "resize-observer-polyfill": "1.5.0",
     "style-loader": "0.20.2"
   }
 }
