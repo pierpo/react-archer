@@ -2,15 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export class ArcherElement extends React.Component {
-  componentDidMount() {
-    if (!this.context.registerTransition || !this.context.registerChild) {
+  componentWillReceiveProps(nextProps) {
+    if (JSON.stringify(this.props.relations) === JSON.stringify(nextProps.relations)) {
       return;
     }
-    if (this.props.relations) {
-      this.props.relations.forEach((relation) => {
-        this.context.registerTransition(this.props.id, relation);
-      });
+    this.registerAllTransitions(nextProps.relations);
+  }
+
+  componentDidMount() {
+    if (!this.props.relations) {
+      return;
     }
+    this.registerAllTransitions(this.props.relations);
+  }
+
+  registerAllTransitions(relations) {
+    relations.forEach((relation) => {
+      this.context.registerTransition(this.props.id, relation);
+    });
   }
 
   render() {

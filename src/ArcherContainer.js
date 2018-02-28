@@ -90,6 +90,8 @@ export class ArcherContainer extends React.Component {
   }
 
   registerTransition(fromElement, relation) {
+    // TODO prevent duplicate registering
+    // TODO improve the state merge... (should be shorter)
     const fromTo = [...this.state.fromTo];
     const newFromTo = { ...relation, from: { ...relation.from, id: fromElement } };
     fromTo.push(newFromTo);
