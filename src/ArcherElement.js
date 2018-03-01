@@ -24,7 +24,11 @@ export class ArcherElement extends React.Component {
 
   render() {
     return (
-      <div ref={this.context.registerChild(this.props.id)}>
+      <div
+        style={{ ...this.props.style, position: 'relative' }}
+        className={this.props.className}
+        ref={this.context.registerChild(this.props.id)}
+      >
         {this.props.children}
       </div>
     );
@@ -50,6 +54,8 @@ ArcherElement.propTypes = {
       id: PropTypes.string,
     }),
   })),
+  style: PropTypes.object,
+  className: PropTypes.string,
 };
 
 export default ArcherElement;

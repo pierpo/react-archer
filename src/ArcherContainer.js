@@ -141,7 +141,7 @@ export class ArcherContainer extends React.Component {
     const arrowPath = `M0,0 L0,${this.props.arrowThickness} L${this.props.arrowLength - 1},${this.props.arrowThickness / 2} z`;
 
     return (
-      <div style={{ position: 'relative' }}>
+      <div style={{ ...this.props.style, position: 'relative' }} className={this.props.className}>
         <svg style={svgContainerStyle}>
           <defs>
             <marker
@@ -175,6 +175,8 @@ ArcherContainer.propTypes = {
   strokeColor: PropTypes.string,
   strokeWidth: PropTypes.number,
   children: PropTypes.node,
+  style: PropTypes.object,
+  className: PropTypes.string,
 };
 
 ArcherContainer.defaultProps = {
