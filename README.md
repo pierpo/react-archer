@@ -87,11 +87,19 @@ A size in `px`
 
 A size in `px`
 
+#### `style`: PropTypes.object
+
+#### `className`: PropTypes.string
+
 #### `children`: PropTypes.node
 
 ### `ArcherElement`
 
 #### `id`: PropTypes.string
+
+#### `style`: PropTypes.object
+
+#### `className`: PropTypes.string
 
 #### `relations`: PropTypes.arrayOf(relation)
 
