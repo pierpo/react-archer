@@ -100,10 +100,10 @@ The `relation` object has the following shape:
 ```javascript
 {
   from: {
-    anchor: PropTypes.arrayOf([ 'top', 'bottom', 'left', 'right' ])
+    anchor: PropTypes.oneOf([ 'top', 'bottom', 'left', 'right' ])
   },
   to: {
-    anchor: PropTypes.arrayOf([ 'top', 'bottom', 'left', 'right' ])
+    anchor: PropTypes.oneOf([ 'top', 'bottom', 'left', 'right' ])
     id: PropTypes.string
   }
 }
