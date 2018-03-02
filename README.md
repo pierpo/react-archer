@@ -116,3 +116,9 @@ The `relation` object has the following shape:
   }
 }
 ```
+
+## TODO
+
+- Automatic anchoring option
+- Options to customize the path shape more (straight line, right angle line, smoothed right angle path)
+
