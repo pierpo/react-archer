@@ -17,18 +17,18 @@ function rectToPoint(rect) {
   return new Point(rect.left, rect.top);
 }
 
-function computeCoordinatesFromAnchorPosition (anchorPosition, rect) {
+function computeCoordinatesFromAnchorPosition(anchorPosition, rect) {
   switch (anchorPosition) {
-  case 'top':
-    return rectToPoint(rect).add(new Point(rect.width / 2, 0));
-  case 'bottom':
-    return rectToPoint(rect).add(new Point(rect.width / 2, rect.height));
-  case 'left':
-    return rectToPoint(rect).add(new Point(0, rect.height / 2));
-  case 'right':
-    return rectToPoint(rect).add(new Point(rect.width, rect.height / 2));
-  default:
-    return new Point(0, 0);
+    case 'top':
+      return rectToPoint(rect).add(new Point(rect.width / 2, 0));
+    case 'bottom':
+      return rectToPoint(rect).add(new Point(rect.width / 2, rect.height));
+    case 'left':
+      return rectToPoint(rect).add(new Point(0, rect.height / 2));
+    case 'right':
+      return rectToPoint(rect).add(new Point(rect.width, rect.height / 2));
+    default:
+      return new Point(0, 0);
   }
 }
 
@@ -53,7 +53,7 @@ export class ArcherContainer extends React.Component {
   }
 
   refreshScreen() {
-    this.setState({...this.state});
+    this.setState({ ...this.state });
   }
 
   getChildContext() {
@@ -67,7 +67,7 @@ export class ArcherContainer extends React.Component {
     if (this.state.parent) {
       return;
     }
-    this.setState(currentState => ({...currentState, parent: ref}));
+    this.setState(currentState => ({ ...currentState, parent: ref }));
   }
 
   getRectFromRef(ref) {
@@ -84,7 +84,10 @@ export class ArcherContainer extends React.Component {
 
   getPointCoordinatesFromAnchorPosition(position, index, parentCoordinates) {
     const rect = this.getRectFromRef(this.state.refs[index]);
-    const absolutePosition = computeCoordinatesFromAnchorPosition(position, rect);
+    const absolutePosition = computeCoordinatesFromAnchorPosition(
+      position,
+      rect,
+    );
 
     return absolutePosition.substract(parentCoordinates);
   }
@@ -93,22 +96,31 @@ export class ArcherContainer extends React.Component {
     // TODO prevent duplicate registering
     // TODO improve the state merge... (should be shorter)
     const fromTo = [...this.state.fromTo];
-    const newFromTo = { ...relation, from: { ...relation.from, id: fromElement } };
+    const newFromTo = {
+      ...relation,
+      from: { ...relation.from, id: fromElement },
+    };
     fromTo.push(newFromTo);
     this.setState(currentState => {
-      return { ...this.currentState, fromTo: [...currentState.fromTo, ...fromTo] };
+      return {
+        ...this.currentState,
+        fromTo: [...currentState.fromTo, ...fromTo],
+      };
     });
   }
 
   registerChild(id) {
-    return (ref) => {
+    return ref => {
       if (!this.state.refs[id]) {
         const ro = new ResizeObserver(() => {
           this.refreshScreen();
         });
         ro.observe(ref);
         this.setState(currentState => {
-          return { ...this.currentState, refs: { ...currentState.refs, [id]: ref } };
+          return {
+            ...this.currentState,
+            refs: { ...currentState.refs, [id]: ref },
+          };
         });
       }
     };
@@ -116,11 +128,19 @@ export class ArcherContainer extends React.Component {
 
   computeArrows() {
     const parentCoordinates = this.getParentCoordinates();
-    return this.state.fromTo.map((sd) => {
+    return this.state.fromTo.map(sd => {
       const startingAnchor = sd.from.anchor;
-      const startingPoint = this.getPointCoordinatesFromAnchorPosition(sd.from.anchor, sd.from.id, parentCoordinates);
+      const startingPoint = this.getPointCoordinatesFromAnchorPosition(
+        sd.from.anchor,
+        sd.from.id,
+        parentCoordinates,
+      );
       const endingAnchor = sd.to.anchor;
-      const endingPoint = this.getPointCoordinatesFromAnchorPosition(sd.to.anchor, sd.to.id, parentCoordinates);
+      const endingPoint = this.getPointCoordinatesFromAnchorPosition(
+        sd.to.anchor,
+        sd.to.id,
+        parentCoordinates,
+      );
       return (
         <SvgArrow
           key={JSON.stringify(sd)}
@@ -132,16 +152,20 @@ export class ArcherContainer extends React.Component {
           arrowLength={this.props.arrowLength}
           strokeWidth={this.props.strokeWidth}
         />
-      );}
-    );
+      );
+    });
   }
 
   render() {
     const SvgArrows = this.computeArrows();
-    const arrowPath = `M0,0 L0,${this.props.arrowThickness} L${this.props.arrowLength - 1},${this.props.arrowThickness / 2} z`;
+    const arrowPath = `M0,0 L0,${this.props.arrowThickness} L${this.props
+      .arrowLength - 1},${this.props.arrowThickness / 2} z`;
 
     return (
-      <div style={{ ...this.props.style, position: 'relative' }} className={this.props.className}>
+      <div
+        style={{ ...this.props.style, position: 'relative' }}
+        className={this.props.className}
+      >
         <svg style={svgContainerStyle}>
           <defs>
             <marker
@@ -153,17 +177,13 @@ export class ArcherContainer extends React.Component {
               orient="auto"
               markerUnits="strokeWidth"
             >
-              <path
-                d={arrowPath}
-                fill={this.props.strokeColor} />
+              <path d={arrowPath} fill={this.props.strokeColor} />
             </marker>
           </defs>
           {SvgArrows}
         </svg>
 
-        <div ref={this.storeParent}>
-          {this.props.children}
-        </div>
+        <div ref={this.storeParent}>{this.props.children}</div>
       </div>
     );
   }

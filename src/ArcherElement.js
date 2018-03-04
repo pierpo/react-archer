@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 
 export class ArcherElement extends React.Component {
   componentWillReceiveProps(nextProps) {
-    if (JSON.stringify(this.props.relations) === JSON.stringify(nextProps.relations)) {
+    if (
+      JSON.stringify(this.props.relations) ===
+      JSON.stringify(nextProps.relations)
+    ) {
       return;
     }
     this.registerAllTransitions(nextProps.relations);
@@ -17,7 +20,7 @@ export class ArcherElement extends React.Component {
   }
 
   registerAllTransitions(relations) {
-    relations.forEach((relation) => {
+    relations.forEach(relation => {
       this.context.registerTransition(this.props.id, relation);
     });
   }
@@ -45,15 +48,17 @@ const anchorType = PropTypes.oneOf(['top', 'bottom', 'left', 'right']);
 
 ArcherElement.propTypes = {
   id: PropTypes.string,
-  relations: PropTypes.arrayOf(PropTypes.shape({
-    from: PropTypes.shape({
-      anchor: anchorType,
+  relations: PropTypes.arrayOf(
+    PropTypes.shape({
+      from: PropTypes.shape({
+        anchor: anchorType,
+      }),
+      to: PropTypes.shape({
+        anchor: anchorType,
+        id: PropTypes.string,
+      }),
     }),
-    to: PropTypes.shape({
-      anchor: anchorType,
-      id: PropTypes.string,
-    }),
-  })),
+  ),
   style: PropTypes.object,
   className: PropTypes.string,
 };
