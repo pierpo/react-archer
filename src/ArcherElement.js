@@ -61,6 +61,7 @@ ArcherElement.propTypes = {
   ),
   style: PropTypes.object,
   className: PropTypes.string,
+  children: PropTypes.node,
 };
 
 export default ArcherElement;
