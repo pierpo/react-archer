@@ -24,7 +24,8 @@
     "build:lib": "babel src --out-dir lib",
     "build": "npm run build:lib && cross-env NODE_ENV=production webpack --config webpack.prod.config.js",
     "prepare": "npm run build",
-    "lint": "eslint --ext .js,.jsx src/"
+    "lint": "eslint --ext .js,.jsx src/",
+    "test": "jest && yarn lint"
   },
   "devDependencies": {
     "babel-plugin-transform-class-properties": "6.24.1",
@@ -34,6 +35,7 @@
     "babel-preset-react": "6.24.1",
     "cross-env": "5.1.3",
     "css-loader": "0.28.10",
+    "enzyme": "^3.3.0",
     "eslint": "4.18.1",
     "eslint-config-prettier": "^2.9.0",
     "eslint-config-standard": "^11.0.0",
@@ -45,6 +47,7 @@
     "eslint-plugin-react": "7.7.0",
     "eslint-plugin-standard": "^3.0.1",
     "html-webpack-plugin": "2.30.1",
+    "jest": "v21",
     "prettier": "1.10.2",
     "style-loader": "0.20.2"
   }
