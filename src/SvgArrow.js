@@ -16,7 +16,7 @@ function computeEndingArrowDirectionVector(endingAnchor) {
   }
 }
 
-function computeEndingPointAccordingToArrow(
+export function computeEndingPointAccordingToArrow(
   xEnd,
   yEnd,
   arrowLength,
@@ -31,7 +31,7 @@ function computeEndingPointAccordingToArrow(
   return { xe, ye };
 }
 
-function computeStartingAnchorPosition(xs, ys, xe, ye, startingAnchor) {
+export function computeStartingAnchorPosition(xs, ys, xe, ye, startingAnchor) {
   if (startingAnchor === 'top' || startingAnchor === 'bottom') {
     return {
       xa1: xs,
@@ -48,7 +48,7 @@ function computeStartingAnchorPosition(xs, ys, xe, ye, startingAnchor) {
   return { xa1: xs, ya1: ys };
 }
 
-function computeEndingAnchorPosition(xs, ys, xe, ye, endingAnchor) {
+export function computeEndingAnchorPosition(xs, ys, xe, ye, endingAnchor) {
   if (endingAnchor === 'top' || endingAnchor === 'bottom') {
     return {
       xa2: xe,
