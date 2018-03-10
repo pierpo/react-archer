@@ -1,6 +1,6 @@
 exports.root = true;
 
-exports.plugins = ['prettier'];
+exports.plugins = ['prettier', 'react'];
 
 exports.extends = ['standard', 'standard-react', 'prettier'];
 
@@ -16,7 +16,7 @@ exports.settings = {
   },
 };
 
-exports.globals = {};
+exports.globals = {'expect': true, 'it': true, 'describe': true};
 
 exports.rules = {
   'prettier/prettier': [
