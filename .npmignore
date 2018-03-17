@@ -1,2 +1,4 @@
 example
 *.test.*
+setup-tests.js
+shim.js
