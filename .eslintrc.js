@@ -16,7 +16,7 @@ exports.settings = {
   },
 };
 
-exports.globals = { 'expect': true, 'it': true, 'describe': true, 'beforeEach': true };
+exports.globals = { 'jest': true, 'expect': true, 'it': true, 'describe': true, 'beforeEach': true };
 
 exports.rules = {
   'prettier/prettier': [
