@@ -25,8 +25,8 @@
     "build": "npm run build:lib && cross-env NODE_ENV=production webpack --config webpack.prod.config.js",
     "prepare": "npm run build",
     "lint": "eslint --ext .js,.jsx src/",
-    "test:watch": "jest --watch",
-    "test": "jest && yarn lint"
+    "test:watch": "jest ./src --watch",
+    "test": "jest ./src && yarn lint"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
@@ -55,6 +55,9 @@
     "style-loader": "0.20.2"
   },
   "jest": {
-    "setupFiles": ["./shim.js", "./setup-tests.js"]
+    "setupFiles": [
+      "./shim.js",
+      "./setup-tests.js"
+    ]
   }
 }
