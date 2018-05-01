@@ -124,3 +124,5 @@ The `relation` object has the following shape:
 - Automatic anchoring option
 - Options to customize the path shape more (straight line, right angle line, smoothed right angle path)
 - Individual customization of arrows (change color of a single arrow for example)
+- Add a Code Sandbox
+- Add flow
