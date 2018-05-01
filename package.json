@@ -23,10 +23,11 @@
     "dev": "webpack-dev-server --hot --progress --colors --config ./webpack.config.js",
     "build:lib": "babel src --out-dir lib",
     "build": "npm run build:lib && cross-env NODE_ENV=production webpack --config webpack.prod.config.js",
+    "pretest": "yarn lint",
     "prepare": "npm run build",
     "lint": "eslint --ext .js,.jsx src/",
-    "test:watch": "jest ./src --watch",
-    "test": "jest ./src && yarn lint"
+    "test:watch": "jest ./src/ --watch",
+    "test": "jest ./src/"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
@@ -55,6 +56,8 @@
     "style-loader": "0.20.2"
   },
   "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": ["src/**/*.{js,jsx}"],
     "setupFiles": [
       "./shim.js",
       "./setup-tests.js"
