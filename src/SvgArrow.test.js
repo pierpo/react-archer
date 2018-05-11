@@ -189,7 +189,7 @@ describe('SvgArrow', () => {
 
       expect(path.props()).toMatchObject({
         d: 'M10,10 C10,10 30,10 30,10',
-        markerEnd: 'url(#arrow)',
+        markerEnd: 'url(about:blank#arrow)',
         style: {
           strokeWidth: 2,
           stroke: 'blue',
