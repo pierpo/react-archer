@@ -109,7 +109,7 @@ const SvgArrow = ({
     <path
       d={pathString}
       style={{ fill: 'none', stroke: strokeColor, strokeWidth }}
-      markerEnd="url(#arrow)"
+      markerEnd={`url(${location.href}#arrow)`}
     />
   );
 };
