@@ -39,9 +39,13 @@ export class ArcherContainer extends React.Component {
     this.registerChild = this.registerChild.bind(this);
     this.storeParent = this.storeParent.bind(this);
     this.refreshScreen = this.refreshScreen.bind(this);
+    const observer = new ResizeObserver(() => {
+      this.refreshScreen();
+    });
     this.state = {
       refs: {},
       fromTo: [],
+      observer,
     };
   }
   componentDidMount() {
@@ -49,6 +53,10 @@ export class ArcherContainer extends React.Component {
   }
 
   componentWillUnmount() {
+    Object.keys(this.state.refs).map(elementKey => {
+      const { observer } = this.state;
+      observer.unobserve(this.state.refs[elementKey]);
+    });
     window.removeEventListener('resize', this.refreshScreen);
   }
 
@@ -112,10 +120,7 @@ export class ArcherContainer extends React.Component {
   registerChild(id) {
     return ref => {
       if (!this.state.refs[id]) {
-        const ro = new ResizeObserver(() => {
-          this.refreshScreen();
-        });
-        ro.observe(ref);
+        this.state.observer.observe(ref);
         this.setState(currentState => {
           return {
             ...this.currentState,
