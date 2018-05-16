@@ -35,10 +35,6 @@ function computeCoordinatesFromAnchorPosition(anchorPosition, rect) {
 export class ArcherContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.registerTransition = this.registerTransition.bind(this);
-    this.registerChild = this.registerChild.bind(this);
-    this.storeParent = this.storeParent.bind(this);
-    this.refreshScreen = this.refreshScreen.bind(this);
     const observer = new ResizeObserver(() => {
       this.refreshScreen();
     });
@@ -60,37 +56,41 @@ export class ArcherContainer extends React.Component {
     window.removeEventListener('resize', this.refreshScreen);
   }
 
-  refreshScreen() {
+  refreshScreen = () => {
     this.setState({ ...this.state });
-  }
+  };
 
-  getChildContext() {
+  getChildContext = () => {
     return {
       registerTransition: this.registerTransition,
       registerChild: this.registerChild,
     };
-  }
+  };
 
-  storeParent(ref) {
+  storeParent = ref => {
     if (this.state.parent) {
       return;
     }
     this.setState(currentState => ({ ...currentState, parent: ref }));
-  }
+  };
 
-  getRectFromRef(ref) {
+  getRectFromRef = ref => {
     if (!ref) {
       return new Point(0, 0);
     }
     return ref.getBoundingClientRect();
-  }
+  };
 
-  getParentCoordinates() {
+  getParentCoordinates = () => {
     const rectp = this.getRectFromRef(this.state.parent);
     return rectToPoint(rectp);
-  }
+  };
 
-  getPointCoordinatesFromAnchorPosition(position, index, parentCoordinates) {
+  getPointCoordinatesFromAnchorPosition = (
+    position,
+    index,
+    parentCoordinates,
+  ) => {
     const rect = this.getRectFromRef(this.state.refs[index]);
     const absolutePosition = computeCoordinatesFromAnchorPosition(
       position,
@@ -98,9 +98,9 @@ export class ArcherContainer extends React.Component {
     );
 
     return absolutePosition.substract(parentCoordinates);
-  }
+  };
 
-  registerTransition(fromElement, relation) {
+  registerTransition = (fromElement, relation) => {
     // TODO prevent duplicate registering
     // TODO improve the state merge... (should be shorter)
     const fromTo = [...this.state.fromTo];
@@ -115,9 +115,9 @@ export class ArcherContainer extends React.Component {
         fromTo: [...currentState.fromTo, ...fromTo],
       };
     });
-  }
+  };
 
-  registerChild(id) {
+  registerChild = id => {
     return ref => {
       if (!this.state.refs[id]) {
         this.state.observer.observe(ref);
@@ -129,9 +129,9 @@ export class ArcherContainer extends React.Component {
         });
       }
     };
-  }
+  };
 
-  computeArrows() {
+  computeArrows = () => {
     const parentCoordinates = this.getParentCoordinates();
     return this.state.fromTo.map(sd => {
       const startingAnchor = sd.from.anchor;
@@ -159,7 +159,7 @@ export class ArcherContainer extends React.Component {
         />
       );
     });
-  }
+  };
 
   render() {
     const SvgArrows = this.computeArrows();
