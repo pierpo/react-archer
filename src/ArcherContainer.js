@@ -134,21 +134,22 @@ export class ArcherContainer extends React.Component {
   computeArrows = () => {
     const parentCoordinates = this.getParentCoordinates();
     return this.state.fromTo.map(sd => {
-      const startingAnchor = sd.from.anchor;
+      const { from, to, label } = sd;
+      const startingAnchor = from.anchor;
       const startingPoint = this.getPointCoordinatesFromAnchorPosition(
-        sd.from.anchor,
-        sd.from.id,
+        from.anchor,
+        from.id,
         parentCoordinates,
       );
-      const endingAnchor = sd.to.anchor;
+      const endingAnchor = to.anchor;
       const endingPoint = this.getPointCoordinatesFromAnchorPosition(
-        sd.to.anchor,
-        sd.to.id,
+        to.anchor,
+        to.id,
         parentCoordinates,
       );
       return (
         <SvgArrow
-          key={JSON.stringify(sd)}
+          key={JSON.stringify({ from, to })}
           startingPoint={startingPoint}
           startingAnchor={startingAnchor}
           endingPoint={endingPoint}
@@ -156,6 +157,7 @@ export class ArcherContainer extends React.Component {
           strokeColor={this.props.strokeColor}
           arrowLength={this.props.arrowLength}
           strokeWidth={this.props.strokeWidth}
+          arrowLabel={label}
         />
       );
     });

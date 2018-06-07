@@ -40,7 +40,8 @@ const App = () => {
             id="element2"
             relations={[{
               from: { anchor: 'right'},
-              to: { anchor: 'left', id: 'element3' }
+              to: { anchor: 'left', id: 'element3' },
+              label: <div style={{ marginTop: '-20px' }}>Arrow 2</div>,
             }]}
           >
             <div style={boxStyle}>Element 2</div>
@@ -54,7 +55,8 @@ const App = () => {
             id="element4"
             relations={[{
               from: { anchor: 'left'},
-              to: { anchor: 'right', id: 'root' }
+              to: { anchor: 'right', id: 'root' },
+              label: 'Arrow 3',
             }]}
           >
             <div style={boxStyle}>Element 4</div>
@@ -115,7 +117,8 @@ The `relation` object has the following shape:
   to: {
     anchor: PropTypes.oneOf([ 'top', 'bottom', 'left', 'right' ])
     id: PropTypes.string
-  }
+  },
+  label: PropTypes.node
 }
 ```
 

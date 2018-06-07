@@ -4,6 +4,7 @@ import SvgArrow, {
   computeEndingPointAccordingToArrow,
   computeStartingAnchorPosition,
   computeEndingAnchorPosition,
+  computeLabelDimensions,
 } from './SvgArrow';
 
 describe('SvgArrow', () => {
@@ -159,6 +160,53 @@ describe('SvgArrow', () => {
           yEnd,
           endingAnchor,
         );
+        expect(result).toEqual(data.expected);
+      });
+    });
+  });
+
+  describe('computeLabelDimensions', () => {
+    const dataSet = [
+      {
+        message: 1,
+        input: {
+          xStart: 10,
+          yStart: 20,
+          xEnd: 15,
+          yEnd: 2,
+          endingAnchor: 'top',
+        },
+        expected: {
+          hl: 18,
+          wl: 5,
+          xl: 10,
+          yl: 2,
+        },
+      },
+      {
+        message: 2,
+        input: {
+          xStart: 10,
+          yStart: 2,
+          xEnd: 5,
+          yEnd: 10,
+          endingAnchor: 'left',
+        },
+        expected: {
+          hl: 8,
+          wl: 5,
+          xl: 5,
+          yl: 2,
+        },
+      },
+    ];
+
+    dataSet.forEach(data => {
+      it(`should compute coordinates of  label foreignObject [data ${
+        data.message
+      }]`, () => {
+        const { xStart, yStart, xEnd, yEnd } = data.input;
+        const result = computeLabelDimensions(xStart, yStart, xEnd, yEnd);
         expect(result).toEqual(data.expected);
       });
     });

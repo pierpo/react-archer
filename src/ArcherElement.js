@@ -4,8 +4,13 @@ import PropTypes from 'prop-types';
 export class ArcherElement extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (
-      JSON.stringify(this.props.relations) ===
-      JSON.stringify(nextProps.relations)
+      !nextProps.relations ||
+      !this.props.relations ||
+      (JSON.stringify(this.props.relations.to) ===
+        JSON.stringify(nextProps.relations.to) &&
+        JSON.stringify(this.props.relations.from) ===
+          JSON.stringify(nextProps.relations.from) &&
+        this.props.relations.label === nextProps.relations.label)
     ) {
       return;
     }
@@ -50,6 +55,7 @@ ArcherElement.propTypes = {
   id: PropTypes.string,
   relations: PropTypes.arrayOf(
     PropTypes.shape({
+      label: PropTypes.node,
       from: PropTypes.shape({
         anchor: anchorType,
       }),
