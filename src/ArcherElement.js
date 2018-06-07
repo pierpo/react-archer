@@ -3,15 +3,13 @@ import PropTypes from 'prop-types';
 
 export class ArcherElement extends React.Component {
   componentWillReceiveProps(nextProps) {
-    if (
-      !nextProps.relations ||
-      !this.props.relations ||
-      (JSON.stringify(this.props.relations.to) ===
-        JSON.stringify(nextProps.relations.to) &&
-        JSON.stringify(this.props.relations.from) ===
-          JSON.stringify(nextProps.relations.from) &&
-        this.props.relations.label === nextProps.relations.label)
-    ) {
+    const currentRelations = (this.props.relations || []).map(r =>
+      (r.label || {}).toString(),
+    );
+    const nextRelations = (nextProps.relations || []).map(r =>
+      (r.label || {}).toString(),
+    );
+    if (JSON.stringify(currentRelations) === JSON.stringify(nextRelations)) {
       return;
     }
     this.registerAllTransitions(nextProps.relations);
