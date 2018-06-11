@@ -1,15 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+const stringifyRelations = relations => {
+  const relationsWithStringifiedLabels = (relations || []).map(r => {
+    return (r.label || {}).toString();
+  });
+  return JSON.stringify(relationsWithStringifiedLabels);
+};
+
 export class ArcherElement extends React.Component {
   componentWillReceiveProps(nextProps) {
-    const currentRelations = (this.props.relations || []).map(r =>
-      (r.label || {}).toString(),
-    );
-    const nextRelations = (nextProps.relations || []).map(r =>
-      (r.label || {}).toString(),
-    );
-    if (JSON.stringify(currentRelations) === JSON.stringify(nextRelations)) {
+    if (
+      stringifyRelations(this.props.relations) ===
+      stringifyRelations(nextProps.relations)
+    ) {
       return;
     }
     this.registerAllTransitions(nextProps.relations);
