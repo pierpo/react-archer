@@ -65,6 +65,21 @@ export function computeEndingAnchorPosition(xs, ys, xe, ye, endingAnchor) {
   return { xa2: xe, ya2: ye };
 }
 
+export function computeLabelDimensions(xs, ys, xe, ye) {
+  const wl = Math.abs(xe - xs);
+  const hl = Math.abs(ye - ys);
+
+  const xl = xe > xs ? xs : xe;
+  const yl = ye > ys ? ys : ye;
+
+  return {
+    xl,
+    yl,
+    wl,
+    hl,
+  };
+}
+
 const SvgArrow = ({
   startingPoint,
   startingAnchor,
@@ -73,6 +88,7 @@ const SvgArrow = ({
   strokeColor,
   arrowLength,
   strokeWidth,
+  arrowLabel,
 }) => {
   const actualArrowLength = arrowLength * 2;
 
@@ -105,12 +121,29 @@ const SvgArrow = ({
   const pathString =
     `M${xs},${ys} ` + `C${xa1},${ya1} ${xa2},${ya2} ` + `${xe},${ye}`;
 
+  const { xl, yl, wl, hl } = computeLabelDimensions(xs, ys, xe, ye);
+
   return (
-    <path
-      d={pathString}
-      style={{ fill: 'none', stroke: strokeColor, strokeWidth }}
-      markerEnd={`url(${location.href}#arrow)`}
-    />
+    <g>
+      <path
+        d={pathString}
+        style={{ fill: 'none', stroke: strokeColor, strokeWidth }}
+        markerEnd={`url(${location.href}#arrow)`}
+      />
+      <foreignObject x={xl} y={yl} width={wl} height={hl}>
+        <div
+          style={{
+            width: wl,
+            height: hl,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <div>{arrowLabel}</div>
+        </div>
+      </foreignObject>
+    </g>
   );
 };
 
@@ -129,6 +162,7 @@ SvgArrow.propTypes = {
   strokeColor: PropTypes.string,
   arrowLength: PropTypes.number,
   strokeWidth: PropTypes.number,
+  arrowLabel: PropTypes.node,
 };
 
 export default SvgArrow;

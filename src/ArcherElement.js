@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 
 export class ArcherElement extends React.Component {
   componentWillReceiveProps(nextProps) {
-    if (
-      JSON.stringify(this.props.relations) ===
-      JSON.stringify(nextProps.relations)
-    ) {
+    const currentRelations = (this.props.relations || []).map(r =>
+      (r.label || {}).toString(),
+    );
+    const nextRelations = (nextProps.relations || []).map(r =>
+      (r.label || {}).toString(),
+    );
+    if (JSON.stringify(currentRelations) === JSON.stringify(nextRelations)) {
       return;
     }
     this.registerAllTransitions(nextProps.relations);
@@ -50,6 +53,7 @@ ArcherElement.propTypes = {
   id: PropTypes.string,
   relations: PropTypes.arrayOf(
     PropTypes.shape({
+      label: PropTypes.node,
       from: PropTypes.shape({
         anchor: anchorType,
       }),
