@@ -3,8 +3,12 @@ import PropTypes from 'prop-types';
 
 const stringifyRelations = relations => {
   const relationsWithStringifiedLabels = (relations || []).map(r => {
-    return (r.label || {}).toString();
+    if (r.label && r.label.props) {
+      return JSON.stringify(r.label.props);
+    }
+    return JSON.stringify(r.label);
   });
+
   return JSON.stringify(relationsWithStringifiedLabels);
 };
 
