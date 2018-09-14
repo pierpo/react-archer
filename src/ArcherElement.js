@@ -36,12 +36,19 @@ export class ArcherElement extends React.Component {
     });
   }
 
+  onRefUpdate = ref => {
+    if (!ref) {
+      return;
+    }
+    this.context.registerChild(this.props.id, ref);
+  };
+
   render() {
     return (
       <div
         style={{ ...this.props.style, position: 'relative' }}
         className={this.props.className}
-        ref={this.context.registerChild(this.props.id)}
+        ref={this.onRefUpdate}
       >
         {this.props.children}
       </div>
