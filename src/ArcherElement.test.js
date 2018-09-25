@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import ArcherElement from './ArcherElement';
 
 let wrapper;
@@ -22,9 +22,14 @@ describe('ArcherElement', () => {
     expect(wrapper.props().children).toEqual(children);
   });
 
-  it('should call registerChild in ref callback', () => {
-    wrapper.setProps({ id: 'the id' });
-    expect(registerChildMock).toHaveBeenCalledWith('the id');
+  it('should register child on mounting ref callback', () => {
+    const context = { registerChild: registerChildMock };
+    const props = { ...defaultProps, id: 'the id' };
+    wrapper = mount(<ArcherElement {...props} />, { context });
+
+    expect(registerChildMock).toHaveBeenCalledWith('the id', expect.anything());
+    wrapper.unmount();
+    expect(registerChildMock).toHaveBeenCalledTimes(1);
   });
 
   describe('lifecycle', () => {

@@ -117,18 +117,16 @@ export class ArcherContainer extends React.Component {
     });
   };
 
-  registerChild = id => {
-    return ref => {
-      if (!this.state.refs[id]) {
-        this.state.observer.observe(ref);
-        this.setState(currentState => {
-          return {
-            ...this.currentState,
-            refs: { ...currentState.refs, [id]: ref },
-          };
-        });
-      }
-    };
+  registerChild = (id, ref) => {
+    if (!this.state.refs[id]) {
+      this.state.observer.observe(ref);
+      this.setState(currentState => {
+        return {
+          ...this.currentState,
+          refs: { ...currentState.refs, [id]: ref },
+        };
+      });
+    }
   };
 
   computeArrows = () => {
