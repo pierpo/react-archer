@@ -3,3 +3,7 @@ example
 setup-tests.js
 shim.js
 coverage
+yarn-error.log
+*.png
+tags
+.circleci/config.yml
