@@ -144,25 +144,17 @@ export class ArcherContainer extends React.Component<Props, State> {
       from: { ...relation.from, id: fromElement },
     };
     fromTo.push(newFromTo);
-    this.setState((currentState: State) => {
-      return {
-        // $FlowFixMe TODO Wow, didn't work at all... I'll fix it once I'm done with flow
-        ...this.currentState,
-        fromTo: [...currentState.fromTo, ...fromTo],
-      };
-    });
+    this.setState((currentState: State) => ({
+      fromTo: [...currentState.fromTo, ...fromTo],
+    }));
   };
 
   registerChild = (id: string, ref: HTMLElement) => {
     if (!this.state.refs[id]) {
       this.state.observer.observe(ref);
-      this.setState((currentState: State) => {
-        return {
-          // $FlowFixMe TODO Wow, didn't work at all... I'll fix it once I'm done with flow
-          ...this.currentState,
-          refs: { ...currentState.refs, [id]: ref },
-        };
-      });
+      this.setState((currentState: State) => ({
+        refs: { ...currentState.refs, [id]: ref },
+      }));
     }
   };
 
