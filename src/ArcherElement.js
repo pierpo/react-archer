@@ -12,6 +12,7 @@ type Props = {
 };
 
 // TODO type the context (and finetune the functions typing in it)
+// eslint-disable-next-line no-unused-vars
 type Context = {
   registerChild: Function,
   registerTransition: Function,
