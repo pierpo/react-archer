@@ -21,7 +21,7 @@ type State = {
   refs: {
     [string]: HTMLElement,
   },
-  fromTo: Array<RelationType>,
+  fromTo: Array<CompleteRelationType>,
   observer: ResizeObserver,
   parent: ?HTMLElement,
 };
@@ -144,7 +144,12 @@ export class ArcherContainer extends React.Component<Props, State> {
       from: { ...relation.from, id: fromElement },
     };
     fromTo.push(newFromTo);
+
     this.setState((currentState: State) => ({
+      // Really can't find a solution for this Flow error. I think it's a bug.
+      // I wrote an issue on Flow, let's see what happens.
+      // https://github.com/facebook/flow/issues/7135
+      // $FlowFixMe
       fromTo: [...currentState.fromTo, ...fromTo],
     }));
   };
@@ -165,7 +170,6 @@ export class ArcherContainer extends React.Component<Props, State> {
       const startingAnchor = from.anchor;
       const startingPoint = this.getPointCoordinatesFromAnchorPosition(
         from.anchor,
-        // $FlowFixMe TODO something's wrong here again... Damn
         from.id,
         parentCoordinates,
       );

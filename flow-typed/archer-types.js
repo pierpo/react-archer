@@ -11,6 +11,18 @@ declare type RelationType = {
   label: React$Node,
 };
 
+declare type CompleteRelationType = {
+  from: {
+    anchor: AnchorPositionType,
+    id: string,
+  },
+  to: {
+    anchor: AnchorPositionType,
+    id: string,
+  },
+  label: React$Node,
+};
+
 declare type PointType = {
   x: number,
   y: number,
