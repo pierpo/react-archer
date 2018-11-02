@@ -13,8 +13,37 @@
  * https://github.com/flowtype/flow-typed
  */
 
+class DOMRectReadOnly {
+  +x: number;
+  +y: number;
+  +width: number;
+  +height: number;
+  +top: number;
+  +right: number;
+  +bottom: number;
+  +left: number;
+}
+
+class ResizeObserverEntry {
+  +target: Element;
+  +contentRect: DOMRectReadOnly;
+}
+
+type Entries = $ReadOnlyArray<ResizeObserverEntry>;
+
+type ResizeObserverCallback = {
+  (entries: Entries, observer: ResizeObserver): void,
+};
+
+declare class ResizeObserver {
+  constructor(ResizeObserverCallback): ResizeObserver;
+  observe(target: Element): void;
+  unobserve(target: Element): void;
+  disconnect(): void;
+}
+
 declare module 'resize-observer-polyfill' {
-  declare module.exports: any;
+  declare module.exports: typeof ResizeObserver;
 }
 
 /**
@@ -92,53 +121,83 @@ declare module 'resize-observer-polyfill/src/utils/throttle' {
 
 // Filename aliases
 declare module 'resize-observer-polyfill/dist/ResizeObserver.es.js' {
-  declare module.exports: $Exports<'resize-observer-polyfill/dist/ResizeObserver.es'>;
+  declare module.exports: $Exports<
+    'resize-observer-polyfill/dist/ResizeObserver.es',
+  >;
 }
 declare module 'resize-observer-polyfill/dist/ResizeObserver.global.js' {
-  declare module.exports: $Exports<'resize-observer-polyfill/dist/ResizeObserver.global'>;
+  declare module.exports: $Exports<
+    'resize-observer-polyfill/dist/ResizeObserver.global',
+  >;
 }
 declare module 'resize-observer-polyfill/dist/ResizeObserver.js' {
-  declare module.exports: $Exports<'resize-observer-polyfill/dist/ResizeObserver'>;
+  declare module.exports: $Exports<
+    'resize-observer-polyfill/dist/ResizeObserver',
+  >;
 }
 declare module 'resize-observer-polyfill/src/index.js' {
   declare module.exports: $Exports<'resize-observer-polyfill/src/index'>;
 }
 declare module 'resize-observer-polyfill/src/ResizeObservation.js' {
-  declare module.exports: $Exports<'resize-observer-polyfill/src/ResizeObservation'>;
+  declare module.exports: $Exports<
+    'resize-observer-polyfill/src/ResizeObservation',
+  >;
 }
 declare module 'resize-observer-polyfill/src/ResizeObserver.js' {
-  declare module.exports: $Exports<'resize-observer-polyfill/src/ResizeObserver'>;
+  declare module.exports: $Exports<
+    'resize-observer-polyfill/src/ResizeObserver',
+  >;
 }
 declare module 'resize-observer-polyfill/src/ResizeObserverController.js' {
-  declare module.exports: $Exports<'resize-observer-polyfill/src/ResizeObserverController'>;
+  declare module.exports: $Exports<
+    'resize-observer-polyfill/src/ResizeObserverController',
+  >;
 }
 declare module 'resize-observer-polyfill/src/ResizeObserverEntry.js' {
-  declare module.exports: $Exports<'resize-observer-polyfill/src/ResizeObserverEntry'>;
+  declare module.exports: $Exports<
+    'resize-observer-polyfill/src/ResizeObserverEntry',
+  >;
 }
 declare module 'resize-observer-polyfill/src/ResizeObserverSPI.js' {
-  declare module.exports: $Exports<'resize-observer-polyfill/src/ResizeObserverSPI'>;
+  declare module.exports: $Exports<
+    'resize-observer-polyfill/src/ResizeObserverSPI',
+  >;
 }
 declare module 'resize-observer-polyfill/src/shims/es6-collections.js' {
-  declare module.exports: $Exports<'resize-observer-polyfill/src/shims/es6-collections'>;
+  declare module.exports: $Exports<
+    'resize-observer-polyfill/src/shims/es6-collections',
+  >;
 }
 declare module 'resize-observer-polyfill/src/shims/global.js' {
   declare module.exports: $Exports<'resize-observer-polyfill/src/shims/global'>;
 }
 declare module 'resize-observer-polyfill/src/shims/requestAnimationFrame.js' {
-  declare module.exports: $Exports<'resize-observer-polyfill/src/shims/requestAnimationFrame'>;
+  declare module.exports: $Exports<
+    'resize-observer-polyfill/src/shims/requestAnimationFrame',
+  >;
 }
 declare module 'resize-observer-polyfill/src/utils/defineConfigurable.js' {
-  declare module.exports: $Exports<'resize-observer-polyfill/src/utils/defineConfigurable'>;
+  declare module.exports: $Exports<
+    'resize-observer-polyfill/src/utils/defineConfigurable',
+  >;
 }
 declare module 'resize-observer-polyfill/src/utils/geometry.js' {
-  declare module.exports: $Exports<'resize-observer-polyfill/src/utils/geometry'>;
+  declare module.exports: $Exports<
+    'resize-observer-polyfill/src/utils/geometry',
+  >;
 }
 declare module 'resize-observer-polyfill/src/utils/getWindowOf.js' {
-  declare module.exports: $Exports<'resize-observer-polyfill/src/utils/getWindowOf'>;
+  declare module.exports: $Exports<
+    'resize-observer-polyfill/src/utils/getWindowOf',
+  >;
 }
 declare module 'resize-observer-polyfill/src/utils/isBrowser.js' {
-  declare module.exports: $Exports<'resize-observer-polyfill/src/utils/isBrowser'>;
+  declare module.exports: $Exports<
+    'resize-observer-polyfill/src/utils/isBrowser',
+  >;
 }
 declare module 'resize-observer-polyfill/src/utils/throttle.js' {
-  declare module.exports: $Exports<'resize-observer-polyfill/src/utils/throttle'>;
+  declare module.exports: $Exports<
+    'resize-observer-polyfill/src/utils/throttle',
+  >;
 }
