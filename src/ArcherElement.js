@@ -1,8 +1,26 @@
+// @flow
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const stringifyRelations = relations => {
+type Props = {
+  id: string,
+  relations: Array<RelationType>,
+  style: Object,
+  className: string,
+  children: React$Node,
+};
+
+// TODO type the context (and finetune the functions typing in it)
+type Context = {
+  registerChild: Function,
+  registerTransition: Function,
+  refresh: Function,
+};
+
+const stringifyRelations = (relations: Array<RelationType>): string => {
   const relationsWithStringifiedLabels = (relations || []).map(r => {
+    // $FlowFixMe TODO
     if (r.label && r.label.props) {
       return JSON.stringify(r.label.props);
     }
@@ -12,8 +30,8 @@ const stringifyRelations = relations => {
   return JSON.stringify(relationsWithStringifiedLabels);
 };
 
-export class ArcherElement extends React.Component {
-  componentWillReceiveProps(nextProps) {
+export class ArcherElement extends React.Component<Props> {
+  componentWillReceiveProps(nextProps: Props) {
     if (
       stringifyRelations(this.props.relations) ===
       stringifyRelations(nextProps.relations)
@@ -30,13 +48,13 @@ export class ArcherElement extends React.Component {
     this.registerAllTransitions(this.props.relations);
   }
 
-  registerAllTransitions(relations) {
+  registerAllTransitions(relations: Array<RelationType>) {
     relations.forEach(relation => {
       this.context.registerTransition(this.props.id, relation);
     });
   }
 
-  onRefUpdate = ref => {
+  onRefUpdate = (ref: ?HTMLElement) => {
     if (!ref) {
       return;
     }
@@ -60,27 +78,6 @@ ArcherElement.contextTypes = {
   registerChild: PropTypes.func,
   registerTransition: PropTypes.func,
   refresh: PropTypes.func,
-};
-
-const anchorType = PropTypes.oneOf(['top', 'bottom', 'left', 'right']);
-
-ArcherElement.propTypes = {
-  id: PropTypes.string,
-  relations: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.node,
-      from: PropTypes.shape({
-        anchor: anchorType,
-      }),
-      to: PropTypes.shape({
-        anchor: anchorType,
-        id: PropTypes.string,
-      }),
-    }),
-  ),
-  style: PropTypes.object,
-  className: PropTypes.string,
-  children: PropTypes.node,
 };
 
 export default ArcherElement;

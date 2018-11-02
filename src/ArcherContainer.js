@@ -1,9 +1,30 @@
+// @flow
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import ResizeObserver from 'resize-observer-polyfill';
 import Point from './Point';
 
 import SvgArrow from './SvgArrow';
+
+type Props = {
+  arrowLength: number,
+  arrowThickness: number,
+  strokeColor: string,
+  strokeWidth: number,
+  children: React$Node,
+  style: Object,
+  className: string,
+};
+
+type State = {
+  refs: {
+    [string]: HTMLElement,
+  },
+  fromTo: Array<RelationType>,
+  observer: ResizeObserver,
+  parent: ?HTMLElement,
+};
 
 const svgContainerStyle = {
   position: 'absolute',
@@ -13,11 +34,14 @@ const svgContainerStyle = {
   left: 0,
 };
 
-function rectToPoint(rect) {
+function rectToPoint(rect: ClientRect) {
   return new Point(rect.left, rect.top);
 }
 
-function computeCoordinatesFromAnchorPosition(anchorPosition, rect) {
+function computeCoordinatesFromAnchorPosition(
+  anchorPosition: AnchorPositionType,
+  rect: ClientRect,
+) {
   switch (anchorPosition) {
     case 'top':
       return rectToPoint(rect).add(new Point(rect.width / 2, 0));
@@ -32,8 +56,8 @@ function computeCoordinatesFromAnchorPosition(anchorPosition, rect) {
   }
 }
 
-export class ArcherContainer extends React.Component {
-  constructor(props) {
+export class ArcherContainer extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     const observer = new ResizeObserver(() => {
       this.refreshScreen();
@@ -42,8 +66,17 @@ export class ArcherContainer extends React.Component {
       refs: {},
       fromTo: [],
       observer,
+      parent: null,
     };
   }
+
+  static defaultProps = {
+    arrowLength: 10,
+    arrowThickness: 6,
+    strokeColor: '#f00',
+    strokeWidth: 2,
+  };
+
   componentDidMount() {
     window.addEventListener('resize', this.refreshScreen);
   }
@@ -56,7 +89,7 @@ export class ArcherContainer extends React.Component {
     window.removeEventListener('resize', this.refreshScreen);
   }
 
-  refreshScreen = () => {
+  refreshScreen = (): void => {
     this.setState({ ...this.state });
   };
 
@@ -67,30 +100,32 @@ export class ArcherContainer extends React.Component {
     };
   };
 
-  storeParent = ref => {
+  storeParent = (ref: ?HTMLElement): void => {
     if (this.state.parent) {
       return;
     }
     this.setState(currentState => ({ ...currentState, parent: ref }));
   };
 
-  getRectFromRef = ref => {
+  getRectFromRef = (ref: HTMLElement): ClientRect => {
     if (!ref) {
+      // $FlowFixMe TODO something is really wrong here...
       return new Point(0, 0);
     }
     return ref.getBoundingClientRect();
   };
 
-  getParentCoordinates = () => {
+  getParentCoordinates = (): PointType => {
+    // $FlowFixMe TODO something is really wrong here...
     const rectp = this.getRectFromRef(this.state.parent);
     return rectToPoint(rectp);
   };
 
   getPointCoordinatesFromAnchorPosition = (
-    position,
-    index,
-    parentCoordinates,
-  ) => {
+    position: AnchorPositionType,
+    index: string,
+    parentCoordinates: PointType,
+  ): PointType => {
     const rect = this.getRectFromRef(this.state.refs[index]);
     const absolutePosition = computeCoordinatesFromAnchorPosition(
       position,
@@ -100,7 +135,7 @@ export class ArcherContainer extends React.Component {
     return absolutePosition.substract(parentCoordinates);
   };
 
-  registerTransition = (fromElement, relation) => {
+  registerTransition = (fromElement: string, relation: RelationType): void => {
     // TODO prevent duplicate registering
     // TODO improve the state merge... (should be shorter)
     const fromTo = [...this.state.fromTo];
@@ -109,19 +144,21 @@ export class ArcherContainer extends React.Component {
       from: { ...relation.from, id: fromElement },
     };
     fromTo.push(newFromTo);
-    this.setState(currentState => {
+    this.setState((currentState: State) => {
       return {
+        // $FlowFixMe TODO Wow, didn't work at all... I'll fix it once I'm done with flow
         ...this.currentState,
         fromTo: [...currentState.fromTo, ...fromTo],
       };
     });
   };
 
-  registerChild = (id, ref) => {
+  registerChild = (id: string, ref: HTMLElement) => {
     if (!this.state.refs[id]) {
       this.state.observer.observe(ref);
-      this.setState(currentState => {
+      this.setState((currentState: State) => {
         return {
+          // $FlowFixMe TODO Wow, didn't work at all... I'll fix it once I'm done with flow
           ...this.currentState,
           refs: { ...currentState.refs, [id]: ref },
         };
@@ -129,13 +166,14 @@ export class ArcherContainer extends React.Component {
     }
   };
 
-  computeArrows = () => {
+  computeArrows = (): React$Node => {
     const parentCoordinates = this.getParentCoordinates();
     return this.state.fromTo.map(sd => {
       const { from, to, label } = sd;
       const startingAnchor = from.anchor;
       const startingPoint = this.getPointCoordinatesFromAnchorPosition(
         from.anchor,
+        // $FlowFixMe TODO something's wrong here again... Damn
         from.id,
         parentCoordinates,
       );
@@ -193,23 +231,6 @@ export class ArcherContainer extends React.Component {
     );
   }
 }
-
-ArcherContainer.propTypes = {
-  arrowLength: PropTypes.number,
-  arrowThickness: PropTypes.number,
-  strokeColor: PropTypes.string,
-  strokeWidth: PropTypes.number,
-  children: PropTypes.node,
-  style: PropTypes.object,
-  className: PropTypes.string,
-};
-
-ArcherContainer.defaultProps = {
-  arrowLength: 10,
-  arrowThickness: 6,
-  strokeColor: '#f00',
-  strokeWidth: 2,
-};
 
 ArcherContainer.childContextTypes = {
   registerChild: PropTypes.func,
