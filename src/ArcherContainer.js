@@ -1,7 +1,6 @@
 // @flow
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import ResizeObserver from 'resize-observer-polyfill';
 import Point from './Point';
 
@@ -56,8 +55,14 @@ function computeCoordinatesFromAnchorPosition(
   }
 }
 
-// $FlowFixMe TODO Should add the context type into <{}> but I need to upgrade babel, which is quite a pain
-const ArcherContainerContext = React.createContext({});
+export type ArcherContainerContextType = {
+  registerChild?: (string, HTMLElement) => void,
+  registerTransition?: (string, RelationType) => void,
+};
+
+const ArcherContainerContext = React.createContext<ArcherContainerContextType>(
+  {},
+);
 
 const ArcherContainerContextProvider = ArcherContainerContext.Provider;
 export const ArcherContainerContextConsumer = ArcherContainerContext.Consumer;

@@ -1,9 +1,11 @@
 // @flow
 
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import { ArcherContainerContextConsumer } from './ArcherContainer';
+import {
+  type ArcherContainerContextType,
+  ArcherContainerContextConsumer,
+} from './ArcherContainer';
 
 type Props = {
   id: string,
@@ -11,13 +13,7 @@ type Props = {
   style: Object,
   className: string,
   children: React$Node,
-};
-
-// TODO type the context (and finetune the functions typing in it)
-// eslint-disable-next-line no-unused-vars
-type Context = {
-  registerChild: Function,
-  registerTransition: Function,
+  context: ArcherContainerContextType,
 };
 
 const stringifyRelations = (relations: Array<RelationType>): string => {
@@ -52,14 +48,16 @@ export class ArcherElement extends React.Component<Props> {
 
   registerAllTransitions(relations: Array<RelationType>) {
     relations.forEach(relation => {
+      if (!this.props.context.registerTransition) return;
+
       this.props.context.registerTransition(this.props.id, relation);
     });
   }
 
   onRefUpdate = (ref: ?HTMLElement) => {
-    if (!ref) {
-      return;
-    }
+    if (!ref) return;
+    if (!this.props.context.registerChild) return;
+
     this.props.context.registerChild(this.props.id, ref);
   };
 
