@@ -56,6 +56,12 @@ function computeCoordinatesFromAnchorPosition(
   }
 }
 
+// $FlowFixMe TODO Should add the context type into <{}> but I need to upgrade babel, which is quite a pain
+const ArcherContainerContext = React.createContext({});
+
+const ArcherContainerContextProvider = ArcherContainerContext.Provider;
+export const ArcherContainerContextConsumer = ArcherContainerContext.Consumer;
+
 export class ArcherContainer extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -91,13 +97,6 @@ export class ArcherContainer extends React.Component<Props, State> {
 
   refreshScreen = (): void => {
     this.setState({ ...this.state });
-  };
-
-  getChildContext = () => {
-    return {
-      registerTransition: this.registerTransition,
-      registerChild: this.registerChild,
-    };
   };
 
   storeParent = (ref: ?HTMLElement): void => {
@@ -201,36 +200,38 @@ export class ArcherContainer extends React.Component<Props, State> {
       .arrowLength - 1},${this.props.arrowThickness / 2} z`;
 
     return (
-      <div
-        style={{ ...this.props.style, position: 'relative' }}
-        className={this.props.className}
+      <ArcherContainerContextProvider
+        value={{
+          registerTransition: this.registerTransition,
+          registerChild: this.registerChild,
+        }}
       >
-        <svg style={svgContainerStyle}>
-          <defs>
-            <marker
-              id="arrow"
-              markerWidth={this.props.arrowLength}
-              markerHeight={this.props.arrowThickness}
-              refX="0"
-              refY={this.props.arrowThickness / 2}
-              orient="auto"
-              markerUnits="strokeWidth"
-            >
-              <path d={arrowPath} fill={this.props.strokeColor} />
-            </marker>
-          </defs>
-          {SvgArrows}
-        </svg>
+        <div
+          style={{ ...this.props.style, position: 'relative' }}
+          className={this.props.className}
+        >
+          <svg style={svgContainerStyle}>
+            <defs>
+              <marker
+                id="arrow"
+                markerWidth={this.props.arrowLength}
+                markerHeight={this.props.arrowThickness}
+                refX="0"
+                refY={this.props.arrowThickness / 2}
+                orient="auto"
+                markerUnits="strokeWidth"
+              >
+                <path d={arrowPath} fill={this.props.strokeColor} />
+              </marker>
+            </defs>
+            {SvgArrows}
+          </svg>
 
-        <div ref={this.storeParent}>{this.props.children}</div>
-      </div>
+          <div ref={this.storeParent}>{this.props.children}</div>
+        </div>
+      </ArcherContainerContextProvider>
     );
   }
 }
-
-ArcherContainer.childContextTypes = {
-  registerChild: PropTypes.func,
-  registerTransition: PropTypes.func,
-};
 
 export default ArcherContainer;

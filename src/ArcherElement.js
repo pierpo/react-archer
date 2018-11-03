@@ -3,6 +3,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { ArcherContainerContextConsumer } from './ArcherContainer';
+
 type Props = {
   id: string,
   relations: Array<RelationType>,
@@ -16,7 +18,6 @@ type Props = {
 type Context = {
   registerChild: Function,
   registerTransition: Function,
-  refresh: Function,
 };
 
 const stringifyRelations = (relations: Array<RelationType>): string => {
@@ -51,7 +52,7 @@ export class ArcherElement extends React.Component<Props> {
 
   registerAllTransitions(relations: Array<RelationType>) {
     relations.forEach(relation => {
-      this.context.registerTransition(this.props.id, relation);
+      this.props.context.registerTransition(this.props.id, relation);
     });
   }
 
@@ -59,7 +60,7 @@ export class ArcherElement extends React.Component<Props> {
     if (!ref) {
       return;
     }
-    this.context.registerChild(this.props.id, ref);
+    this.props.context.registerChild(this.props.id, ref);
   };
 
   render() {
@@ -75,10 +76,10 @@ export class ArcherElement extends React.Component<Props> {
   }
 }
 
-ArcherElement.contextTypes = {
-  registerChild: PropTypes.func,
-  registerTransition: PropTypes.func,
-  refresh: PropTypes.func,
-};
+const ArcherElementWithContext = (props: *) => (
+  <ArcherContainerContextConsumer>
+    {context => <ArcherElement {...props} context={context} />}
+  </ArcherContainerContextConsumer>
+);
 
-export default ArcherElement;
+export default ArcherElementWithContext;
