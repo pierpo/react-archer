@@ -1,9 +1,10 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path')
-const examplePath = path.resolve(__dirname, 'example')
+const path = require('path');
+const examplePath = path.resolve(__dirname, 'example');
 
 module.exports = {
+  mode: 'development',
   entry: path.resolve(examplePath, 'index.js'),
   output: {
     path: examplePath,
@@ -11,7 +12,7 @@ module.exports = {
     library: 'reactArcher',
   },
   module: {
-    loaders: [
+    rules: [
       {
         exclude: /node_modules/,
         test: /\.(js|jsx)/,

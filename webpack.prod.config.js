@@ -1,7 +1,8 @@
-var path = require('path')
-var webpack = require('webpack')
-var isProd = process.env.NODE_ENV === 'production' || null
+var path = require('path');
+var webpack = require('webpack');
+var isProd = process.env.NODE_ENV === 'production' || null;
 
+// TODO lots of cleanup to do here
 const externals = {
   react: {
     root: 'React',
@@ -24,6 +25,7 @@ const externals = {
 };
 
 var config = {
+  mode: 'production',
   entry: './src/react-archer.js',
   output: {
     path: path.join(__dirname, 'dist'),
@@ -34,7 +36,7 @@ var config = {
     libraryTarget: 'umd',
   },
   module: {
-    loaders: [
+    rules: [
       {
         exclude: /node_modules/,
         test: /\.(js|jsx)/,
@@ -60,8 +62,8 @@ if (isProd) {
       mangle: {
         except: ['React', 'ReactDOM', 'Archer', 'ReactArcher'],
       },
-    })
+    }),
   );
-};
+}
 
-module.exports = config
+module.exports = config;
