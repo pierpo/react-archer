@@ -6,8 +6,8 @@
   "version": "0.2.2",
   "license": "MIT",
   "dependencies": {
-    "react": "16.2.0",
-    "react-dom": "16.2.0",
+    "react": "16.6.0",
+    "react-dom": "16.6.0",
     "resize-observer-polyfill": "1.5.0"
   },
   "homepage": "https://github.com/pierpo/react-archer",
