@@ -18,8 +18,18 @@ describe('ArcherContainer', () => {
   });
 
   it('should render given children and a svg element', () => {
-    expect(wrapper.childAt(1).text()).toEqual('child');
-    expect(wrapper.childAt(0).getElements()[0].type).toEqual('svg');
+    expect(
+      wrapper
+        .childAt(0)
+        .childAt(1)
+        .text(),
+    ).toEqual('child');
+    expect(
+      wrapper
+        .childAt(0)
+        .childAt(0)
+        .getElements()[0].type,
+    ).toEqual('svg');
   });
 
   it('should render svg with the marker element used to draw an svg arrow', () => {
