@@ -74,7 +74,7 @@ export class ArcherElement extends React.Component<Props> {
   }
 }
 
-const ArcherElementWithContext = (props: *) => (
+const ArcherElementWithContext = (props: Props) => (
   <ArcherContainerContextConsumer>
     {context => <ArcherElement {...props} context={context} />}
   </ArcherContainerContextConsumer>
