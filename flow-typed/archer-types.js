@@ -22,10 +22,3 @@ declare type CompleteRelationType = {
   },
   label: React$Node,
 };
-
-declare type PointType = {
-  x: number,
-  y: number,
-  add: PointType => PointType,
-  substract: PointType => PointType,
-};

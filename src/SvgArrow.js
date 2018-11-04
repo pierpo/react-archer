@@ -1,11 +1,12 @@
 // @flow
 
 import React from 'react';
+import Point from './Point';
 
 type Props = {
-  startingPoint: PointType,
+  startingPoint: Point,
   startingAnchor: AnchorPositionType,
-  endingPoint: PointType,
+  endingPoint: Point,
   endingAnchor: AnchorPositionType,
   strokeColor: string,
   arrowLength: number,
