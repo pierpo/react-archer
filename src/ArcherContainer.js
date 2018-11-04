@@ -111,17 +111,19 @@ export class ArcherContainer extends React.Component<Props, State> {
     this.setState(currentState => ({ ...currentState, parent: ref }));
   };
 
-  getRectFromRef = (ref: HTMLElement): ClientRect => {
+  getRectFromRef = (ref: ?HTMLElement): ?ClientRect => {
     if (!ref) {
-      // $FlowFixMe TODO something is really wrong here...
-      return new Point(0, 0);
+      return null;
     }
     return ref.getBoundingClientRect();
   };
 
   getParentCoordinates = (): Point => {
-    // $FlowFixMe TODO something is really wrong here...
     const rectp = this.getRectFromRef(this.state.parent);
+
+    if (!rectp) {
+      return new Point(0, 0);
+    }
     return rectToPoint(rectp);
   };
 
@@ -131,6 +133,10 @@ export class ArcherContainer extends React.Component<Props, State> {
     parentCoordinates: Point,
   ): Point => {
     const rect = this.getRectFromRef(this.state.refs[index]);
+
+    if (!rect) {
+      return new Point(0, 0);
+    }
     const absolutePosition = computeCoordinatesFromAnchorPosition(
       position,
       rect,
