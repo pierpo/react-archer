@@ -21,7 +21,7 @@
   "scripts": {
     "dev": "webpack-dev-server --hot --progress --colors --config ./webpack.config.js",
     "build": "webpack --config webpack.prod.config.js",
-    "pretest": "yarn lint",
+    "pretest": "yarn lint && yarn flow",
     "prepare": "npm run build",
     "lint": "eslint --ext .js,.jsx src/",
     "test:watch": "jest ./src/ --watch",
