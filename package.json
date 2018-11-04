@@ -25,7 +25,7 @@
     "prepare": "npm run build",
     "lint": "eslint --ext .js,.jsx src/",
     "test:watch": "jest ./src/ --watch",
-    "test": "jest ./src/"
+    "test": "jest --coverage ./src/"
   },
   "devDependencies": {
     "@babel/core": "7.1.2",
@@ -62,7 +62,7 @@
     "webpack-dev-server": "3.1.10"
   },
   "jest": {
-    "collectCoverage": true,
+    "collectCoverage": false,
     "collectCoverageFrom": [
       "src/**/*.{js,jsx}"
     ],
