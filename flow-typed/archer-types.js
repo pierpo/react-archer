@@ -8,7 +8,7 @@ declare type RelationType = {
     anchor: AnchorPositionType,
     id: string,
   },
-  label: React$Node,
+  label?: ?React$Node,
 };
 
 declare type CompleteRelationType = {
@@ -20,5 +20,5 @@ declare type CompleteRelationType = {
     anchor: AnchorPositionType,
     id: string,
   },
-  label: React$Node,
+  label?: ?React$Node,
 };

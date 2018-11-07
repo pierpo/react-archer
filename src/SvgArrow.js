@@ -11,7 +11,7 @@ type Props = {
   strokeColor: string,
   arrowLength: number,
   strokeWidth: number,
-  arrowLabel: React$Node,
+  arrowLabel?: ?React$Node,
 };
 
 function computeEndingArrowDirectionVector(endingAnchor) {
@@ -160,19 +160,21 @@ const SvgArrow = ({
         style={{ fill: 'none', stroke: strokeColor, strokeWidth }}
         markerEnd={`url(${location.href}#arrow)`}
       />
-      <foreignObject x={xl} y={yl} width={wl} height={hl}>
-        <div
-          style={{
-            width: wl,
-            height: hl,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <div>{arrowLabel}</div>
-        </div>
-      </foreignObject>
+      {arrowLabel && (
+        <foreignObject x={xl} y={yl} width={wl} height={hl}>
+          <div
+            style={{
+              width: wl,
+              height: hl,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <div>{arrowLabel}</div>
+          </div>
+        </foreignObject>
+      )}
     </g>
   );
 };
