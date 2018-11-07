@@ -7,3 +7,4 @@ yarn-error.log
 *.png
 tags
 .circleci/config.yml
+flow-typed
