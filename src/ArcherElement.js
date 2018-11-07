@@ -28,7 +28,7 @@ const stringifyRelations = (relations: Array<RelationType>): string => {
   return JSON.stringify(relationsWithStringifiedLabels);
 };
 
-export class ArcherElement extends React.Component<Props> {
+export class ArcherElementNoContext extends React.Component<Props> {
   componentWillReceiveProps(nextProps: Props) {
     if (
       stringifyRelations(this.props.relations) ===
@@ -76,7 +76,7 @@ export class ArcherElement extends React.Component<Props> {
 
 const ArcherElementWithContext = (props: Props) => (
   <ArcherContainerContextConsumer>
-    {context => <ArcherElement {...props} context={context} />}
+    {context => <ArcherElementNoContext {...props} context={context} />}
   </ArcherContainerContextConsumer>
 );
 
