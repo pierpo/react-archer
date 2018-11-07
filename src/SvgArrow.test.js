@@ -1,11 +1,13 @@
+// @flow
 import React from 'react';
-import { shallow } from 'enzyme';
+import { type ShallowWrapper, shallow } from 'enzyme';
 import SvgArrow, {
   computeEndingPointAccordingToArrow,
   computeStartingAnchorPosition,
   computeEndingAnchorPosition,
   computeLabelDimensions,
 } from './SvgArrow';
+import Point from './Point';
 
 describe('SvgArrow', () => {
   describe('computeEndingPointAccordingToArrow', () => {
@@ -213,12 +215,12 @@ describe('SvgArrow', () => {
   });
 
   describe('component', () => {
-    let wrapper;
+    let wrapper: ShallowWrapper;
 
     const props = {
-      startingPoint: { x: 10, y: 10 },
+      startingPoint: new Point(10, 10),
       startingAnchor: 'bottom',
-      endingPoint: { x: 30, y: 30 },
+      endingPoint: new Point(30, 30),
       endingAnchor: 'top',
       strokeColor: 'blue',
       arrowLength: 10,

@@ -1,8 +1,9 @@
+// @flow
 import React from 'react';
-import { shallow } from 'enzyme';
+import { type ShallowWrapper, shallow } from 'enzyme';
 import ArcherContainer from './ArcherContainer';
 
-let wrapper;
+let wrapper: ShallowWrapper;
 describe('ArcherContainer', () => {
   const children = <div>child</div>;
 

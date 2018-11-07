@@ -1,3 +1,4 @@
+// @flow
 import Point from './Point';
 
 describe('Point', () => {
