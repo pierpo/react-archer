@@ -225,6 +225,7 @@ describe('SvgArrow', () => {
       strokeColor: 'blue',
       arrowLength: 10,
       strokeWidth: 2,
+      arrowMarkerId: 'arrow123123',
     };
 
     beforeEach(() => {
@@ -239,7 +240,7 @@ describe('SvgArrow', () => {
 
       expect(path.props()).toMatchObject({
         d: 'M10,10 C10,10 30,10 30,10',
-        markerEnd: 'url(http://localhost/#arrow)',
+        markerEnd: 'url(http://localhost/#arrow123123)',
         style: {
           strokeWidth: 2,
           stroke: 'blue',
