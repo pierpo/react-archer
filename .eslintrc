@@ -1,0 +1,31 @@
+{
+  "root": true,
+  "plugins": [
+    "prettier",
+    "react",
+    "flowtype"
+  ],
+  "extends": [
+    "standard",
+    "standard-react",
+    "prettier",
+    "plugin:flowtype/recommended"
+  ],
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true
+  },
+  "settings": {
+    "react": {
+      "version": "16.2"
+    }
+  },
+  "globals": {
+    "jest": true,
+    "expect": true,
+    "it": true,
+    "describe": true,
+    "beforeEach": true
+  },
+  "rules": {}
+}

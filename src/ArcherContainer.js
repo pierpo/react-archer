@@ -1,9 +1,29 @@
+// @flow
+
 import React from 'react';
-import PropTypes from 'prop-types';
 import ResizeObserver from 'resize-observer-polyfill';
 import Point from './Point';
 
 import SvgArrow from './SvgArrow';
+
+type Props = {
+  arrowLength: number,
+  arrowThickness: number,
+  strokeColor: string,
+  strokeWidth: number,
+  children: React$Node,
+  style?: Object,
+  className?: string,
+};
+
+type State = {
+  refs: {
+    [string]: HTMLElement,
+  },
+  fromTo: Array<CompleteRelationType>,
+  observer: ResizeObserver,
+  parent: ?HTMLElement,
+};
 
 const svgContainerStyle = {
   position: 'absolute',
@@ -13,11 +33,14 @@ const svgContainerStyle = {
   left: 0,
 };
 
-function rectToPoint(rect) {
+function rectToPoint(rect: ClientRect) {
   return new Point(rect.left, rect.top);
 }
 
-function computeCoordinatesFromAnchorPosition(anchorPosition, rect) {
+function computeCoordinatesFromAnchorPosition(
+  anchorPosition: AnchorPositionType,
+  rect: ClientRect,
+) {
   switch (anchorPosition) {
     case 'top':
       return rectToPoint(rect).add(new Point(rect.width / 2, 0));
@@ -32,8 +55,20 @@ function computeCoordinatesFromAnchorPosition(anchorPosition, rect) {
   }
 }
 
-export class ArcherContainer extends React.Component {
-  constructor(props) {
+export type ArcherContainerContextType = {
+  registerChild?: (string, HTMLElement) => void,
+  registerTransition?: (string, RelationType) => void,
+};
+
+const ArcherContainerContext = React.createContext<ArcherContainerContextType>(
+  {},
+);
+
+const ArcherContainerContextProvider = ArcherContainerContext.Provider;
+export const ArcherContainerContextConsumer = ArcherContainerContext.Consumer;
+
+export class ArcherContainer extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     const observer = new ResizeObserver(() => {
       this.refreshScreen();
@@ -42,8 +77,17 @@ export class ArcherContainer extends React.Component {
       refs: {},
       fromTo: [],
       observer,
+      parent: null,
     };
   }
+
+  static defaultProps = {
+    arrowLength: 10,
+    arrowThickness: 6,
+    strokeColor: '#f00',
+    strokeWidth: 2,
+  };
+
   componentDidMount() {
     window.addEventListener('resize', this.refreshScreen);
   }
@@ -56,42 +100,43 @@ export class ArcherContainer extends React.Component {
     window.removeEventListener('resize', this.refreshScreen);
   }
 
-  refreshScreen = () => {
+  refreshScreen = (): void => {
     this.setState({ ...this.state });
   };
 
-  getChildContext = () => {
-    return {
-      registerTransition: this.registerTransition,
-      registerChild: this.registerChild,
-    };
-  };
-
-  storeParent = ref => {
+  storeParent = (ref: ?HTMLElement): void => {
     if (this.state.parent) {
       return;
     }
     this.setState(currentState => ({ ...currentState, parent: ref }));
   };
 
-  getRectFromRef = ref => {
+  getRectFromRef = (ref: ?HTMLElement): ?ClientRect => {
     if (!ref) {
-      return new Point(0, 0);
+      return null;
     }
     return ref.getBoundingClientRect();
   };
 
-  getParentCoordinates = () => {
+  getParentCoordinates = (): Point => {
     const rectp = this.getRectFromRef(this.state.parent);
+
+    if (!rectp) {
+      return new Point(0, 0);
+    }
     return rectToPoint(rectp);
   };
 
   getPointCoordinatesFromAnchorPosition = (
-    position,
-    index,
-    parentCoordinates,
-  ) => {
+    position: AnchorPositionType,
+    index: string,
+    parentCoordinates: Point,
+  ): Point => {
     const rect = this.getRectFromRef(this.state.refs[index]);
+
+    if (!rect) {
+      return new Point(0, 0);
+    }
     const absolutePosition = computeCoordinatesFromAnchorPosition(
       position,
       rect,
@@ -100,7 +145,7 @@ export class ArcherContainer extends React.Component {
     return absolutePosition.substract(parentCoordinates);
   };
 
-  registerTransition = (fromElement, relation) => {
+  registerTransition = (fromElement: string, relation: RelationType): void => {
     // TODO prevent duplicate registering
     // TODO improve the state merge... (should be shorter)
     const fromTo = [...this.state.fromTo];
@@ -109,27 +154,26 @@ export class ArcherContainer extends React.Component {
       from: { ...relation.from, id: fromElement },
     };
     fromTo.push(newFromTo);
-    this.setState(currentState => {
-      return {
-        ...this.currentState,
-        fromTo: [...currentState.fromTo, ...fromTo],
-      };
-    });
+
+    this.setState((currentState: State) => ({
+      // Really can't find a solution for this Flow error. I think it's a bug.
+      // I wrote an issue on Flow, let's see what happens.
+      // https://github.com/facebook/flow/issues/7135
+      // $FlowFixMe
+      fromTo: [...currentState.fromTo, ...fromTo],
+    }));
   };
 
-  registerChild = (id, ref) => {
+  registerChild = (id: string, ref: HTMLElement): void => {
     if (!this.state.refs[id]) {
       this.state.observer.observe(ref);
-      this.setState(currentState => {
-        return {
-          ...this.currentState,
-          refs: { ...currentState.refs, [id]: ref },
-        };
-      });
+      this.setState((currentState: State) => ({
+        refs: { ...currentState.refs, [id]: ref },
+      }));
     }
   };
 
-  computeArrows = () => {
+  computeArrows = (): React$Node => {
     const parentCoordinates = this.getParentCoordinates();
     return this.state.fromTo.map(sd => {
       const { from, to, label } = sd;
@@ -167,53 +211,38 @@ export class ArcherContainer extends React.Component {
       .arrowLength - 1},${this.props.arrowThickness / 2} z`;
 
     return (
-      <div
-        style={{ ...this.props.style, position: 'relative' }}
-        className={this.props.className}
+      <ArcherContainerContextProvider
+        value={{
+          registerTransition: this.registerTransition,
+          registerChild: this.registerChild,
+        }}
       >
-        <svg style={svgContainerStyle}>
-          <defs>
-            <marker
-              id="arrow"
-              markerWidth={this.props.arrowLength}
-              markerHeight={this.props.arrowThickness}
-              refX="0"
-              refY={this.props.arrowThickness / 2}
-              orient="auto"
-              markerUnits="strokeWidth"
-            >
-              <path d={arrowPath} fill={this.props.strokeColor} />
-            </marker>
-          </defs>
-          {SvgArrows}
-        </svg>
+        <div
+          style={{ ...this.props.style, position: 'relative' }}
+          className={this.props.className}
+        >
+          <svg style={svgContainerStyle}>
+            <defs>
+              <marker
+                id="arrow"
+                markerWidth={this.props.arrowLength}
+                markerHeight={this.props.arrowThickness}
+                refX="0"
+                refY={this.props.arrowThickness / 2}
+                orient="auto"
+                markerUnits="strokeWidth"
+              >
+                <path d={arrowPath} fill={this.props.strokeColor} />
+              </marker>
+            </defs>
+            {SvgArrows}
+          </svg>
 
-        <div ref={this.storeParent}>{this.props.children}</div>
-      </div>
+          <div ref={this.storeParent}>{this.props.children}</div>
+        </div>
+      </ArcherContainerContextProvider>
     );
   }
 }
-
-ArcherContainer.propTypes = {
-  arrowLength: PropTypes.number,
-  arrowThickness: PropTypes.number,
-  strokeColor: PropTypes.string,
-  strokeWidth: PropTypes.number,
-  children: PropTypes.node,
-  style: PropTypes.object,
-  className: PropTypes.string,
-};
-
-ArcherContainer.defaultProps = {
-  arrowLength: 10,
-  arrowThickness: 6,
-  strokeColor: '#f00',
-  strokeWidth: 2,
-};
-
-ArcherContainer.childContextTypes = {
-  registerChild: PropTypes.func,
-  registerTransition: PropTypes.func,
-};
 
 export default ArcherContainer;

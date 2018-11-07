@@ -1,8 +1,24 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+// @flow
 
-const stringifyRelations = relations => {
+import React from 'react';
+
+import {
+  type ArcherContainerContextType,
+  ArcherContainerContextConsumer,
+} from './ArcherContainer';
+
+type Props = {
+  id: string,
+  relations: Array<RelationType>,
+  style?: Object,
+  className?: string,
+  children: React$Node,
+  context: ArcherContainerContextType,
+};
+
+const stringifyRelations = (relations: Array<RelationType>): string => {
   const relationsWithStringifiedLabels = (relations || []).map(r => {
+    // $FlowFixMe TODO
     if (r.label && r.label.props) {
       return JSON.stringify(r.label.props);
     }
@@ -12,8 +28,8 @@ const stringifyRelations = relations => {
   return JSON.stringify(relationsWithStringifiedLabels);
 };
 
-export class ArcherElement extends React.Component {
-  componentWillReceiveProps(nextProps) {
+export class ArcherElementNoContext extends React.Component<Props> {
+  componentWillReceiveProps(nextProps: Props) {
     if (
       stringifyRelations(this.props.relations) ===
       stringifyRelations(nextProps.relations)
@@ -30,17 +46,19 @@ export class ArcherElement extends React.Component {
     this.registerAllTransitions(this.props.relations);
   }
 
-  registerAllTransitions(relations) {
+  registerAllTransitions(relations: Array<RelationType>) {
     relations.forEach(relation => {
-      this.context.registerTransition(this.props.id, relation);
+      if (!this.props.context.registerTransition) return;
+
+      this.props.context.registerTransition(this.props.id, relation);
     });
   }
 
-  onRefUpdate = ref => {
-    if (!ref) {
-      return;
-    }
-    this.context.registerChild(this.props.id, ref);
+  onRefUpdate = (ref: ?HTMLElement) => {
+    if (!ref) return;
+    if (!this.props.context.registerChild) return;
+
+    this.props.context.registerChild(this.props.id, ref);
   };
 
   render() {
@@ -56,31 +74,10 @@ export class ArcherElement extends React.Component {
   }
 }
 
-ArcherElement.contextTypes = {
-  registerChild: PropTypes.func,
-  registerTransition: PropTypes.func,
-  refresh: PropTypes.func,
-};
+const ArcherElementWithContext = (props: Props) => (
+  <ArcherContainerContextConsumer>
+    {context => <ArcherElementNoContext {...props} context={context} />}
+  </ArcherContainerContextConsumer>
+);
 
-const anchorType = PropTypes.oneOf(['top', 'bottom', 'left', 'right']);
-
-ArcherElement.propTypes = {
-  id: PropTypes.string,
-  relations: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.node,
-      from: PropTypes.shape({
-        anchor: anchorType,
-      }),
-      to: PropTypes.shape({
-        anchor: anchorType,
-        id: PropTypes.string,
-      }),
-    }),
-  ),
-  style: PropTypes.object,
-  className: PropTypes.string,
-  children: PropTypes.node,
-};
-
-export default ArcherElement;
+export default ArcherElementWithContext;

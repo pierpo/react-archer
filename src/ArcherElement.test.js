@@ -1,34 +1,40 @@
+// @flow
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-import ArcherElement from './ArcherElement';
+import { type ShallowWrapper, type ReactWrapper, shallow, mount } from 'enzyme';
+import { ArcherElementNoContext } from './ArcherElement';
 
-let wrapper;
+let wrapper: ShallowWrapper;
+let wrapperMount: ReactWrapper;
+
 let registerChildMock;
 describe('ArcherElement', () => {
   const children = <div>hi</div>;
+  const context = { registerChild: registerChildMock };
 
   const defaultProps = {
+    relations: [],
+    id: '',
+    context,
     children,
   };
 
   beforeEach(() => {
     registerChildMock = jest.fn();
-    const context = { registerChild: registerChildMock };
 
-    wrapper = shallow(<ArcherElement {...defaultProps} />, { context });
+    wrapper = shallow(<ArcherElementNoContext {...defaultProps} />);
   });
 
   it('should render children', () => {
     expect(wrapper.props().children).toEqual(children);
   });
 
-  it('should register child on mounting ref callback', () => {
+  it.only('should register child on mounting ref callback', () => {
     const context = { registerChild: registerChildMock };
-    const props = { ...defaultProps, id: 'the id' };
-    wrapper = mount(<ArcherElement {...props} />, { context });
+    const props = { ...defaultProps, id: 'the id', context };
+    wrapperMount = mount(<ArcherElementNoContext {...props} />);
 
     expect(registerChildMock).toHaveBeenCalledWith('the id', expect.anything());
-    wrapper.unmount();
+    wrapperMount.unmount();
     expect(registerChildMock).toHaveBeenCalledTimes(1);
   });
 
@@ -101,7 +107,7 @@ describe('ArcherElement', () => {
         registerTransition: registerTransitionMock,
       };
 
-      wrapper.setContext(context);
+      wrapper.setProps({ context });
     });
 
     it('should call registerTransition once per relation', () => {

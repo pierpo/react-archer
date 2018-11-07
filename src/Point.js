@@ -1,15 +1,21 @@
-function Point(x, y) {
-  this.x = x;
-  this.y = y;
-  return this;
+// @flow
+
+class Point {
+  x: number;
+  y: number;
+
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
+
+  add(point: Point) {
+    return new Point(this.x + point.x, this.y + point.y);
+  }
+
+  substract(point: Point) {
+    return new Point(this.x - point.x, this.y - point.y);
+  }
 }
-
-Point.prototype.add = function(point) {
-  return new Point(this.x + point.x, this.y + point.y);
-};
-
-Point.prototype.substract = function(point) {
-  return new Point(this.x - point.x, this.y - point.y);
-};
 
 export default Point;

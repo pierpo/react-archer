@@ -1,5 +1,18 @@
+// @flow
+
 import React from 'react';
-import PropTypes from 'prop-types';
+import Point from './Point';
+
+type Props = {
+  startingPoint: Point,
+  startingAnchor: AnchorPositionType,
+  endingPoint: Point,
+  endingAnchor: AnchorPositionType,
+  strokeColor: string,
+  arrowLength: number,
+  strokeWidth: number,
+  arrowLabel?: ?React$Node,
+};
 
 function computeEndingArrowDirectionVector(endingAnchor) {
   switch (endingAnchor) {
@@ -17,21 +30,27 @@ function computeEndingArrowDirectionVector(endingAnchor) {
 }
 
 export function computeEndingPointAccordingToArrow(
-  xEnd,
-  yEnd,
-  arrowLength,
-  strokeWidth,
-  endingAnchor,
+  xEnd: number,
+  yEnd: number,
+  arrowLength: number,
+  strokeWidth: number,
+  endingAnchor: AnchorPositionType,
 ) {
   const { arrowX, arrowY } = computeEndingArrowDirectionVector(endingAnchor);
 
-  const xe = xEnd + arrowX * arrowLength * strokeWidth / 2;
-  const ye = yEnd + arrowY * arrowLength * strokeWidth / 2;
+  const xe = xEnd + (arrowX * arrowLength * strokeWidth) / 2;
+  const ye = yEnd + (arrowY * arrowLength * strokeWidth) / 2;
 
   return { xe, ye };
 }
 
-export function computeStartingAnchorPosition(xs, ys, xe, ye, startingAnchor) {
+export function computeStartingAnchorPosition(
+  xs: number,
+  ys: number,
+  xe: number,
+  ye: number,
+  startingAnchor: AnchorPositionType,
+): { xa1: number, ya1: number } {
   if (startingAnchor === 'top' || startingAnchor === 'bottom') {
     return {
       xa1: xs,
@@ -48,7 +67,13 @@ export function computeStartingAnchorPosition(xs, ys, xe, ye, startingAnchor) {
   return { xa1: xs, ya1: ys };
 }
 
-export function computeEndingAnchorPosition(xs, ys, xe, ye, endingAnchor) {
+export function computeEndingAnchorPosition(
+  xs: number,
+  ys: number,
+  xe: number,
+  ye: number,
+  endingAnchor: AnchorPositionType,
+): { xa2: number, ya2: number } {
   if (endingAnchor === 'top' || endingAnchor === 'bottom') {
     return {
       xa2: xe,
@@ -65,7 +90,12 @@ export function computeEndingAnchorPosition(xs, ys, xe, ye, endingAnchor) {
   return { xa2: xe, ya2: ye };
 }
 
-export function computeLabelDimensions(xs, ys, xe, ye) {
+export function computeLabelDimensions(
+  xs: number,
+  ys: number,
+  xe: number,
+  ye: number,
+): { xl: number, yl: number, wl: number, hl: number } {
   const wl = Math.abs(xe - xs);
   const hl = Math.abs(ye - ys);
 
@@ -89,7 +119,7 @@ const SvgArrow = ({
   arrowLength,
   strokeWidth,
   arrowLabel,
-}) => {
+}: Props) => {
   const actualArrowLength = arrowLength * 2;
 
   const xs = startingPoint.x;
@@ -130,39 +160,23 @@ const SvgArrow = ({
         style={{ fill: 'none', stroke: strokeColor, strokeWidth }}
         markerEnd={`url(${location.href}#arrow)`}
       />
-      <foreignObject x={xl} y={yl} width={wl} height={hl}>
-        <div
-          style={{
-            width: wl,
-            height: hl,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <div>{arrowLabel}</div>
-        </div>
-      </foreignObject>
+      {arrowLabel && (
+        <foreignObject x={xl} y={yl} width={wl} height={hl}>
+          <div
+            style={{
+              width: wl,
+              height: hl,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <div>{arrowLabel}</div>
+          </div>
+        </foreignObject>
+      )}
     </g>
   );
-};
-
-const pointPropType = PropTypes.shape({
-  x: PropTypes.number,
-  y: PropTypes.number,
-});
-
-const anchorType = PropTypes.oneOf(['top', 'bottom', 'left', 'right']);
-
-SvgArrow.propTypes = {
-  startingPoint: pointPropType,
-  startingAnchor: anchorType,
-  endingPoint: pointPropType,
-  endingAnchor: anchorType,
-  strokeColor: PropTypes.string,
-  arrowLength: PropTypes.number,
-  strokeWidth: PropTypes.number,
-  arrowLabel: PropTypes.node,
 };
 
 export default SvgArrow;

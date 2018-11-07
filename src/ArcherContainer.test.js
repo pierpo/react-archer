@@ -1,8 +1,9 @@
+// @flow
 import React from 'react';
-import { shallow } from 'enzyme';
+import { type ShallowWrapper, shallow } from 'enzyme';
 import ArcherContainer from './ArcherContainer';
 
-let wrapper;
+let wrapper: ShallowWrapper;
 describe('ArcherContainer', () => {
   const children = <div>child</div>;
 
@@ -18,8 +19,18 @@ describe('ArcherContainer', () => {
   });
 
   it('should render given children and a svg element', () => {
-    expect(wrapper.childAt(1).text()).toEqual('child');
-    expect(wrapper.childAt(0).getElements()[0].type).toEqual('svg');
+    expect(
+      wrapper
+        .childAt(0)
+        .childAt(1)
+        .text(),
+    ).toEqual('child');
+    expect(
+      wrapper
+        .childAt(0)
+        .childAt(0)
+        .getElements()[0].type,
+    ).toEqual('svg');
   });
 
   it('should render svg with the marker element used to draw an svg arrow', () => {
