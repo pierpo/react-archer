@@ -4,6 +4,7 @@ import { type ShallowWrapper, shallow } from 'enzyme';
 import ArcherContainer from './ArcherContainer';
 
 let wrapper: ShallowWrapper;
+let instance: ArcherContainer;
 describe('ArcherContainer', () => {
   const children = <div>child</div>;
 
@@ -16,6 +17,7 @@ describe('ArcherContainer', () => {
 
   beforeEach(() => {
     wrapper = shallow(<ArcherContainer {...defaultProps} />);
+    instance = wrapper.instance();
   });
 
   it('should render given children and a svg element', () => {
@@ -38,7 +40,7 @@ describe('ArcherContainer', () => {
     const markerProps = marker.props();
 
     const expectedProps = {
-      id: 'arrow',
+      id: instance.arrowMarkerId,
       markerWidth: 10,
       markerHeight: 30,
       refX: '0',

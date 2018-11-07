@@ -68,6 +68,8 @@ const ArcherContainerContextProvider = ArcherContainerContext.Provider;
 export const ArcherContainerContextConsumer = ArcherContainerContext.Consumer;
 
 export class ArcherContainer extends React.Component<Props, State> {
+  arrowMarkerId: string;
+
   constructor(props: Props) {
     super(props);
     const observer = new ResizeObserver(() => {
@@ -79,6 +81,12 @@ export class ArcherContainer extends React.Component<Props, State> {
       observer,
       parent: null,
     };
+
+    const arrowMarkerRandomNumber = Math.random()
+      .toString()
+      .slice(2);
+
+    this.arrowMarkerId = `arrow${arrowMarkerRandomNumber}`;
   }
 
   static defaultProps = {
@@ -200,6 +208,7 @@ export class ArcherContainer extends React.Component<Props, State> {
           arrowLength={this.props.arrowLength}
           strokeWidth={this.props.strokeWidth}
           arrowLabel={label}
+          arrowMarkerId={this.arrowMarkerId}
         />
       );
     });
@@ -224,7 +233,7 @@ export class ArcherContainer extends React.Component<Props, State> {
           <svg style={svgContainerStyle}>
             <defs>
               <marker
-                id="arrow"
+                id={this.arrowMarkerId}
                 markerWidth={this.props.arrowLength}
                 markerHeight={this.props.arrowThickness}
                 refX="0"
