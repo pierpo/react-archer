@@ -8,3 +8,4 @@ yarn-error.log
 tags
 .circleci/config.yml
 flow-typed
+yarn.lock
