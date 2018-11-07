@@ -12,8 +12,8 @@ type Props = {
   strokeColor: string,
   strokeWidth: number,
   children: React$Node,
-  style: Object,
-  className: string,
+  style?: Object,
+  className?: string,
 };
 
 type State = {
