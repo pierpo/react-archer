@@ -10,8 +10,8 @@ import {
 type Props = {
   id: string,
   relations: Array<RelationType>,
-  style: Object,
-  className: string,
+  style?: Object,
+  className?: string,
   children: React$Node,
   context: ArcherContainerContextType,
 };
