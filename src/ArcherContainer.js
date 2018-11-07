@@ -68,7 +68,7 @@ const ArcherContainerContextProvider = ArcherContainerContext.Provider;
 export const ArcherContainerContextConsumer = ArcherContainerContext.Consumer;
 
 export class ArcherContainer extends React.Component<Props, State> {
-  arrowMarkerId: string;
+  arrowMarkerUniquePrefix: string;
 
   constructor(props: Props) {
     super(props);
@@ -86,7 +86,7 @@ export class ArcherContainer extends React.Component<Props, State> {
       .toString()
       .slice(2);
 
-    this.arrowMarkerId = `arrow${arrowMarkerRandomNumber}`;
+    this.arrowMarkerUniquePrefix = `arrow${arrowMarkerRandomNumber}`;
   }
 
   static defaultProps = {
@@ -184,7 +184,7 @@ export class ArcherContainer extends React.Component<Props, State> {
   computeArrows = (): React$Node => {
     const parentCoordinates = this.getParentCoordinates();
     return this.state.fromTo.map(sd => {
-      const { from, to, label } = sd;
+      const { from, to, label, style } = sd;
       const startingAnchor = from.anchor;
       const startingPoint = this.getPointCoordinatesFromAnchorPosition(
         from.anchor,
@@ -197,6 +197,16 @@ export class ArcherContainer extends React.Component<Props, State> {
         to.id,
         parentCoordinates,
       );
+
+      const strokeColor =
+        (style && style.strokeColor) || this.props.strokeColor;
+
+      const arrowLength =
+        (style && style.arrowLength) || this.props.arrowLength;
+
+      const strokeWidth =
+        (style && style.strokeWidth) || this.props.strokeWidth;
+
       return (
         <SvgArrow
           key={JSON.stringify({ from, to })}
@@ -204,20 +214,63 @@ export class ArcherContainer extends React.Component<Props, State> {
           startingAnchor={startingAnchor}
           endingPoint={endingPoint}
           endingAnchor={endingAnchor}
-          strokeColor={this.props.strokeColor}
-          arrowLength={this.props.arrowLength}
-          strokeWidth={this.props.strokeWidth}
+          strokeColor={strokeColor}
+          arrowLength={arrowLength}
+          strokeWidth={strokeWidth}
           arrowLabel={label}
-          arrowMarkerId={this.arrowMarkerId}
+          arrowMarkerId={this.getMarkerId(from, to)}
         />
+      );
+    });
+  };
+
+  /** Generates an id for an arrow marker
+   * Useful to have one marker per arrow so that each arrow
+   * can have a different color!
+   * */
+  getMarkerId = (from: RelationNozzleType, to: RelationNozzleType): string => {
+    return `${this.arrowMarkerUniquePrefix}${from.id}${to.id}`;
+  };
+
+  /** Generates all the markers
+   * We want one marker per arrow so that each arrow can have
+   * a different color or size
+   * */
+  generateAllArrowMarkers = (): React$Node => {
+    return this.state.fromTo.map(sd => {
+      const { from, to, style } = sd;
+
+      const strokeColor =
+        (style && style.strokeColor) || this.props.strokeColor;
+
+      const arrowLength =
+        (style && style.arrowLength) || this.props.arrowLength;
+
+      const arrowThickness =
+        (style && style.arrowThickness) || this.props.arrowThickness;
+
+      const arrowPath = `M0,0 L0,${arrowThickness} L${arrowLength -
+        1},${arrowThickness / 2} z`;
+
+      return (
+        <marker
+          id={this.getMarkerId(from, to)}
+          key={this.getMarkerId(from, to)}
+          markerWidth={arrowLength}
+          markerHeight={arrowThickness}
+          refX="0"
+          refY={arrowThickness / 2}
+          orient="auto"
+          markerUnits="strokeWidth"
+        >
+          <path d={arrowPath} fill={strokeColor} />
+        </marker>
       );
     });
   };
 
   render() {
     const SvgArrows = this.computeArrows();
-    const arrowPath = `M0,0 L0,${this.props.arrowThickness} L${this.props
-      .arrowLength - 1},${this.props.arrowThickness / 2} z`;
 
     return (
       <ArcherContainerContextProvider
@@ -231,19 +284,7 @@ export class ArcherContainer extends React.Component<Props, State> {
           className={this.props.className}
         >
           <svg style={svgContainerStyle}>
-            <defs>
-              <marker
-                id={this.arrowMarkerId}
-                markerWidth={this.props.arrowLength}
-                markerHeight={this.props.arrowThickness}
-                refX="0"
-                refY={this.props.arrowThickness / 2}
-                orient="auto"
-                markerUnits="strokeWidth"
-              >
-                <path d={arrowPath} fill={this.props.strokeColor} />
-              </marker>
-            </defs>
+            <defs>{this.generateAllArrowMarkers()}</defs>
             {SvgArrows}
           </svg>
 
