@@ -75,50 +75,25 @@ export default App;
 
 ### `ArcherContainer`
 
-#### `strokeColor`: string
-
-A color string `'#ff0000'`
-
-#### `strokeWidth`: number
-
-A size in `px`
-
-#### `arrowLength`: number
-
-A size in `px`
-
-#### `arrowThickness`: number
-
-A size in `px`
-
-#### `children`: React.Node
+| Name | Type | Description |
+| - | - | - |
+| `strokeColor` | `string` | A color string `'#ff0000'`
+| `strokeWidth` | `number` | A size in `px`
+| `arrowLength` | `number` | A size in `px`
+| `arrowThickness` | `number` | A size in `px`
+| `children` | `React.Node` |
 
 ### `ArcherElement`
 
-#### `id`: string
-
-The id that will identify the Archer Element.
-Should only contain alphanumeric characters and standard characters that you can find in HTML ids.
-
-#### `strokeColor`: string
-
-A color string `'#ff0000'`
-
-#### `strokeWidth`: number
-
-A size in `px`
-
-#### `arrowLength`: number
-
-A size in `px`
-
-#### `arrowThickness`: number
-
-A size in `px`
-
-#### `children`: React.Node
-
-#### `relations`: Array\<Relation\>
+| Name | Type | Description |
+| - | - | - |
+| `id` | `string` | The id that will identify the Archer Element. Should only contain alphanumeric characters and standard characters that you can find in HTML ids.
+| `strokeColor` | `string` | A color string `'#ff0000'`
+| `strokeWidth` | `number` | A size in `px`
+| `arrowLength` | `number` | A size in `px`
+| `arrowThickness` | `number` | A size in `px`
+| `children` | `React.Node` |
+| `relations` | `Array<Relation>` |
 
 The `Relation` type has the following shape:
 
