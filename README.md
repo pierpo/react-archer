@@ -75,50 +75,63 @@ export default App;
 
 ### `ArcherContainer`
 
-#### `strokeColor`: PropTypes.string
+#### `strokeColor`: string
 
 A color string `'#ff0000'`
 
-#### `strokeWidth`: PropTypes.number
+#### `strokeWidth`: number
 
 A size in `px`
 
-#### `arrowLength`: PropTypes.number
+#### `arrowLength`: number
 
 A size in `px`
 
-#### `arrowThickness`: PropTypes.number
+#### `arrowThickness`: number
 
 A size in `px`
 
-#### `style`: PropTypes.object
-
-#### `className`: PropTypes.string
-
-#### `children`: PropTypes.node
+#### `children`: React.Node
 
 ### `ArcherElement`
 
-#### `id`: PropTypes.string
+#### `id`: string
 
-#### `style`: PropTypes.object
+The id that will identify the Archer Element.
+Should only contain alphanumeric characters and standard characters that you can find in HTML ids.
 
-#### `className`: PropTypes.string
+#### `strokeColor`: string
 
-#### `relations`: PropTypes.arrayOf(relation)
+A color string `'#ff0000'`
 
-The `relation` object has the following shape:
+#### `strokeWidth`: number
+
+A size in `px`
+
+#### `arrowLength`: number
+
+A size in `px`
+
+#### `arrowThickness`: number
+
+A size in `px`
+
+#### `children`: React.Node
+
+#### `relations`: Array\<Relation\>
+
+The `Relation` type has the following shape:
 
 ```javascript
 {
   from: {
-    anchor: PropTypes.oneOf([ 'top', 'bottom', 'left', 'right' ])
+    anchor: 'top' | 'bottom' | 'left' | 'right'
   },
   to: {
-    anchor: PropTypes.oneOf([ 'top', 'bottom', 'left', 'right' ])
-    id: PropTypes.string
+    anchor: 'top' | 'bottom' | 'left' | 'right'
+    id: string
   },
-  label: PropTypes.node
+  label: React.Node
 }
 ```
 
@@ -126,6 +139,4 @@ The `relation` object has the following shape:
 
 - Automatic anchoring option
 - Options to customize the path shape more (straight line, right angle line, smoothed right angle path)
-- Individual customization of arrows (change color of a single arrow for example)
 - Add a Code Sandbox
-- Add flow
