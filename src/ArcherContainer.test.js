@@ -17,6 +17,20 @@ describe('ArcherContainer', () => {
 
   beforeEach(() => {
     wrapper = shallow(<ArcherContainer {...defaultProps} />);
+    wrapper.setState({
+      fromTo: [
+        {
+          from: {
+            anchor: 'top',
+            id: 'first-element',
+          },
+          to: {
+            anchor: 'bottom',
+            id: 'second-element',
+          },
+        },
+      ],
+    });
     instance = wrapper.instance();
   });
 
@@ -40,7 +54,7 @@ describe('ArcherContainer', () => {
     const markerProps = marker.props();
 
     const expectedProps = {
-      id: instance.arrowMarkerId,
+      id: `${instance.arrowMarkerUniquePrefix}first-elementsecond-element`,
       markerWidth: 10,
       markerHeight: 30,
       refX: '0',
