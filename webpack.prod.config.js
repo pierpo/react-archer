@@ -28,8 +28,8 @@ var config = {
   mode: 'production',
   entry: './src/react-archer.js',
   output: {
-    path: path.join(__dirname, 'dist'),
-    publicPath: 'dist/',
+    path: path.join(__dirname, 'lib'),
+    publicPath: 'lib/',
     filename: 'react-archer.js',
     sourceMapFilename: 'react-archer.sourcemap.js',
     library: 'ReactArcher',
