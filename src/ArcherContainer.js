@@ -154,7 +154,6 @@ export class ArcherContainer extends React.Component<Props, State> {
   };
 
   registerTransition = (fromElement: string, relation: RelationType): void => {
-    // TODO prevent duplicate registering
     // TODO improve the state merge... (should be shorter)
     const fromTo = [...this.state.fromTo];
     const newFromTo = {
@@ -168,7 +167,7 @@ export class ArcherContainer extends React.Component<Props, State> {
       // I wrote an issue on Flow, let's see what happens.
       // https://github.com/facebook/flow/issues/7135
       // $FlowFixMe
-      fromTo: [...currentState.fromTo, ...fromTo],
+      fromTo: [...fromTo],
     }));
   };
 
