@@ -154,21 +154,22 @@ export class ArcherContainer extends React.Component<Props, State> {
   };
 
   registerTransition = (fromElement: string, relation: RelationType): void => {
-    // TODO prevent duplicate registering
     // TODO improve the state merge... (should be shorter)
-    const fromTo = [...this.state.fromTo];
-    const newFromTo = {
-      ...relation,
-      from: { ...relation.from, id: fromElement },
-    };
-    fromTo.push(newFromTo);
+    const { fromTo } = this.state;
+    const newFromTo = [
+      ...(!fromTo.find(sd => sd.from.id === fromElement) ? [{
+        ...relation,
+        from: { ...relation.from, id: fromElement },
+      }]: []),
+      ...fromTo,
+    ];
 
-    this.setState((currentState: State) => ({
+    this.setState(() => ({
       // Really can't find a solution for this Flow error. I think it's a bug.
       // I wrote an issue on Flow, let's see what happens.
       // https://github.com/facebook/flow/issues/7135
       // $FlowFixMe
-      fromTo: [...currentState.fromTo, ...fromTo],
+      fromTo: newFromTo,
     }));
   };
 
