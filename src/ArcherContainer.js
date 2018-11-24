@@ -154,23 +154,23 @@ export class ArcherContainer extends React.Component<Props, State> {
   };
 
   registerTransition = (fromElement: string, relation: RelationType): void => {
-    // TODO improve the state merge... (should be shorter)
     const { fromTo } = this.state;
-    const newFromTo = [
-      ...(!fromTo.find(sd => sd.from.id === fromElement) ? [{
-        ...relation,
-        from: { ...relation.from, id: fromElement },
-      }]: []),
-      ...fromTo,
-    ];
-
-    this.setState(() => ({
-      // Really can't find a solution for this Flow error. I think it's a bug.
-      // I wrote an issue on Flow, let's see what happens.
+    const relationExists = fromTo.find(sd => sd.from.id === fromElement && sd.to.id === relation.to.id);
+    if (!relationExists) {
+      // Destructure and use all the properties to work around issue with spreading different Flow types
       // https://github.com/facebook/flow/issues/7135
       // $FlowFixMe
-      fromTo: newFromTo,
-    }));
+      const { to, label, style } = relation;
+      const from = {
+        anchor: relation.from.anchor,
+        id: fromElement,
+      };
+      const newFromTo = [
+        ...fromTo,
+        { to, label, style, from },
+      ];
+      this.setState(() => ({ fromTo: newFromTo }));
+    }
   };
 
   registerChild = (id: string, ref: HTMLElement): void => {
