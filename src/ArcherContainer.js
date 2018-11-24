@@ -155,7 +155,7 @@ export class ArcherContainer extends React.Component<Props, State> {
 
   registerTransition = (fromElement: string, relation: RelationType): void => {
     const { fromTo } = this.state;
-    const relationExists = fromTo.find(sd => sd.from.id === fromElement && sd.to.id === relation.to.id);
+    const relationExists = Boolean(fromTo.find(sd => sd.from.id === fromElement && sd.to.id === relation.to.id));
     if (!relationExists) {
       // Destructure and use all the properties to work around issue with spreading different Flow types
       // https://github.com/facebook/flow/issues/7135
