@@ -58,6 +58,8 @@ function computeCoordinatesFromAnchorPosition(
 export type ArcherContainerContextType = {
   registerChild?: (string, HTMLElement) => void,
   registerTransition?: (string, RelationType) => void,
+  unregisterChild?: (string) => void,
+  unregisterAllTransitions?: (string) => void,
 };
 
 const ArcherContainerContext = React.createContext<ArcherContainerContextType>(
@@ -172,6 +174,12 @@ export class ArcherContainer extends React.Component<Props, State> {
     }));
   };
 
+  unregisterAllTransitions = (element: string): void => {
+    const { fromTo } = this.state;
+    const newFromTo = fromTo.filter(sd => sd.from.id !== element && sd.to.id !== element);
+    this.setState(() => ({ fromTo: newFromTo }));
+  };
+
   registerChild = (id: string, ref: HTMLElement): void => {
     if (!this.state.refs[id]) {
       this.state.observer.observe(ref);
@@ -179,6 +187,14 @@ export class ArcherContainer extends React.Component<Props, State> {
         refs: { ...currentState.refs, [id]: ref },
       }));
     }
+  };
+
+  unregisterChild = (id: string): void => {
+    const { refs, observer } = this.state;
+    observer.unobserve(refs[id]);
+    const newRefs = { ...refs };
+    newRefs[id] = null;
+    this.setState(() => ({ refs: newRefs, }));
   };
 
   computeArrows = (): React$Node => {
@@ -276,7 +292,9 @@ export class ArcherContainer extends React.Component<Props, State> {
       <ArcherContainerContextProvider
         value={{
           registerTransition: this.registerTransition,
+          unregisterAllTransitions: this.unregisterAllTransitions,
           registerChild: this.registerChild,
+          unregisterChild: this.unregisterChild,
         }}
       >
         <div
