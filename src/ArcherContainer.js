@@ -55,6 +55,24 @@ function computeCoordinatesFromAnchorPosition(
   }
 }
 
+export function mergeTransitions(
+  currentRelations: Array<CompleteRelationType>,
+  newRelation: CompleteRelationType,
+): Array<CompleteRelationType> {
+  const newTransitionsWithDuplicates = [newRelation, ...currentRelations];
+  // Remove duplicates, with "duplicate" meaning same 'to' and same 'from'
+  // The older relation is removed with a higher priority (imagine that you update the style
+  // or a label, you then want the new relation to be kept)
+  const uniqueNewTransitions = newTransitionsWithDuplicates.filter(
+    (transition, index, self) =>
+      self.findIndex(
+        t => t.from.id === transition.from.id && t.to.id === transition.to.id,
+      ) === index,
+  );
+
+  return uniqueNewTransitions;
+}
+
 export type ArcherContainerContextType = {
   registerChild?: (string, HTMLElement) => void,
   registerTransition?: (string, RelationType) => void,
@@ -156,21 +174,17 @@ export class ArcherContainer extends React.Component<Props, State> {
   };
 
   registerTransition = (fromElement: string, relation: RelationType): void => {
-    // TODO prevent duplicate registering
-    // TODO improve the state merge... (should be shorter)
-    const fromTo = [...this.state.fromTo];
     const newFromTo = {
       ...relation,
       from: { ...relation.from, id: fromElement },
     };
-    fromTo.push(newFromTo);
 
     this.setState((currentState: State) => ({
       // Really can't find a solution for this Flow error. I think it's a bug.
       // I wrote an issue on Flow, let's see what happens.
       // https://github.com/facebook/flow/issues/7135
       // $FlowFixMe
-      fromTo: [...currentState.fromTo, ...fromTo],
+      fromTo: mergeTransitions(currentState.fromTo, newFromTo),
     }));
   };
 
