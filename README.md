@@ -9,6 +9,8 @@
 
 ## Example
 
+[Try it out!](https://pierpo.github.io/react-archer/)
+
 ![Example](https://raw.githubusercontent.com/pierpo/react-archer/master/example.png)
 
 ```jsx
