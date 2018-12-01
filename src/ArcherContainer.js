@@ -207,7 +207,7 @@ export class ArcherContainer extends React.Component<Props, State> {
     const { refs, observer } = this.state;
     observer.unobserve(refs[id]);
     const newRefs = { ...refs };
-    newRefs[id] = null;
+    delete newRefs[id];
     this.setState(() => ({ refs: newRefs, }));
   };
 
