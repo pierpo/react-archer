@@ -9,3 +9,4 @@ tags
 .circleci/config.yml
 flow-typed
 yarn.lock
+example-dist
