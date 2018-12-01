@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { type ShallowWrapper, shallow } from 'enzyme';
-import ArcherContainer from './ArcherContainer';
+import ArcherContainer, { mergeTransitions } from './ArcherContainer';
 
 let wrapper: ShallowWrapper;
 let instance: ArcherContainer;
@@ -65,5 +65,52 @@ describe('ArcherContainer', () => {
     };
 
     expect(markerProps).toMatchObject(expectedProps);
+  });
+
+  describe('mergeTransitions', () => {
+    it('should properly merge transitions', () => {
+      const currentRelations = [
+        {
+          from: { id: 'here', anchor: 'top' },
+          to: { id: 'there', anchor: 'top' },
+        },
+        {
+          from: { id: 'here', anchor: 'top' },
+          to: { id: 'here', anchor: 'top' },
+        },
+      ];
+      const newRelation = {
+        from: { id: 'here', anchor: 'top' },
+        to: { id: 'there', anchor: 'top' },
+      };
+
+      const result = mergeTransitions(currentRelations, newRelation);
+
+      expect(result.length).toEqual(2);
+    });
+
+    it('should merge transitions and keep the newer ones', () => {
+      const currentRelations = [
+        {
+          from: { id: 'here', anchor: 'top' },
+          to: { id: 'there', anchor: 'top' },
+        },
+        {
+          from: { id: 'here', anchor: 'top' },
+          to: { id: 'here', anchor: 'top' },
+        },
+      ];
+      const newRelation = {
+        from: { id: 'here', anchor: 'top' },
+        to: { id: 'there', anchor: 'top' },
+        label: 'this is a new label',
+      };
+
+      const result = mergeTransitions(currentRelations, newRelation);
+
+      expect(result.find(o => o.label === 'this is a new label')).toEqual(
+        newRelation,
+      );
+    });
   });
 });
