@@ -76,8 +76,8 @@ export function mergeTransitions(
 export type ArcherContainerContextType = {
   registerChild?: (string, HTMLElement) => void,
   registerTransition?: (string, RelationType) => void,
-  unregisterChild?: (string) => void,
-  unregisterAllTransitions?: (string) => void,
+  unregisterChild?: string => void,
+  unregisterAllTransitions?: string => void,
 };
 
 const ArcherContainerContext = React.createContext<ArcherContainerContextType>(
@@ -190,7 +190,9 @@ export class ArcherContainer extends React.Component<Props, State> {
 
   unregisterAllTransitions = (element: string): void => {
     const { fromTo } = this.state;
-    const newFromTo = fromTo.filter(sd => sd.from.id !== element && sd.to.id !== element);
+    const newFromTo = fromTo.filter(
+      sd => sd.from.id !== element && sd.to.id !== element,
+    );
     this.setState(() => ({ fromTo: newFromTo }));
   };
 
@@ -208,7 +210,7 @@ export class ArcherContainer extends React.Component<Props, State> {
     observer.unobserve(refs[id]);
     const newRefs = { ...refs };
     delete newRefs[id];
-    this.setState(() => ({ refs: newRefs, }));
+    this.setState(() => ({ refs: newRefs }));
   };
 
   computeArrows = (): React$Node => {
