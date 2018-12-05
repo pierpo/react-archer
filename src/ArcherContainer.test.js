@@ -68,6 +68,29 @@ describe('ArcherContainer', () => {
   });
 
   describe('mergeTransitions', () => {
+    it('should keep transitions intact if no changes', () => {
+      const currentRelations = [
+        {
+          from: { id: 'here', anchor: 'top' },
+          to: { id: 'there', anchor: 'top' },
+        },
+        {
+          from: { id: 'here', anchor: 'top' },
+          to: { id: 'here', anchor: 'top' },
+        },
+      ];
+      const newRelation = [];
+      const oldRelation = [];
+
+      const result = mergeTransitions(
+        currentRelations,
+        newRelation,
+        oldRelation,
+      );
+
+      expect(result).toEqual(currentRelations);
+    });
+
     it('should properly merge transitions', () => {
       const currentRelations = [
         {
@@ -79,12 +102,26 @@ describe('ArcherContainer', () => {
           to: { id: 'here', anchor: 'top' },
         },
       ];
-      const newRelation = {
-        from: { id: 'here', anchor: 'top' },
-        to: { id: 'there', anchor: 'top' },
-      };
 
-      const result = mergeTransitions(currentRelations, newRelation);
+      const newRelation = [
+        {
+          from: { id: 'here', anchor: 'top' },
+          to: { id: 'there', anchor: 'top' },
+        },
+      ];
+
+      const oldRelation = [
+        {
+          from: { id: 'here', anchor: 'top' },
+          to: { id: 'there', anchor: 'top' },
+        },
+      ];
+
+      const result = mergeTransitions(
+        currentRelations,
+        newRelation,
+        oldRelation,
+      );
 
       expect(result.length).toEqual(2);
     });
@@ -100,16 +137,30 @@ describe('ArcherContainer', () => {
           to: { id: 'here', anchor: 'top' },
         },
       ];
-      const newRelation = {
-        from: { id: 'here', anchor: 'top' },
-        to: { id: 'there', anchor: 'top' },
-        label: 'this is a new label',
-      };
+      const newRelation = [
+        {
+          from: { id: 'here', anchor: 'top' },
+          to: { id: 'there', anchor: 'top' },
+          label: 'this is a new label',
+        },
+      ];
 
-      const result = mergeTransitions(currentRelations, newRelation);
+      const oldRelation = [
+        {
+          from: { id: 'here', anchor: 'top' },
+          to: { id: 'there', anchor: 'top' },
+        },
+      ];
 
-      expect(result.find(o => o.label === 'this is a new label')).toEqual(
+      const result = mergeTransitions(
+        currentRelations,
         newRelation,
+        oldRelation,
+      );
+
+      expect(result.length).toEqual(2);
+      expect(result.find(o => o.label === 'this is a new label')).toEqual(
+        newRelation[0],
       );
     });
   });

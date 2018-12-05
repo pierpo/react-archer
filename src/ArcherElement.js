@@ -16,8 +16,10 @@ type Props = {
   context: ArcherContainerContextType,
 };
 
+// This function allows us to compare relations with a deep comparison,
+// maybe not in the most robust way...
 const stringifyRelations = (relations: Array<RelationType>): string => {
-  const relationsWithStringifiedLabels = (relations || []).map(r => {
+  const stringifiedLabels = (relations || []).map(r => {
     // $FlowFixMe TODO
     if (r.label && r.label.props) {
       return JSON.stringify(r.label.props);
@@ -25,7 +27,14 @@ const stringifyRelations = (relations: Array<RelationType>): string => {
     return JSON.stringify(r.label);
   });
 
-  return JSON.stringify(relationsWithStringifiedLabels);
+  const relationsWithoutLabels = (relations || []).map(r => {
+    const { label, ...rest } = r;
+    return rest;
+  });
+
+  return (
+    JSON.stringify(relationsWithoutLabels) + JSON.stringify(stringifiedLabels)
+  );
 };
 
 export class ArcherElementNoContext extends React.Component<Props> {
@@ -36,7 +45,7 @@ export class ArcherElementNoContext extends React.Component<Props> {
     ) {
       return;
     }
-    this.registerAllTransitions(nextProps.relations);
+    this.registerAllTransitions(nextProps.relations, this.props.relations);
   }
 
   componentDidMount() {
@@ -51,12 +60,16 @@ export class ArcherElementNoContext extends React.Component<Props> {
     this.unregisterAllTransitions();
   }
 
-  registerAllTransitions(relations: Array<RelationType>) {
-    relations.forEach(relation => {
-      if (!this.props.context.registerTransition) return;
-
-      this.props.context.registerTransition(this.props.id, relation);
-    });
+  registerAllTransitions(
+    newRelations: Array<RelationType>,
+    oldRelations: Array<RelationType> = [],
+  ) {
+    if (!this.props.context.registerTransition) return;
+    this.props.context.registerTransition(
+      this.props.id,
+      newRelations,
+      oldRelations,
+    );
   }
 
   unregisterAllTransitions() {
