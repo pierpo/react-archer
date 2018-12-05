@@ -45,7 +45,7 @@ export class ArcherElementNoContext extends React.Component<Props> {
     ) {
       return;
     }
-    this.registerAllTransitions(nextProps.relations);
+    this.registerAllTransitions(nextProps.relations, this.props.relations);
   }
 
   componentDidMount() {
@@ -60,12 +60,16 @@ export class ArcherElementNoContext extends React.Component<Props> {
     this.unregisterAllTransitions();
   }
 
-  registerAllTransitions(relations: Array<RelationType>) {
-    relations.forEach(relation => {
-      if (!this.props.context.registerTransition) return;
-
-      this.props.context.registerTransition(this.props.id, relation);
-    });
+  registerAllTransitions(
+    newRelations: Array<RelationType>,
+    oldRelations: Array<RelationType> = [],
+  ) {
+    if (!this.props.context.registerTransition) return;
+    this.props.context.registerTransition(
+      this.props.id,
+      newRelations,
+      oldRelations,
+    );
   }
 
   unregisterAllTransitions() {

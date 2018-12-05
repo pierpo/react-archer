@@ -56,26 +56,35 @@ function computeCoordinatesFromAnchorPosition(
 }
 
 export function mergeTransitions(
-  currentRelations: Array<CompleteRelationType>,
-  newRelation: CompleteRelationType,
+  allCurrentRelations: Array<CompleteRelationType>,
+  newRelationsOfElement: Array<CompleteRelationType>,
+  oldRelationsOfElement: Array<CompleteRelationType>,
 ): Array<CompleteRelationType> {
-  const newTransitionsWithDuplicates = [newRelation, ...currentRelations];
-  // Remove duplicates, with "duplicate" meaning same 'to' and same 'from'
-  // The older relation is removed with a higher priority (imagine that you update the style
-  // or a label, you then want the new relation to be kept)
-  const uniqueNewTransitions = newTransitionsWithDuplicates.filter(
-    (transition, index, self) =>
-      self.findIndex(
-        t => t.from.id === transition.from.id && t.to.id === transition.to.id,
-      ) === index,
+  const allCurrentRelationsWithoutOldRelationsOfElement = allCurrentRelations.filter(
+    relation => {
+      const existsInOld = oldRelationsOfElement.find(oldRelation => {
+        return (
+          oldRelation.from.id === relation.from.id &&
+          oldRelation.to.id === relation.to.id
+        );
+      });
+      return !existsInOld;
+    },
   );
 
-  return uniqueNewTransitions;
+  return [
+    ...allCurrentRelationsWithoutOldRelationsOfElement,
+    ...newRelationsOfElement,
+  ];
 }
 
 export type ArcherContainerContextType = {
   registerChild?: (string, HTMLElement) => void,
-  registerTransition?: (string, RelationType) => void,
+  registerTransition?: (
+    string,
+    Array<RelationType>,
+    Array<RelationType>,
+  ) => void,
   unregisterChild?: string => void,
   unregisterAllTransitions?: string => void,
 };
@@ -173,18 +182,32 @@ export class ArcherContainer extends React.Component<Props, State> {
     return absolutePosition.substract(parentCoordinates);
   };
 
-  registerTransition = (fromElement: string, relation: RelationType): void => {
-    const newFromTo = {
+  registerTransition = (
+    fromElementId: string,
+    newRelationsOfElement: Array<RelationType>,
+    oldRelationsOfElement: Array<RelationType>,
+  ): void => {
+    const enrichedNewFromToObjects = newRelationsOfElement.map(relation => ({
       ...relation,
-      from: { ...relation.from, id: fromElement },
-    };
+      from: { ...relation.from, id: fromElementId },
+    }));
+
+    const enrichedOldFromToObjects = oldRelationsOfElement.map(relation => ({
+      ...relation,
+      from: { ...relation.from, id: fromElementId },
+    }));
 
     this.setState((currentState: State) => ({
-      // Really can't find a solution for this Flow error. I think it's a bug.
+      // Really can't find a solution for these Flow errors. I think it's a bug.
       // I wrote an issue on Flow, let's see what happens.
       // https://github.com/facebook/flow/issues/7135
-      // $FlowFixMe
-      fromTo: mergeTransitions(currentState.fromTo, newFromTo),
+      fromTo: mergeTransitions(
+        currentState.fromTo,
+        // $FlowFixMe
+        enrichedNewFromToObjects,
+        // $FlowFixMe
+        enrichedOldFromToObjects,
+      ),
     }));
   };
 
