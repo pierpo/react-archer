@@ -345,7 +345,7 @@ export class ArcherContainer extends React.Component<Props, State> {
             {SvgArrows}
           </svg>
 
-          <div ref={this.storeParent}>{this.props.children}</div>
+          <div style={{ height: '100%' }} ref={this.storeParent}>{this.props.children}</div>
         </div>
       </ArcherContainerContextProvider>
     );
