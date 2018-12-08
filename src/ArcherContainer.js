@@ -14,6 +14,7 @@ type Props = {
   children: React$Node,
   style?: Object,
   className?: string,
+  onClick?: Function,
 };
 
 type State = {
@@ -252,6 +253,8 @@ export class ArcherContainer extends React.Component<Props, State> {
         to.id,
         parentCoordinates,
       );
+      const markerId = this.getMarkerId(from, to);
+      const clickHandler = this.props.onClick;
 
       const strokeColor =
         (style && style.strokeColor) || this.props.strokeColor;
@@ -273,7 +276,8 @@ export class ArcherContainer extends React.Component<Props, State> {
           arrowLength={arrowLength}
           strokeWidth={strokeWidth}
           arrowLabel={label}
-          arrowMarkerId={this.getMarkerId(from, to)}
+          arrowMarkerId={markerId}
+          onClick={(evt) => clickHandler(evt, markerId, from.id, to.id)}
         />
       );
     });
@@ -337,7 +341,7 @@ export class ArcherContainer extends React.Component<Props, State> {
         }}
       >
         <div
-          style={{ ...this.props.style, position: 'relative' }}
+          style={{ ...this.props.style, position: 'relative', pointerEvents: 'none' }}
           className={this.props.className}
         >
           <svg style={svgContainerStyle}>
@@ -345,7 +349,9 @@ export class ArcherContainer extends React.Component<Props, State> {
             {SvgArrows}
           </svg>
 
-          <div ref={this.storeParent}>{this.props.children}</div>
+          <div ref={this.storeParent} style={{ pointerEvents: 'auto' }}>
+            {this.props.children}
+          </div>
         </div>
       </ArcherContainerContextProvider>
     );
