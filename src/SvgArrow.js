@@ -13,7 +13,7 @@ type Props = {
   strokeWidth: number,
   arrowLabel?: ?React$Node,
   arrowMarkerId: string,
-  onClick?: Function,
+  onClick?: ?Function,
 };
 
 function computeEndingArrowDirectionVector(endingAnchor) {

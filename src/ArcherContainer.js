@@ -254,7 +254,12 @@ export class ArcherContainer extends React.Component<Props, State> {
         parentCoordinates,
       );
       const markerId = this.getMarkerId(from, to);
-      const clickHandler = this.props.onClick;
+      const clickHandler = this.props.onClick
+        ? (evt) => {
+          if (this.props.onClick) {
+            this.props.onClick(evt, markerId, from.id, to.id);
+          }
+        } : null;
 
       const strokeColor =
         (style && style.strokeColor) || this.props.strokeColor;
@@ -277,7 +282,7 @@ export class ArcherContainer extends React.Component<Props, State> {
           strokeWidth={strokeWidth}
           arrowLabel={label}
           arrowMarkerId={markerId}
-          onClick={(evt) => clickHandler(evt, markerId, from.id, to.id)}
+          onClick={clickHandler}
         />
       );
     });
