@@ -48,6 +48,7 @@ var config = {
     extensions: ['.js', '.jsx'],
   },
   externals: externals,
+  globalObject: 'typeof self !== \'undefined\' ? self : this',
 };
 
 if (isProd) {
