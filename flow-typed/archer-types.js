@@ -18,14 +18,14 @@ declare type ArrowStyleType = {
 
 declare type RelationType = {
   from: IncompleteRelationNozzleType,
-  to: RelationNozzleType,
+  to: RelationNozzleType | Array<RelationNozzleType>,
   label?: ?React$Node,
   style?: ArrowStyleType,
 };
 
 declare type CompleteRelationType = {
   from: RelationNozzleType,
-  to: RelationNozzleType,
+  to: RelationNozzleType | Array<RelationNozzleType>,
   label?: ?React$Node,
   style?: ArrowStyleType,
 };

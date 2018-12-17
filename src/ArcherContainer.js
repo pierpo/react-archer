@@ -62,12 +62,10 @@ export function mergeTransitions(
 ): Array<CompleteRelationType> {
   const allCurrentRelationsWithoutOldRelationsOfElement = allCurrentRelations.filter(
     relation => {
-      const existsInOld = oldRelationsOfElement.find(oldRelation => {
-        return (
-          oldRelation.from.id === relation.from.id &&
-          oldRelation.to.id === relation.to.id
-        );
-      });
+      const existsInOld = oldRelationsOfElement.find(oldRelation =>
+        oldRelation.from.id === relation.from.id
+      );
+
       return !existsInOld;
     },
   );
@@ -86,14 +84,14 @@ export type ArcherContainerContextType = {
     Array<RelationType>,
   ) => void,
   unregisterChild?: string => void,
-  unregisterAllTransitions?: string => void,
+  unregisterTransitions?: string => void,
 };
 
 const ArcherContainerContext = React.createContext<ArcherContainerContextType>(
   {},
 );
 
-const ArcherContainerContextProvider = ArcherContainerContext.Provider;
+export const ArcherContainerContextProvider = ArcherContainerContext.Provider;
 export const ArcherContainerContextConsumer = ArcherContainerContext.Consumer;
 
 export class ArcherContainer extends React.Component<Props, State> {
@@ -187,34 +185,30 @@ export class ArcherContainer extends React.Component<Props, State> {
     newRelationsOfElement: Array<RelationType>,
     oldRelationsOfElement: Array<RelationType>,
   ): void => {
-    const enrichedNewFromToObjects = newRelationsOfElement.map(relation => ({
-      ...relation,
-      from: { ...relation.from, id: fromElementId },
-    }));
-
-    const enrichedOldFromToObjects = oldRelationsOfElement.map(relation => ({
-      ...relation,
-      from: { ...relation.from, id: fromElementId },
-    }));
+    const enrichedNewFromToObjects = this.relationsWithFromId(fromElementId, newRelationsOfElement);
+    const enrichedOldFromToObjects = this.relationsWithFromId(fromElementId, oldRelationsOfElement);
 
     this.setState((currentState: State) => ({
-      // Really can't find a solution for these Flow errors. I think it's a bug.
-      // I wrote an issue on Flow, let's see what happens.
-      // https://github.com/facebook/flow/issues/7135
       fromTo: mergeTransitions(
         currentState.fromTo,
-        // $FlowFixMe
         enrichedNewFromToObjects,
-        // $FlowFixMe
         enrichedOldFromToObjects,
       ),
     }));
   };
 
-  unregisterAllTransitions = (element: string): void => {
+  relationsWithFromId = (fromElementId: string, relations: Array<RelationType>): Array<CompleteRelationType> => {
+    // $FlowFixMe
+    return relations.map(relation => ({
+      ...relation,
+      from: { ...relation.from, id: fromElementId },
+    }));
+  };
+
+  unregisterTransitions = (elementId: string): void => {
     const { fromTo } = this.state;
     const newFromTo = fromTo.filter(
-      sd => sd.from.id !== element && sd.to.id !== element,
+      sd => sd.from.id !== elementId,
     );
     this.setState(() => ({ fromTo: newFromTo }));
   };
@@ -238,21 +232,8 @@ export class ArcherContainer extends React.Component<Props, State> {
 
   computeArrows = (): React$Node => {
     const parentCoordinates = this.getParentCoordinates();
-    return this.state.fromTo.map(sd => {
-      const { from, to, label, style } = sd;
-      const startingAnchor = from.anchor;
-      const startingPoint = this.getPointCoordinatesFromAnchorPosition(
-        from.anchor,
-        from.id,
-        parentCoordinates,
-      );
-      const endingAnchor = to.anchor;
-      const endingPoint = this.getPointCoordinatesFromAnchorPosition(
-        to.anchor,
-        to.id,
-        parentCoordinates,
-      );
 
+    return this.state.fromTo.map(({ from, to, label, style }: CompleteRelationType) => {
       const strokeColor =
         (style && style.strokeColor) || this.props.strokeColor;
 
@@ -261,6 +242,50 @@ export class ArcherContainer extends React.Component<Props, State> {
 
       const strokeWidth =
         (style && style.strokeWidth) || this.props.strokeWidth;
+
+      const startingAnchor = from.anchor;
+      const startingPoint = this.getPointCoordinatesFromAnchorPosition(
+        from.anchor,
+        from.id,
+        parentCoordinates,
+      );
+
+      if (Array.isArray(to)) {
+        return (
+          <React.Fragment key={JSON.stringify({ from, to })}>
+            {to.map((relationNozzle: RelationNozzleType) => {
+              const endingAnchor = relationNozzle.anchor;
+              const endingPoint = this.getPointCoordinatesFromAnchorPosition(
+                relationNozzle.anchor,
+                relationNozzle.id,
+                parentCoordinates,
+              );
+
+              return (
+                <SvgArrow
+                  key={JSON.stringify({ from, relationNozzle })}
+                  startingPoint={startingPoint}
+                  startingAnchor={startingAnchor}
+                  endingPoint={endingPoint}
+                  endingAnchor={endingAnchor}
+                  strokeColor={strokeColor}
+                  arrowLength={arrowLength}
+                  strokeWidth={strokeWidth}
+                  arrowLabel={label}
+                  arrowMarkerId={this.getMarkerId(from, relationNozzle)}
+                />
+              );
+            })}
+          </React.Fragment>
+        );
+      }
+
+      const endingAnchor = to.anchor;
+      const endingPoint = this.getPointCoordinatesFromAnchorPosition(
+        to.anchor,
+        to.id,
+        parentCoordinates,
+      );
 
       return (
         <SvgArrow
@@ -292,8 +317,7 @@ export class ArcherContainer extends React.Component<Props, State> {
    * a different color or size
    * */
   generateAllArrowMarkers = (): React$Node => {
-    return this.state.fromTo.map(sd => {
-      const { from, to, style } = sd;
+    return this.state.fromTo.map(({ from, to, style }: CompleteRelationType) => {
 
       const strokeColor =
         (style && style.strokeColor) || this.props.strokeColor;
@@ -306,6 +330,27 @@ export class ArcherContainer extends React.Component<Props, State> {
 
       const arrowPath = `M0,0 L0,${arrowThickness} L${arrowLength -
         1},${arrowThickness / 2} z`;
+      
+      if (Array.isArray(to)) {
+        return (
+          <React.Fragment key={JSON.stringify({ from, to })}>
+            {to.map((relationNozzle: RelationNozzleType) => (
+              <marker
+                id={this.getMarkerId(from, relationNozzle)}
+                key={this.getMarkerId(from, relationNozzle)}
+                markerWidth={arrowLength}
+                markerHeight={arrowThickness}
+                refX="0"
+                refY={arrowThickness / 2}
+                orient="auto"
+                markerUnits="strokeWidth"
+              >
+                <path d={arrowPath} fill={strokeColor} />
+              </marker>
+            ))}
+          </React.Fragment>
+        );
+      }
 
       return (
         <marker
@@ -331,7 +376,7 @@ export class ArcherContainer extends React.Component<Props, State> {
       <ArcherContainerContextProvider
         value={{
           registerTransition: this.registerTransition,
-          unregisterAllTransitions: this.unregisterAllTransitions,
+          unregisterTransitions: this.unregisterTransitions,
           registerChild: this.registerChild,
           unregisterChild: this.unregisterChild,
         }}

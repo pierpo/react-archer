@@ -7,12 +7,15 @@ import {
   ArcherContainerContextConsumer,
 } from './ArcherContainer';
 
-type Props = {
+type OuterProps = {
   id: string,
   relations: Array<RelationType>,
   style?: Object,
   className?: string,
   children: React$Node,
+};
+
+type InnerProps = OuterProps & {
   context: ArcherContainerContextType,
 };
 
@@ -37,34 +40,46 @@ const stringifyRelations = (relations: Array<RelationType>): string => {
   );
 };
 
-export class ArcherElementNoContext extends React.Component<Props> {
-  componentWillReceiveProps(nextProps: Props) {
+export class ArcherElementNoContext extends React.Component<InnerProps> {
+  static defaultProps = {
+    relations: [],
+  };
+
+  componentDidUpdate(prevProps: InnerProps) {
     if (
-      stringifyRelations(this.props.relations) ===
-      stringifyRelations(nextProps.relations)
+      stringifyRelations(prevProps.relations) ===
+      stringifyRelations(this.props.relations)
     ) {
       return;
     }
-    this.registerAllTransitions(nextProps.relations, this.props.relations);
+
+    this.registerTransitions(this.props.relations, prevProps.relations);
   }
 
   componentDidMount() {
-    if (!this.props.relations) {
+    if (this.props.relations.length === 0) {
       return;
     }
-    this.registerAllTransitions(this.props.relations);
+
+    this.registerTransitions(this.props.relations);
   }
 
   componentWillUnmount() {
     this.unregisterChild();
-    this.unregisterAllTransitions();
+    this.unregisterTransitions();
   }
 
-  registerAllTransitions(
+  registerTransitions(
     newRelations: Array<RelationType>,
     oldRelations: Array<RelationType> = [],
   ) {
-    if (!this.props.context.registerTransition) return;
+    if (!this.props.context.registerTransition) {
+      throw new Error(
+        `Could not find "registerTransition" in the context of ` +
+        `<ArcherElement>. Wrap the component in a <ArcherContainer>.`
+      );
+    }
+
     this.props.context.registerTransition(
       this.props.id,
       newRelations,
@@ -72,20 +87,36 @@ export class ArcherElementNoContext extends React.Component<Props> {
     );
   }
 
-  unregisterAllTransitions() {
-    if (!this.props.context.unregisterAllTransitions) return;
-    this.props.context.unregisterAllTransitions(this.props.id);
+  unregisterTransitions() {
+    if (!this.props.context.unregisterTransitions) {
+      throw new Error(
+        `Could not find "unregisterTransitions" in the context of ` +
+        `<ArcherElement>. Wrap the component in a <ArcherContainer>.`
+      );
+    }
+
+    this.props.context.unregisterTransitions(this.props.id);
   }
 
   onRefUpdate = (ref: ?HTMLElement) => {
     if (!ref) return;
-    if (!this.props.context.registerChild) return;
+    if (!this.props.context.registerChild) {
+      throw new Error(
+        `Could not find "registerChild" in the context of ` +
+        `<ArcherElement>. Wrap the component in a <ArcherContainer>.`
+      );
+    }
 
     this.props.context.registerChild(this.props.id, ref);
   };
 
   unregisterChild() {
-    if (!this.props.context.unregisterChild) return;
+    if (!this.props.context.unregisterChild) {
+      throw new Error(
+        `Could not find "unregisterChild" in the context of ` +
+        `<ArcherElement>. Wrap the component in a <ArcherContainer>.`
+      );
+    }
 
     this.props.context.unregisterChild(this.props.id);
   }
@@ -103,7 +134,7 @@ export class ArcherElementNoContext extends React.Component<Props> {
   }
 }
 
-const ArcherElementWithContext = (props: Props) => (
+const ArcherElementWithContext = (props: OuterProps) => (
   <ArcherContainerContextConsumer>
     {context => <ArcherElementNoContext {...props} context={context} />}
   </ArcherContainerContextConsumer>

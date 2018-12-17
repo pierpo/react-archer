@@ -34,6 +34,7 @@ var config = {
     sourceMapFilename: 'react-archer.sourcemap.js',
     library: 'ReactArcher',
     libraryTarget: 'umd',
+    globalObject: 'typeof self !== \'undefined\' ? self : this',
   },
   module: {
     rules: [
