@@ -13,6 +13,7 @@ type Props = {
   strokeWidth: number,
   children: React$Node,
   style?: Object,
+  svgContainerStyle?: Object,
   className?: string,
 };
 
@@ -25,7 +26,7 @@ type State = {
   parent: ?HTMLElement,
 };
 
-const svgContainerStyle = {
+const defaultSvgContainerStyle = {
   position: 'absolute',
   width: '100%',
   height: '100%',
@@ -121,6 +122,7 @@ export class ArcherContainer extends React.Component<Props, State> {
     arrowThickness: 6,
     strokeColor: '#f00',
     strokeWidth: 2,
+    svgContainerStyle: {},
   };
 
   componentDidMount() {
@@ -369,6 +371,11 @@ export class ArcherContainer extends React.Component<Props, State> {
     });
   };
 
+  svgContainerStyle = () => ({
+    ...defaultSvgContainerStyle,
+    ...this.props.svgContainerStyle,
+  });
+
   render() {
     const SvgArrows = this.computeArrows();
 
@@ -385,7 +392,7 @@ export class ArcherContainer extends React.Component<Props, State> {
           style={{ ...this.props.style, position: 'relative' }}
           className={this.props.className}
         >
-          <svg style={svgContainerStyle}>
+          <svg style={this.svgContainerStyle()}>
             <defs>{this.generateAllArrowMarkers()}</defs>
             {SvgArrows}
           </svg>
