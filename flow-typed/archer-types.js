@@ -1,12 +1,23 @@
 declare type AnchorPositionType = 'top' | 'bottom' | 'left' | 'right';
 
-declare type IncompleteRelationNozzleType = {
+declare type RelationType = {
+  id: string,
+  targetAnchor: AnchorPositionType,
+  sourceAnchor: AnchorPositionType,
+  label?: ?React$Node,
+  style?: ArrowStyleType,
+};
+
+declare type EntityRelationType = {
+  id: string,
   anchor: AnchorPositionType,
 };
 
-declare type RelationNozzleType = {
-  anchor: AnchorPositionType,
-  id: string,
+declare type SourceToTargetType = {
+  source: EntityRelationType,
+  target: EntityRelationType,
+  label?: ?React$Node,
+  style?: ArrowStyleType,
 };
 
 declare type ArrowStyleType = {
@@ -14,18 +25,4 @@ declare type ArrowStyleType = {
   arrowThickness: number,
   strokeColor: string,
   strokeWidth: number,
-};
-
-declare type RelationType = {
-  from: IncompleteRelationNozzleType,
-  to: RelationNozzleType | Array<RelationNozzleType>,
-  label?: ?React$Node,
-  style?: ArrowStyleType,
-};
-
-declare type CompleteRelationType = {
-  from: RelationNozzleType,
-  to: RelationNozzleType | Array<RelationNozzleType>,
-  label?: ?React$Node,
-  style?: ArrowStyleType,
 };

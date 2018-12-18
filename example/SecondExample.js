@@ -58,8 +58,9 @@ class SecondExample extends React.Component {
                   id={`element${i}`}
                   relations={[
                     {
-                      from: { anchor: 'top' },
-                      to: { anchor: 'bottom', id: 'root' },
+                      id: 'root',
+                      targetAnchor: 'bottom',
+                      sourceAnchor: 'top',
                       label: (
                         <div>
                           {i} {this.state.labels}

@@ -29,8 +29,9 @@ const App = () => {
           <ArcherElement
             id="root"
             relations={[{
-              from: { anchor: 'bottom' },
-              to: { anchor: 'top', id: 'element2' }
+              id: 'element2',
+              targetAnchor: 'top',
+              sourceAnchor: 'bottom',
             }]}
           >
             <div style={boxStyle}>Root</div>
@@ -41,8 +42,9 @@ const App = () => {
           <ArcherElement
             id="element2"
             relations={[{
-              from: { anchor: 'right'},
-              to: { anchor: 'left', id: 'element3' },
+              id: 'element3',
+              targetAnchor: 'left',
+              sourceAnchor: 'right',
               label: <div style={{ marginTop: '-20px' }}>Arrow 2</div>,
             }]}
           >
@@ -56,8 +58,9 @@ const App = () => {
           <ArcherElement
             id="element4"
             relations={[{
-              from: { anchor: 'left'},
-              to: { anchor: 'right', id: 'root' },
+              id: 'root',
+              targetAnchor: 'right',
+              sourceAnchor: 'left',
               label: 'Arrow 3',
             }]}
           >

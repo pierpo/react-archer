@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import isEqual from 'react-fast-compare';
 
 import {
   type ArcherContainerContextType,
@@ -19,41 +20,15 @@ type InnerProps = OuterProps & {
   context: ArcherContainerContextType,
 };
 
-// This function allows us to compare relations with a deep comparison,
-// maybe not in the most robust way...
-const stringifyRelations = (relations: Array<RelationType>): string => {
-  const stringifiedLabels = (relations || []).map(r => {
-    // $FlowFixMe TODO
-    if (r.label && r.label.props) {
-      return JSON.stringify(r.label.props);
-    }
-    return JSON.stringify(r.label);
-  });
-
-  const relationsWithoutLabels = (relations || []).map(r => {
-    const { label, ...rest } = r;
-    return rest;
-  });
-
-  return (
-    JSON.stringify(relationsWithoutLabels) + JSON.stringify(stringifiedLabels)
-  );
-};
-
 export class ArcherElementNoContext extends React.Component<InnerProps> {
   static defaultProps = {
     relations: [],
   };
 
   componentDidUpdate(prevProps: InnerProps) {
-    if (
-      stringifyRelations(prevProps.relations) ===
-      stringifyRelations(this.props.relations)
-    ) {
-      return;
-    }
+    if (isEqual(prevProps.relations, this.props.relations)) return;
 
-    this.registerTransitions(this.props.relations, prevProps.relations);
+    this.registerTransitions(this.props.relations);
   }
 
   componentDidMount() {
@@ -69,25 +44,32 @@ export class ArcherElementNoContext extends React.Component<InnerProps> {
     this.unregisterTransitions();
   }
 
-  registerTransitions(
-    newRelations: Array<RelationType>,
-    oldRelations: Array<RelationType> = [],
-  ) {
-    if (!this.props.context.registerTransition) {
+  registerTransitions = (newRelations: Array<RelationType>) => {
+    const newSourceToTarget = this.generateSourceToTarget(newRelations);
+
+    if (!this.props.context.registerTransitions) {
       throw new Error(
         `Could not find "registerTransition" in the context of ` +
         `<ArcherElement>. Wrap the component in a <ArcherContainer>.`
       );
     }
 
-    this.props.context.registerTransition(
-      this.props.id,
-      newRelations,
-      oldRelations,
-    );
+    this.props.context.registerTransitions(newSourceToTarget);
   }
 
-  unregisterTransitions() {
+  generateSourceToTarget = (relations: Array<RelationType>): Array<SourceToTargetType> => {
+    const sourceId = this.props.id;
+
+    // $FlowFixMe
+    return relations.map(({ id, sourceAnchor, targetAnchor, label, style }: RelationType) => ({
+      source: { id: sourceId, anchor: sourceAnchor },
+      target: { id, anchor: targetAnchor },
+      label,
+      style,
+    }));
+  };
+
+  unregisterTransitions = () => {
     if (!this.props.context.unregisterTransitions) {
       throw new Error(
         `Could not find "unregisterTransitions" in the context of ` +
@@ -96,7 +78,7 @@ export class ArcherElementNoContext extends React.Component<InnerProps> {
     }
 
     this.props.context.unregisterTransitions(this.props.id);
-  }
+  };
 
   onRefUpdate = (ref: ?HTMLElement) => {
     if (!ref) return;
@@ -110,7 +92,7 @@ export class ArcherElementNoContext extends React.Component<InnerProps> {
     this.props.context.registerChild(this.props.id, ref);
   };
 
-  unregisterChild() {
+  unregisterChild = () => {
     if (!this.props.context.unregisterChild) {
       throw new Error(
         `Could not find "unregisterChild" in the context of ` +
@@ -119,7 +101,7 @@ export class ArcherElementNoContext extends React.Component<InnerProps> {
     }
 
     this.props.context.unregisterChild(this.props.id);
-  }
+  };
 
   render() {
     return (

@@ -7,7 +7,7 @@ import { ArcherContainerContextProvider } from './ArcherContainer';
 describe('ArcherElement', () => {
   let registerChildMock;
   let unregisterChildMock;
-  let registerTransitionMock;
+  let registerTransitionsMock;
   let unregisterTransitionsMock;
 
   const children = <div>hi</div>;
@@ -18,15 +18,15 @@ describe('ArcherElement', () => {
   };
 
   type MockArcherContainerType = {
-    registerTransition?: Function,
-    unregisterTransitions?: Function,
-    registerChild?: Function,
-    unregisterChild?: Function,
+    registerTransitions: Function,
+    unregisterTransitions: Function,
+    registerChild: Function,
+    unregisterChild: Function,
     children: React.Node,
   }
 
   const MockArcherContainer = ({
-    registerTransition,
+    registerTransitions,
     unregisterTransitions,
     registerChild,
     unregisterChild,
@@ -34,7 +34,7 @@ describe('ArcherElement', () => {
   }: MockArcherContainerType) => (
     <ArcherContainerContextProvider
       value={{
-        registerTransition,
+        registerTransitions,
         unregisterTransitions,
         registerChild,
         unregisterChild,
@@ -74,7 +74,7 @@ describe('ArcherElement', () => {
       <MockArcherContainer
         registerChild={registerChildMock}
         unregisterChild={unregisterChildMock}
-        registerTransition={registerTransitionMock}
+        registerTransitions={registerTransitionsMock}
         unregisterTransitions={unregisterTransitionsMock}
       >
         <PassThrough {...props} relations={relations} newRelations={newRelations} />
@@ -85,7 +85,7 @@ describe('ArcherElement', () => {
   beforeEach(() => {
     registerChildMock = jest.fn();
     unregisterChildMock = jest.fn();
-    registerTransitionMock = jest.fn();
+    registerTransitionsMock = jest.fn();
     unregisterTransitionsMock = jest.fn();
   });
 
@@ -109,10 +109,19 @@ describe('ArcherElement', () => {
   });
 
   describe('lifecycle', () => {
-    it('should call registerTransition on update', () => {
+    it('should call registerTransitions with sourceToTargets on update', () => {
       const relations = [];
       const newRelations = [
-        { from: { anchor: 'left' }, to: { id: 'toto', anchor: 'top' } },
+        { sourceAnchor: 'left', targetAnchor: 'top', id: 'toto' },
+      ];
+
+      const sourceToTargets = [
+        {
+          source: { id: 'foo', anchor: 'left' },
+          target: { id: 'toto', anchor: 'top' },
+          label: undefined,
+          style: undefined,
+        }
       ];
 
       const wrapper: ReactWrapper = mountContainer(relations, newRelations);
@@ -122,50 +131,59 @@ describe('ArcherElement', () => {
 
       wrapper.update();
 
-      expect(registerTransitionMock).toHaveBeenCalledWith('foo', newRelations, []);
+      expect(registerTransitionsMock).toHaveBeenCalledWith(sourceToTargets);
     });
 
-    it('should not call registerTransition on update if relation exists', () => {
+    it('should not call registerTransitions on update if relation exists', () => {
       const relations = [
-        { from: { anchor: 'left' }, to: { id: 'toto', anchor: 'top' } },
+        { sourceAnchor: 'left', targetAnchor: 'top', id: 'toto' },
       ];
       const newRelations = [
-        { from: { anchor: 'left' }, to: { id: 'toto', anchor: 'top' } },
+        { sourceAnchor: 'left', targetAnchor: 'top', id: 'toto' },
       ];
 
       const wrapper: ReactWrapper = mountContainer(relations, newRelations);
 
-      // mergeTransitions will get called with default []
-      registerTransitionMock.mockReset();
+      // Will get called on mount regardless
+      registerTransitionsMock.mockReset();
 
       // Trigger update in ArcherElement
       wrapper.find(PassThrough).find('div.foo').simulate('click');
 
       wrapper.update();
 
-      expect(registerTransitionMock).not.toHaveBeenCalled();
+      expect(registerTransitionsMock).not.toHaveBeenCalled();
     });
 
-    it('should call registerTransition on mount if relations', () => {
+    it('should call registerTransitions with sourceToTargets on mount if relations', () => {
       const relations = [
-        { from: { anchor: 'left' }, to: { id: 'toto', anchor: 'top' } },
+        { sourceAnchor: 'left', targetAnchor: 'top', id: 'toto' },
+      ];
+
+      const sourceToTargets = [
+        {
+          source: { id: 'foo', anchor: 'left' },
+          target: { id: 'toto', anchor: 'top' },
+          label: undefined,
+          style: undefined,
+        }
       ];
 
       const wrapper: ReactWrapper = mountContainer(relations, []);
 
       wrapper.update();
 
-      expect(registerTransitionMock).toHaveBeenCalledWith('foo', relations, []);
+      expect(registerTransitionsMock).toHaveBeenCalledWith(sourceToTargets);
     });
 
-    it('should not call registerTransition on mount if no relations', () => {
+    it('should not call registerTransitions on mount if no relations', () => {
       const relations = [];
 
       const wrapper: ReactWrapper = mountContainer(relations, []);
 
       wrapper.update();
 
-      expect(registerTransitionMock).not.toHaveBeenCalled();
+      expect(registerTransitionsMock).not.toHaveBeenCalled();
     });
   });
 });
