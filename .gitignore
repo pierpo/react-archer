@@ -1,7 +1,6 @@
 bundle.js
 node_modules
 dist
-lib
 index.html
 coverage
 example-dist
