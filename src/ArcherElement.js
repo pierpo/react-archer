@@ -60,7 +60,6 @@ export class ArcherElementNoContext extends React.Component<InnerProps> {
   generateSourceToTarget = (relations: Array<RelationType>): Array<SourceToTargetType> => {
     const sourceId = this.props.id;
 
-    // $FlowFixMe
     return relations.map(({ id, sourceAnchor, targetAnchor, label, style }: RelationType) => ({
       source: { id: sourceId, anchor: sourceAnchor },
       target: { id, anchor: targetAnchor },
