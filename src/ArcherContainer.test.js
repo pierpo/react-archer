@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-// $FlowFixMe
 import renderer from 'react-test-renderer';
 import { type ShallowWrapper, shallow } from 'enzyme';
 
