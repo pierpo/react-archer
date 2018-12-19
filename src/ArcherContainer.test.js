@@ -16,22 +16,26 @@ describe('ArcherContainer', () => {
   };
 
   type WrapperState = {
-    sourceToTargets: Array<SourceToTargetType>,
+    sourceToTargetsMap: {
+      [string]: Array<SourceToTargetType>,
+    },
   };
 
   const defaultState: WrapperState = {
-    sourceToTargets: [
-      {
-        source: {
-          anchor: 'top',
-          id: 'first-element',
+    sourceToTargetsMap: {
+      foo: [
+        {
+          source: {
+            anchor: 'top',
+            id: 'first-element',
+          },
+          target: {
+            anchor: 'bottom',
+            id: 'second-element',
+          },
         },
-        target: {
-          anchor: 'bottom',
-          id: 'second-element',
-        },
-      },
-    ],
+      ],
+    }
   };
 
   const shallowRenderAndSetState = (newState?: WrapperState) => {

@@ -131,7 +131,7 @@ describe('ArcherElement', () => {
 
       wrapper.update();
 
-      expect(registerTransitionsMock).toHaveBeenCalledWith(sourceToTargets);
+      expect(registerTransitionsMock).toHaveBeenCalledWith('foo', sourceToTargets);
     });
 
     it('should not call registerTransitions on update if relation exists', () => {
@@ -173,7 +173,7 @@ describe('ArcherElement', () => {
 
       wrapper.update();
 
-      expect(registerTransitionsMock).toHaveBeenCalledWith(sourceToTargets);
+      expect(registerTransitionsMock).toHaveBeenCalledWith('foo', sourceToTargets);
     });
 
     it('should not call registerTransitions on mount if no relations', () => {

@@ -54,7 +54,7 @@ export class ArcherElementNoContext extends React.Component<InnerProps> {
       );
     }
 
-    this.props.context.registerTransitions(newSourceToTarget);
+    this.props.context.registerTransitions(this.props.id, newSourceToTarget);
   }
 
   generateSourceToTarget = (relations: Array<RelationType>): Array<SourceToTargetType> => {
