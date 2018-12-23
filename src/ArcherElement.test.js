@@ -1,128 +1,189 @@
 // @flow
-import React from 'react';
-import { type ShallowWrapper, type ReactWrapper, shallow, mount } from 'enzyme';
-import { ArcherElementNoContext } from './ArcherElement';
+import * as React from 'react';
+import { type ReactWrapper, mount } from 'enzyme';
+import ArcherElement from './ArcherElement';
+import { ArcherContainerContextProvider } from './ArcherContainer';
 
-let wrapper: ShallowWrapper;
-let wrapperMount: ReactWrapper;
-
-let registerChildMock;
 describe('ArcherElement', () => {
-  const children = <div>hi</div>;
-  const context = { registerChild: registerChildMock };
+  let registerChildMock;
+  let unregisterChildMock;
+  let registerTransitionsMock;
+  let unregisterTransitionsMock;
 
+  const children = <div>hi</div>;
   const defaultProps = {
     relations: [],
     id: '',
-    context,
     children,
+  };
+
+  type MockArcherContainerType = {
+    registerTransitions: Function,
+    unregisterTransitions: Function,
+    registerChild: Function,
+    unregisterChild: Function,
+    children: React.Node,
+  }
+
+  const MockArcherContainer = ({
+    registerTransitions,
+    unregisterTransitions,
+    registerChild,
+    unregisterChild,
+    children
+  }: MockArcherContainerType) => (
+    <ArcherContainerContextProvider
+      value={{
+        registerTransitions,
+        unregisterTransitions,
+        registerChild,
+        unregisterChild,
+      }}
+    >
+      {children}
+    </ArcherContainerContextProvider>
+  );
+
+  // For triggering relations props changes in a less contrived way
+  class PassThrough extends React.Component<any, any> {
+    state = {
+      relations: this.props.relations,
+      newRelations: this.props.newRelations,
+    };
+
+    render() {
+      const { relations, newRelations } = this.state;
+
+      return (
+        <ArcherElement {...this.props} relations={relations}>
+          <div className="foo" onClick={() => this.setState({ relations: newRelations })}>
+            Foo
+          </div>
+        </ArcherElement>
+      );
+    }
+  }
+
+  const mountContainer = (
+    relations: Array<RelationType>,
+    newRelations: Array<RelationType>
+  ): ReactWrapper => {
+    const props = { ...defaultProps, id: 'foo' };
+
+    return mount(
+      <MockArcherContainer
+        registerChild={registerChildMock}
+        unregisterChild={unregisterChildMock}
+        registerTransitions={registerTransitionsMock}
+        unregisterTransitions={unregisterTransitionsMock}
+      >
+        <PassThrough {...props} relations={relations} newRelations={newRelations} />
+      </MockArcherContainer>
+    );
   };
 
   beforeEach(() => {
     registerChildMock = jest.fn();
-
-    wrapper = shallow(<ArcherElementNoContext {...defaultProps} />);
+    unregisterChildMock = jest.fn();
+    registerTransitionsMock = jest.fn();
+    unregisterTransitionsMock = jest.fn();
   });
 
-  it('should render children', () => {
-    expect(wrapper.props().children).toEqual(children);
-  });
+  it('should register and unregister child on mounting ref callback', () => {
+    const relations = [];
 
-  it.only('should register child on mounting ref callback', () => {
-    const context = { registerChild: registerChildMock };
-    const props = { ...defaultProps, id: 'the id', context };
-    wrapperMount = mount(<ArcherElementNoContext {...props} />);
+    const wrapper: ReactWrapper = mountContainer(relations, []);
 
-    expect(registerChildMock).toHaveBeenCalledWith('the id', expect.anything());
-    wrapperMount.unmount();
+    // See we register the child
+    expect(registerChildMock).toHaveBeenCalledWith('foo', expect.anything());
+
+    wrapper.unmount();
+
+    // See we unregister the child and all transitions
+    expect(unregisterChildMock).toHaveBeenCalledWith('foo');
+    expect(unregisterTransitionsMock).toHaveBeenCalledWith('foo');
+
     expect(registerChildMock).toHaveBeenCalledTimes(1);
+    expect(unregisterChildMock).toHaveBeenCalledTimes(1);
+    expect(unregisterTransitionsMock).toHaveBeenCalledTimes(1);
   });
 
   describe('lifecycle', () => {
-    let instance;
-    let registerAllTransitionsMock;
-
-    beforeEach(() => {
-      instance = wrapper.instance();
-      registerAllTransitionsMock = jest.fn();
-      instance.registerAllTransitions = registerAllTransitionsMock;
-    });
-
-    it('should call registerAllTransitions on receive props', () => {
+    it('should call registerTransitions with sourceToTargets on update', () => {
+      const relations = [];
       const newRelations = [
-        { from: { anchor: 'left' }, to: { id: 'toto', anchor: 'top' } },
+        { targetId: 'toto', targetAnchor: 'top', sourceAnchor: 'left' },
       ];
-      wrapper.setProps({ relations: newRelations });
 
-      expect(registerAllTransitionsMock).toHaveBeenCalledWith(newRelations);
+      const sourceToTargets = [
+        {
+          source: { id: 'foo', anchor: 'left' },
+          target: { id: 'toto', anchor: 'top' },
+          label: undefined,
+          style: undefined,
+        }
+      ];
+
+      const wrapper: ReactWrapper = mountContainer(relations, newRelations);
+
+      // Trigger update in ArcherElement
+      wrapper.find(PassThrough).find('div.foo').simulate('click');
+
+      wrapper.update();
+
+      expect(registerTransitionsMock).toHaveBeenCalledWith('foo', sourceToTargets);
     });
 
-    it('should not call registerAllTransitions on recive props if relation exists', () => {
-      const oldRelations = [
-        { from: { anchor: 'left' }, to: { id: 'toto', anchor: 'top' } },
-      ];
-      wrapper.setProps({ relations: oldRelations });
-      registerAllTransitionsMock.mockReset();
-
-      const newRelations = [
-        { from: { anchor: 'left' }, to: { id: 'toto', anchor: 'top' } },
-      ];
-      wrapper.setProps({ relations: newRelations });
-
-      expect(registerAllTransitionsMock).not.toHaveBeenCalled();
-    });
-
-    it('should call registerAllTransitions on mount if relations', () => {
+    it('should not call registerTransitions on update if relation exists', () => {
       const relations = [
-        { from: { anchor: 'left' }, to: { id: 'toto', anchor: 'top' } },
+        { targetId: 'toto', targetAnchor: 'top', sourceAnchor: 'left' },
       ];
-      registerAllTransitionsMock.mockReset();
+      const newRelations = [
+        { targetId: 'toto', targetAnchor: 'top', sourceAnchor: 'left' },
+      ];
 
-      wrapper.setProps({ relations });
-      instance.componentDidMount();
+      const wrapper: ReactWrapper = mountContainer(relations, newRelations);
 
-      expect(registerAllTransitionsMock).toHaveBeenCalled();
+      // Will get called on mount regardless
+      registerTransitionsMock.mockReset();
+
+      // Trigger update in ArcherElement
+      wrapper.find(PassThrough).find('div.foo').simulate('click');
+
+      wrapper.update();
+
+      expect(registerTransitionsMock).not.toHaveBeenCalled();
     });
 
-    it('should not call registerAllTransitions on mount if no relations', () => {
-      const relations = undefined;
-      registerAllTransitionsMock.mockReset();
+    it('should call registerTransitions with sourceToTargets on mount if relations', () => {
+      const relations = [
+        { targetId: 'toto', targetAnchor: 'top', sourceAnchor: 'left' },
+      ];
 
-      wrapper.setProps({ relations });
-      instance.componentDidMount();
+      const sourceToTargets = [
+        {
+          source: { id: 'foo', anchor: 'left' },
+          target: { id: 'toto', anchor: 'top' },
+          label: undefined,
+          style: undefined,
+        }
+      ];
 
-      expect(registerAllTransitionsMock).not.toHaveBeenCalled();
-    });
-  });
+      const wrapper: ReactWrapper = mountContainer(relations, []);
 
-  describe('registerAllTransitions', () => {
-    let instance;
-    let registerTransitionMock;
+      wrapper.update();
 
-    beforeEach(() => {
-      instance = wrapper.instance();
-      registerTransitionMock = jest.fn();
-      const context = {
-        registerChild: registerChildMock,
-        registerTransition: registerTransitionMock,
-      };
-
-      wrapper.setProps({ context });
+      expect(registerTransitionsMock).toHaveBeenCalledWith('foo', sourceToTargets);
     });
 
-    it('should call registerTransition once per relation', () => {
-      const relations = ['first relation', 'second relation'];
-      wrapper.setProps({ id: 'nice id' });
-      instance.registerAllTransitions(relations);
+    it('should not call registerTransitions on mount if no relations', () => {
+      const relations = [];
 
-      expect(registerTransitionMock).toHaveBeenCalledWith(
-        'nice id',
-        'first relation',
-      );
-      expect(registerTransitionMock).toHaveBeenCalledWith(
-        'nice id',
-        'second relation',
-      );
+      const wrapper: ReactWrapper = mountContainer(relations, []);
+
+      wrapper.update();
+
+      expect(registerTransitionsMock).not.toHaveBeenCalled();
     });
   });
 });

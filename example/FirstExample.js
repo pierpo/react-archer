@@ -17,12 +17,11 @@ const FirstExample = () => {
         <div style={rootStyle}>
           <ArcherElement
             id="root"
-            relations={[
-              {
-                from: { anchor: 'bottom' },
-                to: { anchor: 'top', id: 'element2' },
-              },
-            ]}
+            relations={[{
+              targetId: 'element2',
+              targetAnchor: 'top',
+              sourceAnchor: 'bottom',
+            }]}
           >
             <div style={boxStyle}>Root</div>
           </ArcherElement>
@@ -31,13 +30,12 @@ const FirstExample = () => {
         <div style={rowStyle}>
           <ArcherElement
             id="element2"
-            relations={[
-              {
-                from: { anchor: 'right' },
-                to: { anchor: 'left', id: 'element3' },
-                label: <div style={{ marginTop: '-20px' }}>Arrow 2</div>,
-              },
-            ]}
+            relations={[{
+              targetId: 'element3',
+              targetAnchor: 'left',
+              sourceAnchor: 'right',
+              label: <div style={{ marginTop: '-20px' }}>Arrow 2</div>,
+            }]}
           >
             <div style={boxStyle}>Element 2</div>
           </ArcherElement>
@@ -48,13 +46,12 @@ const FirstExample = () => {
 
           <ArcherElement
             id="element4"
-            relations={[
-              {
-                from: { anchor: 'left' },
-                to: { anchor: 'right', id: 'root' },
-                label: 'Arrow 3',
-              },
-            ]}
+            relations={[{
+              targetId: 'root',
+              targetAnchor: 'right',
+              sourceAnchor: 'left',
+              label: 'Arrow 3',
+            }]}
           >
             <div style={boxStyle}>Element 4</div>
           </ArcherElement>

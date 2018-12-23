@@ -29,8 +29,9 @@ const App = () => {
           <ArcherElement
             id="root"
             relations={[{
-              from: { anchor: 'bottom' },
-              to: { anchor: 'top', id: 'element2' }
+              targetId: 'element2',
+              targetAnchor: 'top',
+              sourceAnchor: 'bottom',
             }]}
           >
             <div style={boxStyle}>Root</div>
@@ -41,8 +42,9 @@ const App = () => {
           <ArcherElement
             id="element2"
             relations={[{
-              from: { anchor: 'right'},
-              to: { anchor: 'left', id: 'element3' },
+              targetId: 'element3',
+              targetAnchor: 'left',
+              sourceAnchor: 'right',
               label: <div style={{ marginTop: '-20px' }}>Arrow 2</div>,
             }]}
           >
@@ -56,8 +58,9 @@ const App = () => {
           <ArcherElement
             id="element4"
             relations={[{
-              from: { anchor: 'left'},
-              to: { anchor: 'right', id: 'root' },
+              targetId: 'root',
+              targetAnchor: 'right',
+              sourceAnchor: 'left',
               label: 'Arrow 3',
             }]}
           >
@@ -101,13 +104,9 @@ The `Relation` type has the following shape:
 
 ```javascript
 {
-  from: {
-    anchor: 'top' | 'bottom' | 'left' | 'right'
-  },
-  to: {
-    anchor: 'top' | 'bottom' | 'left' | 'right'
-    id: string
-  },
+  targetId: string,
+  targetAnchor: 'top' | 'bottom' | 'left' | 'right',
+  sourceAnchor: 'top' | 'bottom' | 'left' | 'right',
   label: React.Node
 }
 ```

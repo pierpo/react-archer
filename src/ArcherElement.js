@@ -1,94 +1,106 @@
 // @flow
 
 import React from 'react';
+import isEqual from 'react-fast-compare';
 
 import {
   type ArcherContainerContextType,
   ArcherContainerContextConsumer,
 } from './ArcherContainer';
 
-type Props = {
+type OuterProps = {
   id: string,
   relations: Array<RelationType>,
   style?: Object,
   className?: string,
   children: React$Node,
+};
+
+type InnerProps = OuterProps & {
   context: ArcherContainerContextType,
 };
 
-// This function allows us to compare relations with a deep comparison,
-// maybe not in the most robust way...
-const stringifyRelations = (relations: Array<RelationType>): string => {
-  const stringifiedLabels = (relations || []).map(r => {
-    // $FlowFixMe TODO
-    if (r.label && r.label.props) {
-      return JSON.stringify(r.label.props);
-    }
-    return JSON.stringify(r.label);
-  });
+export class ArcherElementNoContext extends React.Component<InnerProps> {
+  static defaultProps = {
+    relations: [],
+  };
 
-  const relationsWithoutLabels = (relations || []).map(r => {
-    const { label, ...rest } = r;
-    return rest;
-  });
+  componentDidUpdate(prevProps: InnerProps) {
+    if (isEqual(prevProps.relations, this.props.relations)) return;
 
-  return (
-    JSON.stringify(relationsWithoutLabels) + JSON.stringify(stringifiedLabels)
-  );
-};
-
-export class ArcherElementNoContext extends React.Component<Props> {
-  componentWillReceiveProps(nextProps: Props) {
-    if (
-      stringifyRelations(this.props.relations) ===
-      stringifyRelations(nextProps.relations)
-    ) {
-      return;
-    }
-    this.registerAllTransitions(nextProps.relations, this.props.relations);
+    this.registerTransitions(this.props.relations);
   }
 
   componentDidMount() {
-    if (!this.props.relations) {
+    if (this.props.relations.length === 0) {
       return;
     }
-    this.registerAllTransitions(this.props.relations);
+
+    this.registerTransitions(this.props.relations);
   }
 
   componentWillUnmount() {
     this.unregisterChild();
-    this.unregisterAllTransitions();
+    this.unregisterTransitions();
   }
 
-  registerAllTransitions(
-    newRelations: Array<RelationType>,
-    oldRelations: Array<RelationType> = [],
-  ) {
-    if (!this.props.context.registerTransition) return;
-    this.props.context.registerTransition(
-      this.props.id,
-      newRelations,
-      oldRelations,
-    );
+  registerTransitions = (newRelations: Array<RelationType>) => {
+    const newSourceToTarget = this.generateSourceToTarget(newRelations);
+
+    if (!this.props.context.registerTransitions) {
+      throw new Error(
+        `Could not find "registerTransition" in the context of ` +
+        `<ArcherElement>. Wrap the component in a <ArcherContainer>.`
+      );
+    }
+
+    this.props.context.registerTransitions(this.props.id, newSourceToTarget);
   }
 
-  unregisterAllTransitions() {
-    if (!this.props.context.unregisterAllTransitions) return;
-    this.props.context.unregisterAllTransitions(this.props.id);
-  }
+  generateSourceToTarget = (relations: Array<RelationType>): Array<SourceToTargetType> => {
+    const { id } = this.props;
+
+    return relations.map(({ targetId, sourceAnchor, targetAnchor, label, style }: RelationType) => ({
+      source: { id, anchor: sourceAnchor },
+      target: { id: targetId, anchor: targetAnchor },
+      label,
+      style,
+    }));
+  };
+
+  unregisterTransitions = () => {
+    if (!this.props.context.unregisterTransitions) {
+      throw new Error(
+        `Could not find "unregisterTransitions" in the context of ` +
+        `<ArcherElement>. Wrap the component in a <ArcherContainer>.`
+      );
+    }
+
+    this.props.context.unregisterTransitions(this.props.id);
+  };
 
   onRefUpdate = (ref: ?HTMLElement) => {
     if (!ref) return;
-    if (!this.props.context.registerChild) return;
+    if (!this.props.context.registerChild) {
+      throw new Error(
+        `Could not find "registerChild" in the context of ` +
+        `<ArcherElement>. Wrap the component in a <ArcherContainer>.`
+      );
+    }
 
     this.props.context.registerChild(this.props.id, ref);
   };
 
-  unregisterChild() {
-    if (!this.props.context.unregisterChild) return;
+  unregisterChild = () => {
+    if (!this.props.context.unregisterChild) {
+      throw new Error(
+        `Could not find "unregisterChild" in the context of ` +
+        `<ArcherElement>. Wrap the component in a <ArcherContainer>.`
+      );
+    }
 
     this.props.context.unregisterChild(this.props.id);
-  }
+  };
 
   render() {
     return (
@@ -103,7 +115,7 @@ export class ArcherElementNoContext extends React.Component<Props> {
   }
 }
 
-const ArcherElementWithContext = (props: Props) => (
+const ArcherElementWithContext = (props: OuterProps) => (
   <ArcherContainerContextConsumer>
     {context => <ArcherElementNoContext {...props} context={context} />}
   </ArcherContainerContextConsumer>
