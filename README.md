@@ -93,10 +93,7 @@ export default App;
 | Name | Type | Description |
 | - | - | - |
 | `id` | `string` | The id that will identify the Archer Element. Should only contain alphanumeric characters and standard characters that you can find in HTML ids.
-| `strokeColor` | `string` | A color string `'#ff0000'`
-| `strokeWidth` | `number` | A size in `px`
-| `arrowLength` | `number` | A size in `px`
-| `arrowThickness` | `number` | A size in `px`
+| `style` | `Style` |
 | `children` | `React.Node` |
 | `relations` | `Array<Relation>` |
 
@@ -108,6 +105,17 @@ The `Relation` type has the following shape:
   targetAnchor: 'top' | 'bottom' | 'left' | 'right',
   sourceAnchor: 'top' | 'bottom' | 'left' | 'right',
   label: React.Node
+}
+```
+
+The `Style` type has the following shape:
+
+```javascript
+{
+  strokeColor: string,
+  strokeWidth: number,
+  arrowLength: number,
+  arrowThickness: number
 }
 ```
 
