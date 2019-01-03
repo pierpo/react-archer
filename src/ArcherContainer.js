@@ -226,6 +226,9 @@ export class ArcherContainer extends React.Component<Props, State> {
       const strokeWidth =
         (style && style.strokeWidth) || this.props.strokeWidth;
 
+      const arrowThickness =
+        (style && style.arrowThickness) || this.props.arrowThickness;
+
       const startingAnchor = source.anchor;
       const startingPoint = this.getPointCoordinatesFromAnchorPosition(
         source.anchor,
@@ -251,6 +254,7 @@ export class ArcherContainer extends React.Component<Props, State> {
           arrowLength={arrowLength}
           strokeWidth={strokeWidth}
           arrowLabel={label}
+          arrowThickness={arrowThickness}
           arrowMarkerId={this.getMarkerId(source, target)}
         />
       );
