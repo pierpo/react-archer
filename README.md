@@ -94,7 +94,6 @@ export default App;
 | Name | Type | Description |
 | - | - | - |
 | `id` | `string` | The id that will identify the Archer Element. Should only contain alphanumeric characters and standard characters that you can find in HTML ids.
-| `style` | `Style` |
 | `children` | `React.Node` |
 | `relations` | `Array<Relation>` |
 
@@ -105,7 +104,8 @@ The `Relation` type has the following shape:
   targetId: string,
   targetAnchor: 'top' | 'bottom' | 'left' | 'right',
   sourceAnchor: 'top' | 'bottom' | 'left' | 'right',
-  label: React.Node
+  label: React.Node,
+  style: Style,
 }
 ```
 
