@@ -168,7 +168,7 @@ const SvgArrow = ({
         onClick={onClick}
       />
       {arrowLabel && (
-        <foreignObject x={xl} y={yl} width={wl} height={hl}>
+        <foreignObject x={xl} y={yl} width={wl} height={hl} pointerEvents="none">
           <div
             style={{
               width: wl,
