@@ -114,9 +114,9 @@ export class ArcherContainer extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    Object.keys(this.state.refs).map(elementKey => {
-      const { observer } = this.state;
+    const { observer } = this.state;
 
+    Object.keys(this.state.refs).map(elementKey => {
       observer.unobserve(this.state.refs[elementKey]);
     });
 
