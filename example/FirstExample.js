@@ -18,7 +18,7 @@ const FirstExample = () => {
           <ArcherElement
             id="root"
             relations={[{
-              id: 'element2',
+              targetId: 'element2',
               targetAnchor: 'top',
               sourceAnchor: 'bottom',
             }]}
@@ -31,9 +31,10 @@ const FirstExample = () => {
           <ArcherElement
             id="element2"
             relations={[{
-              id: 'element3',
+              targetId: 'element3',
               targetAnchor: 'left',
               sourceAnchor: 'right',
+              style: { strokeColor: 'blue', strokeWidth: 1 },
               label: <div style={{ marginTop: '-20px' }}>Arrow 2</div>,
             }]}
           >
@@ -47,7 +48,7 @@ const FirstExample = () => {
           <ArcherElement
             id="element4"
             relations={[{
-              id: 'root',
+              targetId: 'root',
               targetAnchor: 'right',
               sourceAnchor: 'left',
               label: 'Arrow 3',

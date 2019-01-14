@@ -58,7 +58,7 @@ class SecondExample extends React.Component {
                   id={`element${i}`}
                   relations={[
                     {
-                      id: 'root',
+                      targetId: 'root',
                       targetAnchor: 'bottom',
                       sourceAnchor: 'top',
                       label: (

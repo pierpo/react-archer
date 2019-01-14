@@ -1,7 +1,7 @@
 declare type AnchorPositionType = 'top' | 'bottom' | 'left' | 'right';
 
 declare type RelationType = {
-  id: string,
+  targetId: string,
   targetAnchor: AnchorPositionType,
   sourceAnchor: AnchorPositionType,
   label?: ?React$Node,

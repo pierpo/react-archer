@@ -29,7 +29,7 @@ const App = () => {
           <ArcherElement
             id="root"
             relations={[{
-              id: 'element2',
+              targetId: 'element2',
               targetAnchor: 'top',
               sourceAnchor: 'bottom',
             }]}
@@ -42,9 +42,10 @@ const App = () => {
           <ArcherElement
             id="element2"
             relations={[{
-              id: 'element3',
+              targetId: 'element3',
               targetAnchor: 'left',
               sourceAnchor: 'right',
+              style: { strokeColor: 'blue', strokeWidth: 1 },
               label: <div style={{ marginTop: '-20px' }}>Arrow 2</div>,
             }]}
           >
@@ -58,7 +59,7 @@ const App = () => {
           <ArcherElement
             id="element4"
             relations={[{
-              id: 'root',
+              targetId: 'root',
               targetAnchor: 'right',
               sourceAnchor: 'left',
               label: 'Arrow 3',
@@ -93,10 +94,6 @@ export default App;
 | Name | Type | Description |
 | - | - | - |
 | `id` | `string` | The id that will identify the Archer Element. Should only contain alphanumeric characters and standard characters that you can find in HTML ids.
-| `strokeColor` | `string` | A color string `'#ff0000'`
-| `strokeWidth` | `number` | A size in `px`
-| `arrowLength` | `number` | A size in `px`
-| `arrowThickness` | `number` | A size in `px`
 | `children` | `React.Node` |
 | `relations` | `Array<Relation>` |
 
@@ -104,14 +101,22 @@ The `Relation` type has the following shape:
 
 ```javascript
 {
-  from: {
-    anchor: 'top' | 'bottom' | 'left' | 'right'
-  },
-  to: {
-    anchor: 'top' | 'bottom' | 'left' | 'right'
-    id: string
-  },
-  label: React.Node
+  targetId: string,
+  targetAnchor: 'top' | 'bottom' | 'left' | 'right',
+  sourceAnchor: 'top' | 'bottom' | 'left' | 'right',
+  label: React.Node,
+  style: Style,
+}
+```
+
+The `Style` type has the following shape:
+
+```javascript
+{
+  strokeColor: string,
+  strokeWidth: number,
+  arrowLength: number,
+  arrowThickness: number
 }
 ```
 

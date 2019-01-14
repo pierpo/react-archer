@@ -112,7 +112,7 @@ describe('ArcherElement', () => {
     it('should call registerTransitions with sourceToTargets on update', () => {
       const relations = [];
       const newRelations = [
-        { sourceAnchor: 'left', targetAnchor: 'top', id: 'toto' },
+        { targetId: 'toto', targetAnchor: 'top', sourceAnchor: 'left' },
       ];
 
       const sourceToTargets = [
@@ -131,15 +131,15 @@ describe('ArcherElement', () => {
 
       wrapper.update();
 
-      expect(registerTransitionsMock).toHaveBeenCalledWith(sourceToTargets);
+      expect(registerTransitionsMock).toHaveBeenCalledWith('foo', sourceToTargets);
     });
 
     it('should not call registerTransitions on update if relation exists', () => {
       const relations = [
-        { sourceAnchor: 'left', targetAnchor: 'top', id: 'toto' },
+        { targetId: 'toto', targetAnchor: 'top', sourceAnchor: 'left' },
       ];
       const newRelations = [
-        { sourceAnchor: 'left', targetAnchor: 'top', id: 'toto' },
+        { targetId: 'toto', targetAnchor: 'top', sourceAnchor: 'left' },
       ];
 
       const wrapper: ReactWrapper = mountContainer(relations, newRelations);
@@ -157,7 +157,7 @@ describe('ArcherElement', () => {
 
     it('should call registerTransitions with sourceToTargets on mount if relations', () => {
       const relations = [
-        { sourceAnchor: 'left', targetAnchor: 'top', id: 'toto' },
+        { targetId: 'toto', targetAnchor: 'top', sourceAnchor: 'left' },
       ];
 
       const sourceToTargets = [
@@ -173,7 +173,7 @@ describe('ArcherElement', () => {
 
       wrapper.update();
 
-      expect(registerTransitionsMock).toHaveBeenCalledWith(sourceToTargets);
+      expect(registerTransitionsMock).toHaveBeenCalledWith('foo', sourceToTargets);
     });
 
     it('should not call registerTransitions on mount if no relations', () => {
