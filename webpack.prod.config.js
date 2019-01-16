@@ -1,6 +1,5 @@
 var path = require('path');
 var webpack = require('webpack');
-var isProd = process.env.NODE_ENV === 'production' || null;
 
 // TODO lots of cleanup to do here
 const externals = {
@@ -50,21 +49,5 @@ var config = {
   },
   externals: externals,
 };
-
-if (isProd) {
-  config.output.filename = 'react-archer.min.js';
-  config.output.sourceMapFilename = 'react-archer.min.js';
-  config.plugins = config.plugins ? config.plugins : [];
-  config.plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-      },
-      mangle: {
-        except: ['React', 'ReactDOM', 'Archer', 'ReactArcher'],
-      },
-    }),
-  );
-}
 
 module.exports = config;

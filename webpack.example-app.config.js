@@ -1,36 +1,34 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+
 const examplePath = path.resolve(__dirname, 'example');
 const exampleDist = path.resolve(__dirname, 'example-dist');
 
-module.exports = {
-  mode: 'production',
-  entry: path.resolve(examplePath, 'index.js'),
-  output: {
-    path: exampleDist,
-    filename: 'example.js',
-  },
-  module: {
-    rules: [
-      {
-        exclude: /node_modules/,
-        test: /\.(js|jsx)/,
-        loader: 'babel-loader',
-      },
-      {
-        test: /\.css$/,
-        loader: 'style-loader!css-loader?sourceMap',
-      },
-    ],
-  },
-  resolve: {
-    extensions: ['.js', '.jsx'],
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './example/index.template.ejs',
-      inject: 'body',
-    }),
-  ],
+const prodConfig = require('./webpack.prod.config');
+
+prodConfig.entry = path.resolve(examplePath, 'index.js');
+
+prodConfig.output = {
+  path: exampleDist,
+  filename: 'example.js',
 };
+
+prodConfig.module.rules.push(
+  {
+    test: /\.css$/,
+    loader: 'style-loader!css-loader?sourceMap',
+  },
+);
+
+prodConfig.plugins = prodConfig.plugins || [];
+prodConfig.plugins.push(
+  new HtmlWebpackPlugin({
+    template: './example/index.template.ejs',
+    inject: 'body',
+  }),
+);
+
+prodConfig.externals = [];
+
+module.exports = prodConfig;
