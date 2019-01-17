@@ -1,28 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
 
-// TODO lots of cleanup to do here
-const externals = {
-  react: {
-    root: 'React',
-    commonjs2: 'react',
-    commonjs: 'react',
-    amd: 'react',
-  },
-  'react-dom': {
-    root: 'ReactDOM',
-    commonjs2: 'react-dom',
-    commonjs: 'react-dom',
-    amd: 'react-dom',
-  },
-  'prop-types': {
-    root: 'PropTypes',
-    commonjs2: 'prop-types',
-    commonjs: 'prop-types',
-    amd: 'prop-types',
-  },
-};
-
 var config = {
   mode: 'production',
   entry: './src/react-archer.js',
@@ -47,7 +25,6 @@ var config = {
   resolve: {
     extensions: ['.js', '.jsx'],
   },
-  externals: externals,
 };
 
 module.exports = config;

@@ -6,8 +6,6 @@
   "version": "1.0.1",
   "license": "MIT",
   "dependencies": {
-    "react": "16.6.0",
-    "react-dom": "16.6.0",
     "react-fast-compare": "^2.0.4",
     "resize-observer-polyfill": "1.5.0"
   },
@@ -28,6 +26,11 @@
     "lint": "eslint --ext .js,.jsx src/",
     "test:watch": "jest ./src/ --watch",
     "test": "jest --coverage ./src/"
+  },
+  "peerDependencies": {
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "prop-types": "^15.6.2"
   },
   "devDependencies": {
     "@babel/core": "7.1.2",
