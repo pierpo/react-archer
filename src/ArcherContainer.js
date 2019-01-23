@@ -110,7 +110,7 @@ export class ArcherContainer extends React.Component<Props, State> {
   };
 
   componentDidMount() {
-    window.addEventListener('resize', this.refreshScreen);
+    if (window) window.addEventListener('resize', this.refreshScreen);
   }
 
   componentWillUnmount() {
@@ -120,7 +120,7 @@ export class ArcherContainer extends React.Component<Props, State> {
       observer.unobserve(this.state.refs[elementKey]);
     });
 
-    window.removeEventListener('resize', this.refreshScreen);
+    if (window) window.removeEventListener('resize', this.refreshScreen);
   }
 
   refreshScreen = (): void => {

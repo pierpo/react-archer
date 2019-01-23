@@ -35,7 +35,7 @@ describe('ArcherContainer', () => {
           },
         },
       ],
-    }
+    },
   };
 
   const shallowRenderAndSetState = (newState?: WrapperState) => {
@@ -139,6 +139,27 @@ describe('ArcherContainer', () => {
 </marker>
 `);
       });
+    });
+  });
+
+  describe('Event Listeners', () => {
+    it('should add/remove resize listeners when mounting/unmounting', () => {
+      global.window.addEventListener = jest.fn();
+      global.window.removeEventListener = jest.fn();
+
+      const wrapper: ShallowWrapper = shallowRenderAndSetState();
+
+      expect(global.window.addEventListener).toBeCalledWith(
+        'resize',
+        expect.anything(),
+      );
+
+      wrapper.unmount();
+
+      expect(global.window.removeEventListener).toBeCalledWith(
+        'resize',
+        expect.anything(),
+      );
     });
   });
 });

@@ -25,7 +25,8 @@
     "expect": true,
     "it": true,
     "describe": true,
-    "beforeEach": true
+    "beforeEach": true,
+    "window": true
   },
   "rules": {}
 }
