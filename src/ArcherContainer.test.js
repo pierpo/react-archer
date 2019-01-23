@@ -35,7 +35,7 @@ describe('ArcherContainer', () => {
           },
         },
       ],
-    }
+    },
   };
 
   const shallowRenderAndSetState = (newState?: WrapperState) => {
@@ -143,20 +143,15 @@ describe('ArcherContainer', () => {
   });
 
   describe('Event Listeners', () => {
-    it('should add resize listeners when mounting', () => {
+    it('should add/remove resize listeners when mounting/unmounting', () => {
       global.window.addEventListener = jest.fn();
-      shallow(<ArcherContainer {...defaultProps} />);
+      global.window.removeEventListener = jest.fn();
+
+      const wrapper: ShallowWrapper = shallowRenderAndSetState();
 
       expect(global.window.addEventListener).toBeCalledWith(
         'resize',
         expect.anything(),
-      );
-    });
-
-    it('should remove resize listeners when mounting', () => {
-      global.window.removeEventListener = jest.fn();
-      const wrapper: ShallowWrapper = shallow(
-        <ArcherContainer {...defaultProps} />,
       );
 
       wrapper.unmount();
