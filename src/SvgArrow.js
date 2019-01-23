@@ -37,7 +37,9 @@ export function computeEndingPointAccordingToArrow(
   strokeWidth: number,
   endingAnchor: AnchorPositionType,
 ) {
-  const { arrowX, arrowY } = computeEndingArrowDirectionVector(endingAnchor);
+  const endingVector = computeEndingArrowDirectionVector(endingAnchor);
+
+  const { arrowX, arrowY } = endingVector;
 
   const xe = xEnd + (arrowX * arrowLength * strokeWidth) / 2;
   const ye = yEnd + (arrowY * arrowLength * strokeWidth) / 2;
@@ -127,28 +129,32 @@ const SvgArrow = ({
   const xs = startingPoint.x;
   const ys = startingPoint.y;
 
-  const { xe, ye } = computeEndingPointAccordingToArrow(
+  const endingPointWithArrow = computeEndingPointAccordingToArrow(
     endingPoint.x,
     endingPoint.y,
     actualArrowLength,
     strokeWidth,
     endingAnchor,
   );
+  const { xe, ye } = endingPointWithArrow;
 
-  const { xa1, ya1 } = computeStartingAnchorPosition(
+  const startingPosition = computeStartingAnchorPosition(
     xs,
     ys,
     xe,
     ye,
     startingAnchor,
   );
-  const { xa2, ya2 } = computeEndingAnchorPosition(
+  const { xa1, ya1 } = startingPosition;
+
+  const endingPosition = computeEndingAnchorPosition(
     xs,
     ys,
     xe,
     ye,
     endingAnchor,
   );
+  const { xa2, ya2 } = endingPosition;
 
   const pathString =
     `M${xs},${ys} ` + `C${xa1},${ya1} ${xa2},${ya2} ` + `${xe},${ye}`;

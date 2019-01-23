@@ -1,28 +1,6 @@
-var path = require('path');
-var webpack = require('webpack');
-var isProd = process.env.NODE_ENV === 'production' || null;
-
-// TODO lots of cleanup to do here
-const externals = {
-  react: {
-    root: 'React',
-    commonjs2: 'react',
-    commonjs: 'react',
-    amd: 'react',
-  },
-  'react-dom': {
-    root: 'ReactDOM',
-    commonjs2: 'react-dom',
-    commonjs: 'react-dom',
-    amd: 'react-dom',
-  },
-  'prop-types': {
-    root: 'PropTypes',
-    commonjs2: 'prop-types',
-    commonjs: 'prop-types',
-    amd: 'prop-types',
-  },
-};
+const path = require('path');
+const webpack = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
 
 var config = {
   mode: 'production',
@@ -48,23 +26,19 @@ var config = {
   resolve: {
     extensions: ['.js', '.jsx'],
   },
-  externals: externals,
+  optimization: {
+    minimizer: [
+      new TerserPlugin({
+        cache: true,
+        parallel: true,
+        terserOptions: {
+          compress: {
+            inline: false,
+          },
+        },
+      }),
+    ],
+  },
 };
-
-if (isProd) {
-  config.output.filename = 'react-archer.min.js';
-  config.output.sourceMapFilename = 'react-archer.min.js';
-  config.plugins = config.plugins ? config.plugins : [];
-  config.plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-      },
-      mangle: {
-        except: ['React', 'ReactDOM', 'Archer', 'ReactArcher'],
-      },
-    }),
-  );
-}
 
 module.exports = config;
