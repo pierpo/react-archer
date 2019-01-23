@@ -141,4 +141,30 @@ describe('ArcherContainer', () => {
       });
     });
   });
+
+  describe('Event Listeners', () => {
+    it('should add resize listeners when mounting', () => {
+      global.window.addEventListener = jest.fn();
+      shallow(<ArcherContainer {...defaultProps} />);
+
+      expect(global.window.addEventListener).toBeCalledWith(
+        'resize',
+        expect.anything(),
+      );
+    });
+
+    it('should remove resize listeners when mounting', () => {
+      global.window.removeEventListener = jest.fn();
+      const wrapper: ShallowWrapper = shallow(
+        <ArcherContainer {...defaultProps} />,
+      );
+
+      wrapper.unmount();
+
+      expect(global.window.removeEventListener).toBeCalledWith(
+        'resize',
+        expect.anything(),
+      );
+    });
+  });
 });
