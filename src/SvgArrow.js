@@ -169,7 +169,7 @@ const SvgArrow = ({
         markerEnd={`url(${location.href}#${arrowMarkerId})`}
       />
       {arrowLabel && (
-        <foreignObject x={xl} y={yl} width={wl} height={hl}>
+        <foreignObject x={xl} y={yl} width={wl} height={hl} style={{overflow:'visible'}}>
           <div
             style={{
               width: wl,
