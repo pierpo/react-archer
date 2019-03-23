@@ -3,6 +3,7 @@
   "description": "Draw arrows between DOM elements in React",
   "main": "lib/react-archer.js",
   "module": "lib/react-archer.js",
+  "types": "types/react-archer.d.ts",
   "version": "1.0.2",
   "license": "MIT",
   "dependencies": {
@@ -28,6 +29,7 @@
     "test": "jest --coverage ./src/"
   },
   "peerDependencies": {
+    "@types/react": "^16.8.8",
     "prop-types": "^15.6.2",
     "react": "^16.4.0-0"
   },
