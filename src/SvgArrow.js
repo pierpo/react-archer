@@ -99,8 +99,8 @@ export function computeLabelDimensions(
   xe: number,
   ye: number,
 ): { xl: number, yl: number, wl: number, hl: number } {
-  const wl = Math.abs(xe - xs);
-  const hl = Math.abs(ye - ys);
+  const wl = Math.max(Math.abs(xe - xs), 1);
+  const hl = Math.max(Math.abs(ye - ys), 1);
 
   const xl = xe > xs ? xs : xe;
   const yl = ye > ys ? ys : ye;
