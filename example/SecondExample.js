@@ -36,7 +36,10 @@ class SecondExample extends React.Component {
           </button>
           <button
             onClick={() =>
-              this.setState({ nbElements: this.state.nbElements - 1 })
+              this.setState({
+                nbElements:
+                  this.state.nbElements > 1 ? this.state.nbElements - 1 : 0,
+              })
             }
           >
             -
