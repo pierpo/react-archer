@@ -25,4 +25,5 @@ declare type ArrowStyleType = {
   arrowThickness: number,
   strokeColor: string,
   strokeWidth: number,
+  customStyle: ?Object,
 };

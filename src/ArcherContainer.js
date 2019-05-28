@@ -15,6 +15,7 @@ type Props = {
   style?: Object,
   svgContainerStyle?: Object,
   className?: string,
+  customStyle?: Object
 };
 
 type SourceToTargetsArrayType = Array<SourceToTargetType>;
@@ -230,8 +231,7 @@ export class ArcherContainer extends React.Component<Props, State> {
       const arrowThickness =
         (style && style.arrowThickness) || this.props.arrowThickness;
 
-      const customStyle =
-        (style && style.customStyle) || this.props.customStyle;
+      const customStyle = (style && style.customStyle) || {};
 
       const startingAnchor = source.anchor;
       const startingPoint = this.getPointCoordinatesFromAnchorPosition(
