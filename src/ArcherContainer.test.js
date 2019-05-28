@@ -12,7 +12,10 @@ describe('ArcherContainer', () => {
     children,
     arrowLength: 10,
     arrowThickness: 30,
-    strokeColor: 'rgb(123, 234, 123)',
+    arrow: {
+      stroke: 'rgb(123, 234, 123)',
+      strokeWidth: 2
+    }
   };
 
   type WrapperState = {

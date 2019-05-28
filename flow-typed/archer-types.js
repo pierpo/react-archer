@@ -23,7 +23,5 @@ declare type SourceToTargetType = {
 declare type ArrowStyleType = {
   arrowLength: number,
   arrowThickness: number,
-  strokeColor: string,
-  strokeWidth: number,
-  customStyle: ?Object,
+  arrow: ?Object,
 };

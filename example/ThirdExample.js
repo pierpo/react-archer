@@ -40,8 +40,8 @@ const ThirdExample = () => {
                     targetAnchor: 'left',
                     sourceAnchor: 'right',
                     style: {
-                      strokeColor: 'deepskyblue',
-                      customStyle: {
+                      arrow: {
+                        stroke: 'deepskyblue',
                         strokeDasharray: '16px 8px',
                         animation: 'dash 15s linear infinite',
                       },
@@ -63,8 +63,8 @@ const ThirdExample = () => {
                     targetAnchor: 'left',
                     sourceAnchor: 'right',
                     style: {
-                      strokeColor: 'limegreen',
-                      customStyle: {
+                      arrow: {
+                        stroke: 'limegreen',
                         strokeDasharray: '16px 8px',
                         animation: 'dash 12s linear infinite',
                       },
@@ -90,8 +90,8 @@ const ThirdExample = () => {
                     targetAnchor: 'left',
                     sourceAnchor: 'right',
                     style: {
-                      strokeColor: 'deepskyblue',
-                      customStyle: {
+                      arrow: {
+                        stroke: 'deepskyblue',
                         strokeDasharray: '16px 8px',
                         animation: 'dash 12s linear infinite',
                       },

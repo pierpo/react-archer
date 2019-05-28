@@ -8,12 +8,10 @@ type Props = {
   startingAnchor: AnchorPositionType,
   endingPoint: Point,
   endingAnchor: AnchorPositionType,
-  strokeColor: string,
   arrowLength: number,
-  strokeWidth: number,
   arrowLabel?: ?React$Node,
   arrowMarkerId: string,
-  customStyle: ?Object,
+  arrow: Object,
 };
 
 function computeEndingArrowDirectionVector(endingAnchor) {
@@ -42,8 +40,8 @@ export function computeEndingPointAccordingToArrow(
 
   const { arrowX, arrowY } = endingVector;
 
-  const xe = xEnd + (arrowX * arrowLength * strokeWidth) / 2;
-  const ye = yEnd + (arrowY * arrowLength * strokeWidth) / 2;
+  const xe = xEnd + arrowX * arrowLength * strokeWidth / 2;
+  const ye = yEnd + arrowY * arrowLength * strokeWidth / 2;
 
   return { xe, ye };
 }
@@ -119,12 +117,10 @@ const SvgArrow = ({
   startingAnchor,
   endingPoint,
   endingAnchor,
-  strokeColor,
   arrowLength,
-  strokeWidth,
   arrowLabel,
   arrowMarkerId,
-  customStyle,
+  arrow,
 }: Props) => {
   const actualArrowLength = arrowLength * 2;
 
@@ -135,7 +131,7 @@ const SvgArrow = ({
     endingPoint.x,
     endingPoint.y,
     actualArrowLength,
-    strokeWidth,
+    arrow && arrow.strokeWidth,
     endingAnchor,
   );
   const { xe, ye } = endingPointWithArrow;
@@ -167,11 +163,20 @@ const SvgArrow = ({
     <g>
       <path
         d={pathString}
-        style={{ fill: 'none', stroke: strokeColor, strokeWidth, ...customStyle }}
+        style={{
+          fill: 'none',
+          ...arrow,
+        }}
         markerEnd={`url(${location.href}#${arrowMarkerId})`}
       />
       {arrowLabel && (
-        <foreignObject x={xl} y={yl} width={wl} height={hl} style={{overflow:'visible'}}>
+        <foreignObject
+          x={xl}
+          y={yl}
+          width={wl}
+          height={hl}
+          style={{ overflow: 'visible' }}
+        >
           <div
             style={{
               width: wl,

@@ -9,13 +9,11 @@ import SvgArrow from './SvgArrow';
 type Props = {
   arrowLength: number,
   arrowThickness: number,
-  strokeColor: string,
-  strokeWidth: number,
   children: React$Node,
   style?: Object,
   svgContainerStyle?: Object,
   className?: string,
-  customStyle?: Object
+  arrow: Object
 };
 
 type SourceToTargetsArrayType = Array<SourceToTargetType>;
@@ -105,10 +103,11 @@ export class ArcherContainer extends React.Component<Props, State> {
   static defaultProps = {
     arrowLength: 10,
     arrowThickness: 6,
-    strokeColor: '#f00',
-    strokeWidth: 2,
     svgContainerStyle: {},
-    customStyle: {},
+    arrow: {
+      strokeWidth: 2,
+      stroke: '#f00',
+    },
   };
 
   componentDidMount() {
@@ -219,21 +218,20 @@ export class ArcherContainer extends React.Component<Props, State> {
     const parentCoordinates = this.getParentCoordinates();
 
     return this.getSourceToTargets().map(({ source, target, label, style }: SourceToTargetType) => {
-      const strokeColor =
-        (style && style.strokeColor) || this.props.strokeColor;
+      const stroke = (style && style.arrow && style.arrow.stroke) || this.props.arrow.stroke;
+
+      const strokeWidth = (style && style.arrow && style.arrow.strokeWidth) || this.props.arrow.strokeWidth;
 
       const arrowLength =
         (style && style.arrowLength) || this.props.arrowLength;
 
-      const strokeWidth =
-        (style && style.strokeWidth) || this.props.strokeWidth;
-
       const arrowThickness =
         (style && style.arrowThickness) || this.props.arrowThickness;
 
-      const customStyle = (style && style.customStyle) || {};
-
       const startingAnchor = source.anchor;
+
+      const arrow = (style && style.arrow) || {};
+
       const startingPoint = this.getPointCoordinatesFromAnchorPosition(
         source.anchor,
         source.id,
@@ -254,12 +252,10 @@ export class ArcherContainer extends React.Component<Props, State> {
           startingAnchor={startingAnchor}
           endingPoint={endingPoint}
           endingAnchor={endingAnchor}
-          strokeColor={strokeColor}
           arrowLength={arrowLength}
-          strokeWidth={strokeWidth}
           arrowLabel={label}
           arrowThickness={arrowThickness}
-          customStyle={customStyle}
+          arrow={{strokeWidth, stroke, ...arrow}}
           arrowMarkerId={this.getMarkerId(source, target)}
         />
       );
@@ -281,14 +277,11 @@ export class ArcherContainer extends React.Component<Props, State> {
   generateAllArrowMarkers = (): React$Node => {
     return this.getSourceToTargets().map(({ source, target, label, style }: SourceToTargetType) => {
 
-      const strokeColor =
-        (style && style.strokeColor) || this.props.strokeColor;
+      const stroke = (style && style.arrow && style.arrow.stroke) || this.props.arrow.stroke;
 
-      const arrowLength =
-        (style && style.arrowLength) || this.props.arrowLength;
+      const arrowLength =  (style && style.arrowLength) || this.props.arrowLength;
 
-      const arrowThickness =
-        (style && style.arrowThickness) || this.props.arrowThickness;
+      const arrowThickness = (style && style.arrowThickness) || this.props.arrowThickness;
 
       const arrowPath = `M0,0 L0,${arrowThickness} L${arrowLength -
         1},${arrowThickness / 2} z`;
@@ -304,7 +297,7 @@ export class ArcherContainer extends React.Component<Props, State> {
           orient="auto"
           markerUnits="strokeWidth"
         >
-          <path d={arrowPath} fill={strokeColor} />
+          <path d={arrowPath} fill={stroke} />
         </marker>
       );
     });
