@@ -107,6 +107,7 @@ export class ArcherContainer extends React.Component<Props, State> {
     strokeColor: '#f00',
     strokeWidth: 2,
     svgContainerStyle: {},
+    customStyle: {},
   };
 
   componentDidMount() {
@@ -229,6 +230,9 @@ export class ArcherContainer extends React.Component<Props, State> {
       const arrowThickness =
         (style && style.arrowThickness) || this.props.arrowThickness;
 
+      const customStyle =
+        (style && style.customStyle) || this.props.customStyle;
+
       const startingAnchor = source.anchor;
       const startingPoint = this.getPointCoordinatesFromAnchorPosition(
         source.anchor,
@@ -255,6 +259,7 @@ export class ArcherContainer extends React.Component<Props, State> {
           strokeWidth={strokeWidth}
           arrowLabel={label}
           arrowThickness={arrowThickness}
+          customStyle={customStyle}
           arrowMarkerId={this.getMarkerId(source, target)}
         />
       );

@@ -216,7 +216,7 @@ describe('SvgArrow', () => {
 
   describe('component', () => {
     let wrapper: ShallowWrapper;
-
+    const customStyle = { strokeDasharray: '16px 8px' };
     const props = {
       startingPoint: new Point(10, 10),
       startingAnchor: 'bottom',
@@ -226,6 +226,7 @@ describe('SvgArrow', () => {
       arrowLength: 10,
       strokeWidth: 2,
       arrowMarkerId: 'arrow123123',
+      customStyle: customStyle
     };
 
     beforeEach(() => {
@@ -244,6 +245,7 @@ describe('SvgArrow', () => {
         style: {
           strokeWidth: 2,
           stroke: 'blue',
+          ...customStyle
         },
       });
     });

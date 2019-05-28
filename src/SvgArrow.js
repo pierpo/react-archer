@@ -13,6 +13,7 @@ type Props = {
   strokeWidth: number,
   arrowLabel?: ?React$Node,
   arrowMarkerId: string,
+  customStyle: Object,
 };
 
 function computeEndingArrowDirectionVector(endingAnchor) {
@@ -123,6 +124,7 @@ const SvgArrow = ({
   strokeWidth,
   arrowLabel,
   arrowMarkerId,
+  customStyle,
 }: Props) => {
   const actualArrowLength = arrowLength * 2;
 
@@ -165,7 +167,7 @@ const SvgArrow = ({
     <g>
       <path
         d={pathString}
-        style={{ fill: 'none', stroke: strokeColor, strokeWidth }}
+        style={{ fill: 'none', stroke: strokeColor, strokeWidth, ...customStyle }}
         markerEnd={`url(${location.href}#${arrowMarkerId})`}
       />
       {arrowLabel && (
