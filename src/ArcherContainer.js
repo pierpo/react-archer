@@ -195,7 +195,7 @@ export class ArcherContainer extends React.Component<Props, State> {
 
   unregisterChild = (id: string): void => {
     this.setState((currentState: State) => {
-      currentState.observer.unobserve(refs[id]);
+      currentState.observer.unobserve(currentState.refs[id]);
       const newRefs = { ...(currentState.refs) };
       delete newRefs[id];
       return { refs: newRefs }
