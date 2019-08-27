@@ -177,13 +177,11 @@ export class ArcherContainer extends React.Component<Props, State> {
   };
 
   unregisterTransitions = (elementId: string): void => {
-    const { sourceToTargetsMap } = this.state;
-
-    const sourceToTargetsMapCopy = { ...sourceToTargetsMap };
-
-    delete sourceToTargetsMapCopy[elementId];
-
-    this.setState(() => ({ sourceToTargetsMap: sourceToTargetsMapCopy }));
+    this.setState((currentState) => {
+      const sourceToTargetsMapCopy = { ...(currentState.sourceToTargetsMap) };
+      delete sourceToTargetsMapCopy[elementId];
+      return { sourceToTargetsMap: sourceToTargetsMapCopy }
+    });
   };
 
   registerChild = (id: string, ref: HTMLElement): void => {
@@ -197,11 +195,12 @@ export class ArcherContainer extends React.Component<Props, State> {
   };
 
   unregisterChild = (id: string): void => {
-    const { refs, observer } = this.state;
-    observer.unobserve(refs[id]);
-    const newRefs = { ...refs };
-    delete newRefs[id];
-    this.setState(() => ({ refs: newRefs }));
+    this.setState((currentState: State) => {
+      currentState.observer.unobserve(currentState.refs[id]);
+      const newRefs = { ...(currentState.refs) };
+      delete newRefs[id];
+      return { refs: newRefs }
+    });
   };
 
   getSourceToTargets = (): Array<SourceToTargetType> => {
