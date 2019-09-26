@@ -1,0 +1,5 @@
+{
+  "video": false,
+  "watchForFileChanges": false,
+  "baseUrl": "http://localhost:8080"
+}
