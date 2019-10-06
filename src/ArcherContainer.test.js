@@ -13,6 +13,7 @@ describe('ArcherContainer', () => {
     arrowLength: 10,
     arrowThickness: 30,
     strokeColor: 'rgb(123, 234, 123)',
+    strokeDasharray: '5,5',
   };
 
   type WrapperState = {
@@ -102,6 +103,7 @@ describe('ArcherContainer', () => {
       Object {
         "fill": "none",
         "stroke": "rgb(123, 234, 123)",
+        "strokeDasharray": "5,5",
         "strokeWidth": 2,
       }
     }

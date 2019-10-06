@@ -22,6 +22,7 @@ const FirstExample = () => {
                 targetId: 'element2',
                 targetAnchor: 'top',
                 sourceAnchor: 'bottom',
+                style: { strokeDasharray: '5,5' },
               },
             ]}
           >

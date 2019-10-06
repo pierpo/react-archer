@@ -11,6 +11,7 @@ type Props = {
   strokeColor: string,
   arrowLength: number,
   strokeWidth: number,
+  strokeDasharray?: string,
   arrowLabel?: ?React$Node,
   arrowMarkerId: string,
 };
@@ -121,6 +122,7 @@ const SvgArrow = ({
   strokeColor,
   arrowLength,
   strokeWidth,
+  strokeDasharray,
   arrowLabel,
   arrowMarkerId,
 }: Props) => {
@@ -152,7 +154,7 @@ const SvgArrow = ({
     <g>
       <path
         d={pathString}
-        style={{ fill: 'none', stroke: strokeColor, strokeWidth }}
+        style={{ fill: 'none', stroke: strokeColor, strokeWidth, strokeDasharray }}
         markerEnd={`url(${location.href}#${arrowMarkerId})`}
       />
       {arrowLabel && (

@@ -11,6 +11,7 @@ type Props = {
   arrowThickness: number,
   strokeColor: string,
   strokeWidth: number,
+  strokeDasharray?: string,
   children: React$Node,
   style?: Object,
   svgContainerStyle?: Object,
@@ -222,6 +223,8 @@ export class ArcherContainer extends React.Component<Props, State> {
 
       const strokeWidth = (style && style.strokeWidth) || this.props.strokeWidth;
 
+      const strokeDasharray = (style && style.strokeDasharray) || this.props.strokeDasharray;
+
       const arrowThickness = (style && style.arrowThickness) || this.props.arrowThickness;
 
       const startingAnchor = source.anchor;
@@ -248,6 +251,7 @@ export class ArcherContainer extends React.Component<Props, State> {
           strokeColor={strokeColor}
           arrowLength={arrowLength}
           strokeWidth={strokeWidth}
+          strokeDasharray={strokeDasharray}
           arrowLabel={label}
           arrowThickness={arrowThickness}
           arrowMarkerId={this.getMarkerId(source, target)}
