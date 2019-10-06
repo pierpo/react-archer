@@ -1,0 +1,37 @@
+context('React Archer', () => {
+  beforeEach(() => {
+    cy.visit('/');
+    cy.contains('Root');
+  });
+
+  describe('First example page', () => {
+    beforeEach(() => {
+      cy.contains('Example 1').click();
+    });
+
+    it('should draw arrows', () => {
+      cy.matchImageSnapshot();
+    });
+  });
+
+  describe('Second example page', () => {
+    beforeEach(() => {
+      cy.contains('Example 2').click();
+      cy.contains('Change labels').click();
+    });
+
+    it('should draw arrows', () => {
+      cy.matchImageSnapshot();
+    });
+
+    it('should update labels', () => {
+      cy.get('[data-cy="change-labels-input"]').type('blabla some test');
+      cy.matchImageSnapshot();
+    });
+
+    it('should update number of elements', () => {
+      cy.get('[data-cy="add-element"]').click();
+      cy.matchImageSnapshot();
+    });
+  });
+});

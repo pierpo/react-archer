@@ -19,6 +19,7 @@ class SecondExample extends React.Component {
         <div>
           <div>Change labels</div>
           <input
+            data-cy="change-labels-input"
             type="text"
             onChange={event => {
               this.setState({ labels: event.currentTarget.value });
@@ -28,6 +29,7 @@ class SecondExample extends React.Component {
         <div>
           <div>Add elements</div>
           <button
+            data-cy="add-element"
             onClick={() =>
               this.setState({ nbElements: this.state.nbElements + 1 })
             }
