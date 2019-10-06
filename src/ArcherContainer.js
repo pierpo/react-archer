@@ -27,7 +27,7 @@ type State = {
     [string]: HTMLElement,
   },
   sourceToTargetsMap: {
-    [string]: SourceToTargetsArrayType
+    [string]: SourceToTargetsArrayType,
   },
   observer: ResizeObserver,
   parent: ?HTMLElement,
@@ -70,9 +70,7 @@ export type ArcherContainerContextType = {
   unregisterTransitions?: string => void,
 };
 
-const ArcherContainerContext = React.createContext<ArcherContainerContextType>(
-  {},
-);
+const ArcherContainerContext = React.createContext<ArcherContainerContextType>({});
 
 export const ArcherContainerContextProvider = ArcherContainerContext.Provider;
 export const ArcherContainerContextConsumer = ArcherContainerContext.Consumer;
@@ -158,28 +156,28 @@ export class ArcherContainer extends React.Component<Props, State> {
     if (!rect) {
       return new Point(0, 0);
     }
-    const absolutePosition = computeCoordinatesFromAnchorPosition(
-      position,
-      rect,
-    );
+    const absolutePosition = computeCoordinatesFromAnchorPosition(position, rect);
 
     return absolutePosition.substract(parentCoordinates);
   };
 
-  registerTransitions = (elementId: string, newSourceToTargets: Array<SourceToTargetType>): void => {
+  registerTransitions = (
+    elementId: string,
+    newSourceToTargets: Array<SourceToTargetType>,
+  ): void => {
     this.setState((prevState: State) => ({
       sourceToTargetsMap: {
         ...prevState.sourceToTargetsMap,
-        [elementId]: newSourceToTargets
+        [elementId]: newSourceToTargets,
       },
     }));
   };
 
   unregisterTransitions = (elementId: string): void => {
-    this.setState((currentState) => {
-      const sourceToTargetsMapCopy = { ...(currentState.sourceToTargetsMap) };
+    this.setState(currentState => {
+      const sourceToTargetsMapCopy = { ...currentState.sourceToTargetsMap };
       delete sourceToTargetsMapCopy[elementId];
-      return { sourceToTargetsMap: sourceToTargetsMapCopy }
+      return { sourceToTargetsMap: sourceToTargetsMapCopy };
     });
   };
 
@@ -196,9 +194,9 @@ export class ArcherContainer extends React.Component<Props, State> {
   unregisterChild = (id: string): void => {
     this.setState((currentState: State) => {
       currentState.observer.unobserve(currentState.refs[id]);
-      const newRefs = { ...(currentState.refs) };
+      const newRefs = { ...currentState.refs };
       delete newRefs[id];
-      return { refs: newRefs }
+      return { refs: newRefs };
     });
   };
 
@@ -206,7 +204,9 @@ export class ArcherContainer extends React.Component<Props, State> {
     const { sourceToTargetsMap } = this.state;
 
     // Object.values is unavailable in IE11
-    const jaggedSourceToTargets: JaggedSourceToTargetsArrayType = Object.keys(sourceToTargetsMap).map((key: string) => sourceToTargetsMap[key]);
+    const jaggedSourceToTargets: JaggedSourceToTargetsArrayType = Object.keys(
+      sourceToTargetsMap,
+    ).map((key: string) => sourceToTargetsMap[key]);
 
     // Flatten
     return [].concat.apply([], jaggedSourceToTargets);
@@ -216,17 +216,13 @@ export class ArcherContainer extends React.Component<Props, State> {
     const parentCoordinates = this.getParentCoordinates();
 
     return this.getSourceToTargets().map(({ source, target, label, style }: SourceToTargetType) => {
-      const strokeColor =
-        (style && style.strokeColor) || this.props.strokeColor;
+      const strokeColor = (style && style.strokeColor) || this.props.strokeColor;
 
-      const arrowLength =
-        (style && style.arrowLength) || this.props.arrowLength;
+      const arrowLength = (style && style.arrowLength) || this.props.arrowLength;
 
-      const strokeWidth =
-        (style && style.strokeWidth) || this.props.strokeWidth;
+      const strokeWidth = (style && style.strokeWidth) || this.props.strokeWidth;
 
-      const arrowThickness =
-        (style && style.arrowThickness) || this.props.arrowThickness;
+      const arrowThickness = (style && style.arrowThickness) || this.props.arrowThickness;
 
       const startingAnchor = source.anchor;
       const startingPoint = this.getPointCoordinatesFromAnchorPosition(
@@ -274,18 +270,13 @@ export class ArcherContainer extends React.Component<Props, State> {
    * */
   generateAllArrowMarkers = (): React$Node => {
     return this.getSourceToTargets().map(({ source, target, label, style }: SourceToTargetType) => {
+      const strokeColor = (style && style.strokeColor) || this.props.strokeColor;
 
-      const strokeColor =
-        (style && style.strokeColor) || this.props.strokeColor;
+      const arrowLength = (style && style.arrowLength) || this.props.arrowLength;
 
-      const arrowLength =
-        (style && style.arrowLength) || this.props.arrowLength;
+      const arrowThickness = (style && style.arrowThickness) || this.props.arrowThickness;
 
-      const arrowThickness =
-        (style && style.arrowThickness) || this.props.arrowThickness;
-
-      const arrowPath = `M0,0 L0,${arrowThickness} L${arrowLength -
-        1},${arrowThickness / 2} z`;
+      const arrowPath = `M0,0 L0,${arrowThickness} L${arrowLength - 1},${arrowThickness / 2} z`;
 
       return (
         <marker
@@ -321,16 +312,15 @@ export class ArcherContainer extends React.Component<Props, State> {
           unregisterChild: this.unregisterChild,
         }}
       >
-        <div
-          style={{ ...this.props.style, position: 'relative' }}
-          className={this.props.className}
-        >
+        <div style={{ ...this.props.style, position: 'relative' }} className={this.props.className}>
           <svg style={this.svgContainerStyle()}>
             <defs>{this.generateAllArrowMarkers()}</defs>
             {SvgArrows}
           </svg>
 
-          <div style={{ height: '100%' }} ref={this.storeParent}>{this.props.children}</div>
+          <div style={{ height: '100%' }} ref={this.storeParent}>
+            {this.props.children}
+          </div>
         </div>
       </ArcherContainerContextProvider>
     );

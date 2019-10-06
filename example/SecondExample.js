@@ -30,17 +30,14 @@ class SecondExample extends React.Component {
           <div>Add elements</div>
           <button
             data-cy="add-element"
-            onClick={() =>
-              this.setState({ nbElements: this.state.nbElements + 1 })
-            }
+            onClick={() => this.setState({ nbElements: this.state.nbElements + 1 })}
           >
             +
           </button>
           <button
             onClick={() =>
               this.setState({
-                nbElements:
-                  this.state.nbElements > 1 ? this.state.nbElements - 1 : 0,
+                nbElements: this.state.nbElements > 1 ? this.state.nbElements - 1 : 0,
               })
             }
           >
