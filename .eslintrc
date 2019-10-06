@@ -29,6 +29,7 @@
     "window": true
   },
   "rules": {
+    "react/jsx-curly-newline": 0,
     "prettier/prettier": "error"
   }
 }
