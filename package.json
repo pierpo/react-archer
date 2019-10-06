@@ -70,11 +70,11 @@
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-test-renderer": "^16.6.3",
-    "style-loader": "0.20.2",
-    "terser-webpack-plugin": "^1.2.1",
-    "webpack": "4.39.2",
-    "webpack-cli": "3.3.7",
-    "webpack-dev-server": "3.8.0"
+    "style-loader": "1.0.0",
+    "terser-webpack-plugin": "^2.1.2",
+    "webpack": "4.41.0",
+    "webpack-cli": "3.3.9",
+    "webpack-dev-server": "3.8.2"
   },
   "jest": {
     "collectCoverage": false,
