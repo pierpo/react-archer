@@ -59,16 +59,8 @@ describe('SvgArrow', () => {
     ];
 
     dataSet.forEach(data => {
-      it(`should compute coordinates of destination point excluding the arrow [data ${
-        data.message
-      }]`, () => {
-        const {
-          xEnd,
-          yEnd,
-          arrowLength,
-          strokeWidth,
-          endingAnchor,
-        } = data.input;
+      it(`should compute coordinates of destination point excluding the arrow [data ${data.message}]`, () => {
+        const { xEnd, yEnd, arrowLength, strokeWidth, endingAnchor } = data.input;
         const result = computeEndingPointAccordingToArrow(
           xEnd,
           yEnd,
@@ -108,17 +100,9 @@ describe('SvgArrow', () => {
     ];
 
     dataSet.forEach(data => {
-      it(`should compute coordinates of source element's anchor [data ${
-        data.message
-      }]`, () => {
+      it(`should compute coordinates of source element's anchor [data ${data.message}]`, () => {
         const { xStart, yStart, xEnd, yEnd, endingAnchor } = data.input;
-        const result = computeStartingAnchorPosition(
-          xStart,
-          yStart,
-          xEnd,
-          yEnd,
-          endingAnchor,
-        );
+        const result = computeStartingAnchorPosition(xStart, yStart, xEnd, yEnd, endingAnchor);
         expect(result).toEqual(data.expected);
       });
     });
@@ -151,17 +135,9 @@ describe('SvgArrow', () => {
     ];
 
     dataSet.forEach(data => {
-      it(`should compute coordinates of destination element's anchor [data ${
-        data.message
-      }]`, () => {
+      it(`should compute coordinates of destination element's anchor [data ${data.message}]`, () => {
         const { xStart, yStart, xEnd, yEnd, endingAnchor } = data.input;
-        const result = computeEndingAnchorPosition(
-          xStart,
-          yStart,
-          xEnd,
-          yEnd,
-          endingAnchor,
-        );
+        const result = computeEndingAnchorPosition(xStart, yStart, xEnd, yEnd, endingAnchor);
         expect(result).toEqual(data.expected);
       });
     });
@@ -204,9 +180,7 @@ describe('SvgArrow', () => {
     ];
 
     dataSet.forEach(data => {
-      it(`should compute coordinates of  label foreignObject [data ${
-        data.message
-      }]`, () => {
+      it(`should compute coordinates of  label foreignObject [data ${data.message}]`, () => {
         const { xStart, yStart, xEnd, yEnd } = data.input;
         const result = computeLabelDimensions(xStart, yStart, xEnd, yEnd);
         expect(result).toEqual(data.expected);

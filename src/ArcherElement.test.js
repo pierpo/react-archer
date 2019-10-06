@@ -23,14 +23,14 @@ describe('ArcherElement', () => {
     registerChild: Function,
     unregisterChild: Function,
     children: React.Node,
-  }
+  };
 
   const MockArcherContainer = ({
     registerTransitions,
     unregisterTransitions,
     registerChild,
     unregisterChild,
-    children
+    children,
   }: MockArcherContainerType) => (
     <ArcherContainerContextProvider
       value={{
@@ -66,7 +66,7 @@ describe('ArcherElement', () => {
 
   const mountContainer = (
     relations: Array<RelationType>,
-    newRelations: Array<RelationType>
+    newRelations: Array<RelationType>,
   ): ReactWrapper => {
     const props = { ...defaultProps, id: 'foo' };
 
@@ -78,7 +78,7 @@ describe('ArcherElement', () => {
         unregisterTransitions={unregisterTransitionsMock}
       >
         <PassThrough {...props} relations={relations} newRelations={newRelations} />
-      </MockArcherContainer>
+      </MockArcherContainer>,
     );
   };
 
@@ -111,9 +111,7 @@ describe('ArcherElement', () => {
   describe('lifecycle', () => {
     it('should call registerTransitions with sourceToTargets on update', () => {
       const relations = [];
-      const newRelations = [
-        { targetId: 'toto', targetAnchor: 'top', sourceAnchor: 'left' },
-      ];
+      const newRelations = [{ targetId: 'toto', targetAnchor: 'top', sourceAnchor: 'left' }];
 
       const sourceToTargets = [
         {
@@ -121,13 +119,16 @@ describe('ArcherElement', () => {
           target: { id: 'toto', anchor: 'top' },
           label: undefined,
           style: undefined,
-        }
+        },
       ];
 
       const wrapper: ReactWrapper = mountContainer(relations, newRelations);
 
       // Trigger update in ArcherElement
-      wrapper.find(PassThrough).find('div.foo').simulate('click');
+      wrapper
+        .find(PassThrough)
+        .find('div.foo')
+        .simulate('click');
 
       wrapper.update();
 
@@ -135,12 +136,8 @@ describe('ArcherElement', () => {
     });
 
     it('should not call registerTransitions on update if relation exists', () => {
-      const relations = [
-        { targetId: 'toto', targetAnchor: 'top', sourceAnchor: 'left' },
-      ];
-      const newRelations = [
-        { targetId: 'toto', targetAnchor: 'top', sourceAnchor: 'left' },
-      ];
+      const relations = [{ targetId: 'toto', targetAnchor: 'top', sourceAnchor: 'left' }];
+      const newRelations = [{ targetId: 'toto', targetAnchor: 'top', sourceAnchor: 'left' }];
 
       const wrapper: ReactWrapper = mountContainer(relations, newRelations);
 
@@ -148,7 +145,10 @@ describe('ArcherElement', () => {
       registerTransitionsMock.mockReset();
 
       // Trigger update in ArcherElement
-      wrapper.find(PassThrough).find('div.foo').simulate('click');
+      wrapper
+        .find(PassThrough)
+        .find('div.foo')
+        .simulate('click');
 
       wrapper.update();
 
@@ -156,9 +156,7 @@ describe('ArcherElement', () => {
     });
 
     it('should call registerTransitions with sourceToTargets on mount if relations', () => {
-      const relations = [
-        { targetId: 'toto', targetAnchor: 'top', sourceAnchor: 'left' },
-      ];
+      const relations = [{ targetId: 'toto', targetAnchor: 'top', sourceAnchor: 'left' }];
 
       const sourceToTargets = [
         {
@@ -166,7 +164,7 @@ describe('ArcherElement', () => {
           target: { id: 'toto', anchor: 'top' },
           label: undefined,
           style: undefined,
-        }
+        },
       ];
 
       const wrapper: ReactWrapper = mountContainer(relations, []);

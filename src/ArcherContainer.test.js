@@ -70,9 +70,7 @@ describe('ArcherContainer', () => {
     const markerProps = marker.props();
 
     const expectedProps = {
-      id: `${
-        wrapper.instance().arrowMarkerUniquePrefix
-      }first-elementsecond-element`,
+      id: `${wrapper.instance().arrowMarkerUniquePrefix}first-elementsecond-element`,
       markerWidth: 10,
       markerHeight: 30,
       refX: '0',
@@ -149,17 +147,11 @@ describe('ArcherContainer', () => {
 
       const wrapper: ShallowWrapper = shallowRenderAndSetState();
 
-      expect(global.window.addEventListener).toBeCalledWith(
-        'resize',
-        expect.anything(),
-      );
+      expect(global.window.addEventListener).toBeCalledWith('resize', expect.anything());
 
       wrapper.unmount();
 
-      expect(global.window.removeEventListener).toBeCalledWith(
-        'resize',
-        expect.anything(),
-      );
+      expect(global.window.removeEventListener).toBeCalledWith('resize', expect.anything());
     });
   });
 });

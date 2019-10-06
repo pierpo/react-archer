@@ -138,26 +138,13 @@ const SvgArrow = ({
   );
   const { xe, ye } = endingPointWithArrow;
 
-  const startingPosition = computeStartingAnchorPosition(
-    xs,
-    ys,
-    xe,
-    ye,
-    startingAnchor,
-  );
+  const startingPosition = computeStartingAnchorPosition(xs, ys, xe, ye, startingAnchor);
   const { xa1, ya1 } = startingPosition;
 
-  const endingPosition = computeEndingAnchorPosition(
-    xs,
-    ys,
-    xe,
-    ye,
-    endingAnchor,
-  );
+  const endingPosition = computeEndingAnchorPosition(xs, ys, xe, ye, endingAnchor);
   const { xa2, ya2 } = endingPosition;
 
-  const pathString =
-    `M${xs},${ys} ` + `C${xa1},${ya1} ${xa2},${ya2} ` + `${xe},${ye}`;
+  const pathString = `M${xs},${ys} ` + `C${xa1},${ya1} ${xa2},${ya2} ` + `${xe},${ye}`;
 
   const { xl, yl, wl, hl } = computeLabelDimensions(xs, ys, xe, ye);
 
@@ -169,14 +156,20 @@ const SvgArrow = ({
         markerEnd={`url(${location.href}#${arrowMarkerId})`}
       />
       {arrowLabel && (
-        <foreignObject x={xl} y={yl} width={wl} height={hl} style={{overflow:'visible', pointerEvents: 'none'}}>
+        <foreignObject
+          x={xl}
+          y={yl}
+          width={wl}
+          height={hl}
+          style={{ overflow: 'visible', pointerEvents: 'none' }}
+        >
           <div
             style={{
               position: 'absolute',
               left: '50%',
               top: '50%',
               transform: 'translateX(-50%) translateY(-50%)',
-              pointerEvents: 'all'
+              pointerEvents: 'all',
             }}
           >
             <div>{arrowLabel}</div>
