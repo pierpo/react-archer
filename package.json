@@ -24,7 +24,7 @@
     "deploy:example": "webpack --config webpack.example-app.config.js && gh-pages -d example-dist",
     "pretest": "yarn lint && yarn flow",
     "prepare": "npm run build",
-    "lint": "eslint --ext .js,.jsx src/",
+    "lint": "eslint --ext .js,.jsx src/ example/",
     "test:e2e": "cypress open",
     "test:e2e:update-snapshots": "rm -rf ./cypress/snapshots",
     "test:watch": "jest ./src/ --watch",
