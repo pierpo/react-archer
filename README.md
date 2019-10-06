@@ -85,6 +85,7 @@ export default App;
 | - | - | - |
 | `strokeColor` | `string` | A color string `'#ff0000'`
 | `strokeWidth` | `number` | A size in `px`
+| `strokeDasharray` | `string` | Adds dashes to the stroke. It has to be a string representing an array of sizes. See some [SVG strokes documentation](https://www.w3schools.com/graphics/svg_stroking.asp).
 | `arrowLength` | `number` | A size in `px`
 | `arrowThickness` | `number` | A size in `px`
 | `children` | `React.Node` |
@@ -115,6 +116,7 @@ The `Style` type has the following shape:
 {
   strokeColor: string,
   strokeWidth: number,
+  strokeDasharray: number,
   arrowLength: number,
   arrowThickness: number
 }

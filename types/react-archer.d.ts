@@ -5,20 +5,29 @@ export interface ArcherContainerProps {
    * A size in px
    */
   arrowLength?: number;
+
   /**
    * A size in px
    */
   arrowThickness?: number;
+
   /**
    * A color string
    *
    * @example '#ff0000'
    */
   strokeColor?: string;
+
   /**
    * A size in px
    */
   strokeWidth?: number;
+
+  /**
+   * A string representing an array of sizes
+   * See https://www.w3schools.com/graphics/svg_stroking.asp
+   */
+  strokeDasharray?: string;
 
   style?: React.CSSProperties;
 
@@ -32,6 +41,7 @@ export const ArcherContainer: React.ComponentType<ArcherContainerProps>;
 export interface ArrowStyle {
   strokeColor?: string;
   strokeWidth?: number;
+  strokeDasharray?: string;
   arrowLength?: number;
   arrowThickness?: number;
 }
