@@ -114,6 +114,32 @@ export function computeLabelDimensions(
   };
 }
 
+function computePathString({
+  xStart,
+  yStart,
+  xAnchor1,
+  yAnchor1,
+  xAnchor2,
+  yAnchor2,
+  xEnd,
+  yEnd,
+}: {|
+  xStart: number,
+  yStart: number,
+  xAnchor1: number,
+  yAnchor1: number,
+  xAnchor2: number,
+  yAnchor2: number,
+  xEnd: number,
+  yEnd: number,
+|}): string {
+  return (
+    `M${xStart},${yStart} ` +
+    `C${xAnchor1},${yAnchor1} ${xAnchor2},${yAnchor2} ` +
+    `${xEnd},${yEnd}`
+  );
+}
+
 const SvgArrow = ({
   startingPoint,
   startingAnchorOrientation,
@@ -158,10 +184,16 @@ const SvgArrow = ({
   );
   const { xAnchor2, yAnchor2 } = endingPosition;
 
-  const pathString =
-    `M${xStart},${yStart} ` +
-    `C${xAnchor1},${yAnchor1} ${xAnchor2},${yAnchor2} ` +
-    `${xEnd},${yEnd}`;
+  const pathString = computePathString({
+    xStart,
+    yStart,
+    xAnchor1,
+    yAnchor1,
+    xAnchor2,
+    yAnchor2,
+    xEnd,
+    yEnd,
+  });
 
   const { xLabel, yLabel, labelWidth, labelHeight } = computeLabelDimensions(
     xStart,
