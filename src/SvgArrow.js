@@ -5,19 +5,20 @@ import Point from './Point';
 
 type Props = {
   startingPoint: Point,
-  startingAnchor: AnchorPositionType,
+  startingAnchorOrientation: AnchorPositionType,
   endingPoint: Point,
-  endingAnchor: AnchorPositionType,
+  endingAnchorOrientation: AnchorPositionType,
   strokeColor: string,
   arrowLength: number,
   strokeWidth: number,
   strokeDasharray?: string,
   arrowLabel?: ?React$Node,
   arrowMarkerId: string,
+  noCurves: boolean,
 };
 
-function computeEndingArrowDirectionVector(endingAnchor) {
-  switch (endingAnchor) {
+function computeEndingArrowDirectionVector(endingAnchorOrientation) {
+  switch (endingAnchorOrientation) {
     case 'left':
       return { arrowX: -1, arrowY: 0 };
     case 'right':
@@ -31,124 +32,182 @@ function computeEndingArrowDirectionVector(endingAnchor) {
   }
 }
 
-export function computeEndingPointAccordingToArrow(
-  xEnd: number,
-  yEnd: number,
+export function computeEndingPointAccordingToArrowHead(
+  xArrowHeadEnd: number,
+  yArrowHeadEnd: number,
   arrowLength: number,
   strokeWidth: number,
-  endingAnchor: AnchorPositionType,
+  endingAnchorOrientation: AnchorPositionType,
 ) {
-  const endingVector = computeEndingArrowDirectionVector(endingAnchor);
+  const endingVector = computeEndingArrowDirectionVector(endingAnchorOrientation);
 
   const { arrowX, arrowY } = endingVector;
 
-  const xe = xEnd + (arrowX * arrowLength * strokeWidth) / 2;
-  const ye = yEnd + (arrowY * arrowLength * strokeWidth) / 2;
+  const xEnd = xArrowHeadEnd + (arrowX * arrowLength * strokeWidth) / 2;
+  const yEnd = yArrowHeadEnd + (arrowY * arrowLength * strokeWidth) / 2;
 
-  return { xe, ye };
+  return { xEnd, yEnd };
 }
 
 export function computeStartingAnchorPosition(
-  xs: number,
-  ys: number,
-  xe: number,
-  ye: number,
-  startingAnchor: AnchorPositionType,
-): { xa1: number, ya1: number } {
-  if (startingAnchor === 'top' || startingAnchor === 'bottom') {
+  xStart: number,
+  yStart: number,
+  xEnd: number,
+  yEnd: number,
+  startingAnchorOrientation: AnchorPositionType,
+): { xAnchor1: number, yAnchor1: number } {
+  if (startingAnchorOrientation === 'top' || startingAnchorOrientation === 'bottom') {
     return {
-      xa1: xs,
-      ya1: ys + (ye - ys) / 2,
+      xAnchor1: xStart,
+      yAnchor1: yStart + (yEnd - yStart) / 2,
     };
   }
-  if (startingAnchor === 'left' || startingAnchor === 'right') {
+  if (startingAnchorOrientation === 'left' || startingAnchorOrientation === 'right') {
     return {
-      xa1: xs + (xe - xs) / 2,
-      ya1: ys,
+      xAnchor1: xStart + (xEnd - xStart) / 2,
+      yAnchor1: yStart,
     };
   }
 
-  return { xa1: xs, ya1: ys };
+  return { xAnchor1: xStart, yAnchor1: yStart };
 }
 
 export function computeEndingAnchorPosition(
-  xs: number,
-  ys: number,
-  xe: number,
-  ye: number,
-  endingAnchor: AnchorPositionType,
-): { xa2: number, ya2: number } {
-  if (endingAnchor === 'top' || endingAnchor === 'bottom') {
+  xStart: number,
+  yStart: number,
+  xEnd: number,
+  yEnd: number,
+  endingAnchorOrientation: AnchorPositionType,
+): { xAnchor2: number, yAnchor2: number } {
+  if (endingAnchorOrientation === 'top' || endingAnchorOrientation === 'bottom') {
     return {
-      xa2: xe,
-      ya2: ye - (ye - ys) / 2,
+      xAnchor2: xEnd,
+      yAnchor2: yEnd - (yEnd - yStart) / 2,
     };
   }
-  if (endingAnchor === 'left' || endingAnchor === 'right') {
+  if (endingAnchorOrientation === 'left' || endingAnchorOrientation === 'right') {
     return {
-      xa2: xe - (xe - xs) / 2,
-      ya2: ye,
+      xAnchor2: xEnd - (xEnd - xStart) / 2,
+      yAnchor2: yEnd,
     };
   }
 
-  return { xa2: xe, ya2: ye };
+  return { xAnchor2: xEnd, yAnchor2: yEnd };
 }
 
 export function computeLabelDimensions(
-  xs: number,
-  ys: number,
-  xe: number,
-  ye: number,
-): { xl: number, yl: number, wl: number, hl: number } {
-  const wl = Math.max(Math.abs(xe - xs), 1);
-  const hl = Math.max(Math.abs(ye - ys), 1);
+  xStart: number,
+  yStart: number,
+  xEnd: number,
+  yEnd: number,
+): { xLabel: number, yLabel: number, labelWidth: number, labelHeight: number } {
+  const labelWidth = Math.max(Math.abs(xEnd - xStart), 1);
+  const labelHeight = Math.max(Math.abs(yEnd - yStart), 1);
 
-  const xl = xe > xs ? xs : xe;
-  const yl = ye > ys ? ys : ye;
+  const xLabel = xEnd > xStart ? xStart : xEnd;
+  const yLabel = yEnd > yStart ? yStart : yEnd;
 
   return {
-    xl,
-    yl,
-    wl,
-    hl,
+    xLabel,
+    yLabel,
+    labelWidth,
+    labelHeight,
   };
+}
+
+function computePathString({
+  xStart,
+  yStart,
+  xAnchor1,
+  yAnchor1,
+  xAnchor2,
+  yAnchor2,
+  xEnd,
+  yEnd,
+  noCurves,
+}: {|
+  xStart: number,
+  yStart: number,
+  xAnchor1: number,
+  yAnchor1: number,
+  xAnchor2: number,
+  yAnchor2: number,
+  xEnd: number,
+  yEnd: number,
+  noCurves: boolean,
+|}): string {
+  const curveMarker = noCurves ? '' : 'C';
+
+  return (
+    `M${xStart},${yStart} ` +
+    `${curveMarker}${xAnchor1},${yAnchor1} ${xAnchor2},${yAnchor2} ` +
+    `${xEnd},${yEnd}`
+  );
 }
 
 const SvgArrow = ({
   startingPoint,
-  startingAnchor,
+  startingAnchorOrientation,
   endingPoint,
-  endingAnchor,
+  endingAnchorOrientation,
   strokeColor,
   arrowLength,
   strokeWidth,
   strokeDasharray,
   arrowLabel,
   arrowMarkerId,
+  noCurves,
 }: Props) => {
   const actualArrowLength = arrowLength * 2;
 
-  const xs = startingPoint.x;
-  const ys = startingPoint.y;
+  const xStart = startingPoint.x;
+  const yStart = startingPoint.y;
 
-  const endingPointWithArrow = computeEndingPointAccordingToArrow(
+  const endingPointWithArrow = computeEndingPointAccordingToArrowHead(
     endingPoint.x,
     endingPoint.y,
     actualArrowLength,
     strokeWidth,
-    endingAnchor,
+    endingAnchorOrientation,
   );
-  const { xe, ye } = endingPointWithArrow;
+  const { xEnd, yEnd } = endingPointWithArrow;
 
-  const startingPosition = computeStartingAnchorPosition(xs, ys, xe, ye, startingAnchor);
-  const { xa1, ya1 } = startingPosition;
+  const startingPosition = computeStartingAnchorPosition(
+    xStart,
+    yStart,
+    xEnd,
+    yEnd,
+    startingAnchorOrientation,
+  );
+  const { xAnchor1, yAnchor1 } = startingPosition;
 
-  const endingPosition = computeEndingAnchorPosition(xs, ys, xe, ye, endingAnchor);
-  const { xa2, ya2 } = endingPosition;
+  const endingPosition = computeEndingAnchorPosition(
+    xStart,
+    yStart,
+    xEnd,
+    yEnd,
+    endingAnchorOrientation,
+  );
+  const { xAnchor2, yAnchor2 } = endingPosition;
 
-  const pathString = `M${xs},${ys} ` + `C${xa1},${ya1} ${xa2},${ya2} ` + `${xe},${ye}`;
+  const pathString = computePathString({
+    xStart,
+    yStart,
+    xAnchor1,
+    yAnchor1,
+    xAnchor2,
+    yAnchor2,
+    xEnd,
+    yEnd,
+    noCurves,
+  });
 
-  const { xl, yl, wl, hl } = computeLabelDimensions(xs, ys, xe, ye);
+  const { xLabel, yLabel, labelWidth, labelHeight } = computeLabelDimensions(
+    xStart,
+    yStart,
+    xEnd,
+    yEnd,
+  );
 
   return (
     <g>
@@ -159,10 +218,10 @@ const SvgArrow = ({
       />
       {arrowLabel && (
         <foreignObject
-          x={xl}
-          y={yl}
-          width={wl}
-          height={hl}
+          x={xLabel}
+          y={yLabel}
+          width={labelWidth}
+          height={labelHeight}
           style={{ overflow: 'visible', pointerEvents: 'none' }}
         >
           <div

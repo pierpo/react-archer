@@ -29,6 +29,11 @@ export interface ArcherContainerProps {
    */
   strokeDasharray?: string;
 
+  /**
+   * Set this to true if you want angles instead of curves
+   */
+  noCurves?: boolean;
+
   style?: React.CSSProperties;
 
   svgContainerStyle?: React.CSSProperties;
@@ -44,6 +49,7 @@ export interface ArrowStyle {
   strokeDasharray?: string;
   arrowLength?: number;
   arrowThickness?: number;
+  noCurves?: boolean;
 }
 
 export type AnchorPosition = 'top' | 'bottom' | 'left' | 'right';

@@ -2,7 +2,7 @@
 import React from 'react';
 import { type ShallowWrapper, shallow } from 'enzyme';
 import SvgArrow, {
-  computeEndingPointAccordingToArrow,
+  computeEndingPointAccordingToArrowHead,
   computeStartingAnchorPosition,
   computeEndingAnchorPosition,
   computeLabelDimensions,
@@ -21,7 +21,7 @@ describe('SvgArrow', () => {
           strokeWidth: 2,
           endingAnchor: 'top',
         },
-        expected: { xe: 10, ye: 15 },
+        expected: { xEnd: 10, yEnd: 15 },
       },
       {
         message: 2,
@@ -32,7 +32,7 @@ describe('SvgArrow', () => {
           strokeWidth: 2,
           endingAnchor: 'top',
         },
-        expected: { xe: 10, ye: 18 },
+        expected: { xEnd: 10, yEnd: 18 },
       },
       {
         message: 3,
@@ -43,7 +43,7 @@ describe('SvgArrow', () => {
           strokeWidth: 1,
           endingAnchor: 'top',
         },
-        expected: { xe: 10, ye: 17.5 },
+        expected: { xEnd: 10, yEnd: 17.5 },
       },
       {
         message: 4,
@@ -54,14 +54,14 @@ describe('SvgArrow', () => {
           strokeWidth: 2,
           endingAnchor: 'bottom',
         },
-        expected: { xe: 10, ye: 25 },
+        expected: { xEnd: 10, yEnd: 25 },
       },
     ];
 
     dataSet.forEach(data => {
       it(`should compute coordinates of destination point excluding the arrow [data ${data.message}]`, () => {
         const { xEnd, yEnd, arrowLength, strokeWidth, endingAnchor } = data.input;
-        const result = computeEndingPointAccordingToArrow(
+        const result = computeEndingPointAccordingToArrowHead(
           xEnd,
           yEnd,
           arrowLength,
@@ -73,7 +73,7 @@ describe('SvgArrow', () => {
     });
   });
 
-  describe('computeStartingAnchorPosition', () => {
+  describe('computeStartingAnchorOrientation', () => {
     const dataSet = [
       {
         message: 1,
@@ -84,7 +84,7 @@ describe('SvgArrow', () => {
           yEnd: 2,
           endingAnchor: 'top',
         },
-        expected: { xa1: 10, ya1: 11 },
+        expected: { xAnchor1: 10, yAnchor1: 11 },
       },
       {
         message: 2,
@@ -95,7 +95,7 @@ describe('SvgArrow', () => {
           yEnd: 2,
           endingAnchor: 'left',
         },
-        expected: { xa1: 7.5, ya1: 20 },
+        expected: { xAnchor1: 7.5, yAnchor1: 20 },
       },
     ];
 
@@ -108,7 +108,7 @@ describe('SvgArrow', () => {
     });
   });
 
-  describe('computeEndingAnchorPosition', () => {
+  describe('computeEndingAnchorOrientation', () => {
     const dataSet = [
       {
         message: 1,
@@ -119,7 +119,7 @@ describe('SvgArrow', () => {
           yEnd: 2,
           endingAnchor: 'top',
         },
-        expected: { xa2: 5, ya2: 11 },
+        expected: { xAnchor2: 5, yAnchor2: 11 },
       },
       {
         message: 2,
@@ -130,7 +130,7 @@ describe('SvgArrow', () => {
           yEnd: 2,
           endingAnchor: 'left',
         },
-        expected: { xa2: 7.5, ya2: 2 },
+        expected: { xAnchor2: 7.5, yAnchor2: 2 },
       },
     ];
 
@@ -155,10 +155,10 @@ describe('SvgArrow', () => {
           endingAnchor: 'top',
         },
         expected: {
-          hl: 18,
-          wl: 5,
-          xl: 10,
-          yl: 2,
+          labelHeight: 18,
+          labelWidth: 5,
+          xLabel: 10,
+          yLabel: 2,
         },
       },
       {
@@ -171,10 +171,10 @@ describe('SvgArrow', () => {
           endingAnchor: 'left',
         },
         expected: {
-          hl: 8,
-          wl: 5,
-          xl: 5,
-          yl: 2,
+          labelHeight: 8,
+          labelWidth: 5,
+          xLabel: 5,
+          yLabel: 2,
         },
       },
     ];
@@ -193,13 +193,14 @@ describe('SvgArrow', () => {
 
     const props = {
       startingPoint: new Point(10, 10),
-      startingAnchor: 'bottom',
+      startingAnchorOrientation: 'bottom',
       endingPoint: new Point(30, 30),
-      endingAnchor: 'top',
+      endingAnchorOrientation: 'top',
       strokeColor: 'blue',
       arrowLength: 10,
       strokeWidth: 2,
       arrowMarkerId: 'arrow123123',
+      noCurves: false,
     };
 
     beforeEach(() => {
@@ -214,6 +215,21 @@ describe('SvgArrow', () => {
 
       expect(path.props()).toMatchObject({
         d: 'M10,10 C10,10 30,10 30,10',
+        markerEnd: 'url(http://localhost/#arrow123123)',
+        style: {
+          strokeWidth: 2,
+          stroke: 'blue',
+        },
+      });
+    });
+
+    it('should render path with no curves coordinates', () => {
+      wrapper.setProps({ noCurves: true });
+      wrapper.update();
+      const path = wrapper.find('path');
+
+      expect(path.props()).toMatchObject({
+        d: 'M10,10 10,10 30,10 30,10',
         markerEnd: 'url(http://localhost/#arrow123123)',
         style: {
           strokeWidth: 2,

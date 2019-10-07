@@ -86,6 +86,7 @@ export default App;
 | `strokeColor` | `string` | A color string `'#ff0000'`
 | `strokeWidth` | `number` | A size in `px`
 | `strokeDasharray` | `string` | Adds dashes to the stroke. It has to be a string representing an array of sizes. See some [SVG strokes documentation](https://www.w3schools.com/graphics/svg_stroking.asp).
+| `noCurves` | `boolean` | Set this to true if you want angles instead of curves
 | `arrowLength` | `number` | A size in `px`
 | `arrowThickness` | `number` | A size in `px`
 | `children` | `React.Node` |
@@ -118,12 +119,12 @@ The `Style` type has the following shape:
   strokeWidth: number,
   strokeDasharray: number,
   arrowLength: number,
-  arrowThickness: number
+  arrowThickness: number,
+  noCurves: boolean,
 }
 ```
 
 ## TODO
 
 - Automatic anchoring option
-- Options to customize the path shape more (straight line, right angle line, smoothed right angle path)
 - Add a Code Sandbox
