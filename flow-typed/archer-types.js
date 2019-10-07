@@ -26,4 +26,5 @@ declare type ArrowStyleType = {
   strokeColor: string,
   strokeWidth: number,
   strokeDasharray?: string,
+  noCurves?: boolean,
 };

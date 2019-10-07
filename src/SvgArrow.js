@@ -14,6 +14,7 @@ type Props = {
   strokeDasharray?: string,
   arrowLabel?: ?React$Node,
   arrowMarkerId: string,
+  noCurves: boolean,
 };
 
 function computeEndingArrowDirectionVector(endingAnchorOrientation) {
@@ -123,6 +124,7 @@ function computePathString({
   yAnchor2,
   xEnd,
   yEnd,
+  noCurves,
 }: {|
   xStart: number,
   yStart: number,
@@ -132,10 +134,13 @@ function computePathString({
   yAnchor2: number,
   xEnd: number,
   yEnd: number,
+  noCurves: boolean,
 |}): string {
+  const curveMarker = noCurves ? '' : 'C';
+
   return (
     `M${xStart},${yStart} ` +
-    `C${xAnchor1},${yAnchor1} ${xAnchor2},${yAnchor2} ` +
+    `${curveMarker}${xAnchor1},${yAnchor1} ${xAnchor2},${yAnchor2} ` +
     `${xEnd},${yEnd}`
   );
 }
@@ -151,6 +156,7 @@ const SvgArrow = ({
   strokeDasharray,
   arrowLabel,
   arrowMarkerId,
+  noCurves,
 }: Props) => {
   const actualArrowLength = arrowLength * 2;
 
@@ -193,6 +199,7 @@ const SvgArrow = ({
     yAnchor2,
     xEnd,
     yEnd,
+    noCurves,
   });
 
   const { xLabel, yLabel, labelWidth, labelHeight } = computeLabelDimensions(

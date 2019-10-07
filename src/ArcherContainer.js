@@ -12,6 +12,7 @@ type Props = {
   strokeColor: string,
   strokeWidth: number,
   strokeDasharray?: string,
+  noCurves?: boolean,
   children: React$Node,
   style?: Object,
   svgContainerStyle?: Object,
@@ -227,6 +228,8 @@ export class ArcherContainer extends React.Component<Props, State> {
 
       const arrowThickness = (style && style.arrowThickness) || this.props.arrowThickness;
 
+      const noCurves = (style && style.noCurves) || this.props.noCurves;
+
       const startingAnchorOrientation = source.anchor;
       const startingPoint = this.getPointCoordinatesFromAnchorPosition(
         source.anchor,
@@ -255,6 +258,7 @@ export class ArcherContainer extends React.Component<Props, State> {
           arrowLabel={label}
           arrowThickness={arrowThickness}
           arrowMarkerId={this.getMarkerId(source, target)}
+          noCurves={!!noCurves}
         />
       );
     });
