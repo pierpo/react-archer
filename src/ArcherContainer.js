@@ -227,14 +227,14 @@ export class ArcherContainer extends React.Component<Props, State> {
 
       const arrowThickness = (style && style.arrowThickness) || this.props.arrowThickness;
 
-      const startingAnchor = source.anchor;
+      const startingAnchorOrientation = source.anchor;
       const startingPoint = this.getPointCoordinatesFromAnchorPosition(
         source.anchor,
         source.id,
         parentCoordinates,
       );
 
-      const endingAnchor = target.anchor;
+      const endingAnchorOrientation = target.anchor;
       const endingPoint = this.getPointCoordinatesFromAnchorPosition(
         target.anchor,
         target.id,
@@ -245,9 +245,9 @@ export class ArcherContainer extends React.Component<Props, State> {
         <SvgArrow
           key={JSON.stringify({ source, target })}
           startingPoint={startingPoint}
-          startingAnchor={startingAnchor}
+          startingAnchorOrientation={startingAnchorOrientation}
           endingPoint={endingPoint}
-          endingAnchor={endingAnchor}
+          endingAnchorOrientation={endingAnchorOrientation}
           strokeColor={strokeColor}
           arrowLength={arrowLength}
           strokeWidth={strokeWidth}
