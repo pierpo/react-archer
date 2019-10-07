@@ -34,4 +34,15 @@ context('React Archer', () => {
       cy.matchImageSnapshot();
     });
   });
+
+  describe('Third example page', () => {
+    beforeEach(() => {
+      cy.contains('Example 3').click();
+      cy.get('h2').contains('Example 3');
+    });
+
+    it('should draw non curvy arrows', () => {
+      cy.matchImageSnapshot();
+    });
+  });
 });
