@@ -15,7 +15,7 @@ type Props = {
   arrowLabel?: ?React$Node,
   arrowMarkerId: string,
   noCurves: boolean,
-  offset: number,
+  offset?: number,
 };
 
 function computeEndingArrowDirectionVector(endingAnchorOrientation) {
@@ -137,11 +137,11 @@ function computePathString({
   xEnd: number,
   yEnd: number,
   noCurves: boolean,
-  offset: number,
+  offset?: number,
 |}): string {
   const curveMarker = noCurves ? '' : 'C';
 
-  if (offset > 0) {
+  if (offset && offset > 0) {
     const angle = Math.atan2(yAnchor1 - yStart, xAnchor1 - xStart);
 
     const xOffset = offset * Math.cos(angle);
