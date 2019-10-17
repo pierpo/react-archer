@@ -214,7 +214,7 @@ const SvgArrow = ({
       <path
         d={pathString}
         style={{ fill: 'none', stroke: strokeColor, strokeWidth, strokeDasharray }}
-        markerEnd={`url(${location.href}#${arrowMarkerId})`}
+        markerEnd={`url(${location.href.split('#')[0]}#${arrowMarkerId})`}
       />
       {arrowLabel && (
         <foreignObject
