@@ -70,4 +70,3 @@ const FirstExample = () => {
 };
 
 export default FirstExample;
-
