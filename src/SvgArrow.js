@@ -15,6 +15,7 @@ type Props = {
   arrowLabel?: ?React$Node,
   arrowMarkerId: string,
   noCurves: boolean,
+  offset?: number,
 };
 
 function computeEndingArrowDirectionVector(endingAnchorOrientation) {
@@ -125,6 +126,7 @@ function computePathString({
   xEnd,
   yEnd,
   noCurves,
+  offset,
 }: {|
   xStart: number,
   yStart: number,
@@ -135,8 +137,22 @@ function computePathString({
   xEnd: number,
   yEnd: number,
   noCurves: boolean,
+  offset?: number,
 |}): string {
   const curveMarker = noCurves ? '' : 'C';
+
+  if (offset && offset > 0) {
+    const angle = Math.atan2(yAnchor1 - yStart, xAnchor1 - xStart);
+
+    const xOffset = offset * Math.cos(angle);
+    const yOffset = offset * Math.sin(angle);
+
+    xStart = xStart + xOffset;
+    xEnd = xEnd - xOffset;
+
+    yStart = yStart + yOffset;
+    yEnd = yEnd - yOffset;
+  }
 
   return (
     `M${xStart},${yStart} ` +
@@ -157,6 +173,7 @@ const SvgArrow = ({
   arrowLabel,
   arrowMarkerId,
   noCurves,
+  offset,
 }: Props) => {
   const actualArrowLength = arrowLength * 2;
 
@@ -200,6 +217,7 @@ const SvgArrow = ({
     xEnd,
     yEnd,
     noCurves,
+    offset,
   });
 
   const { xLabel, yLabel, labelWidth, labelHeight } = computeLabelDimensions(

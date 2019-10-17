@@ -17,6 +17,7 @@ type Props = {
   style?: Object,
   svgContainerStyle?: Object,
   className?: string,
+  offset?: number,
 };
 
 type SourceToTargetsArrayType = Array<SourceToTargetType>;
@@ -230,6 +231,8 @@ export class ArcherContainer extends React.Component<Props, State> {
 
       const noCurves = (style && style.noCurves) || this.props.noCurves;
 
+      const offset = this.props.offset || 0;
+
       const startingAnchorOrientation = source.anchor;
       const startingPoint = this.getPointCoordinatesFromAnchorPosition(
         source.anchor,
@@ -259,6 +262,7 @@ export class ArcherContainer extends React.Component<Props, State> {
           arrowThickness={arrowThickness}
           arrowMarkerId={this.getMarkerId(source, target)}
           noCurves={!!noCurves}
+          offset={offset}
         />
       );
     });

@@ -87,6 +87,7 @@ export default App;
 | `strokeWidth` | `number` | A size in `px`
 | `strokeDasharray` | `string` | Adds dashes to the stroke. It has to be a string representing an array of sizes. See some [SVG strokes documentation](https://www.w3schools.com/graphics/svg_stroking.asp).
 | `noCurves` | `boolean` | Set this to true if you want angles instead of curves
+| `offset` | `number` | Optional number for space between element and start/end of stroke
 | `arrowLength` | `number` | A size in `px`
 | `arrowThickness` | `number` | A size in `px`
 | `children` | `React.Node` |
