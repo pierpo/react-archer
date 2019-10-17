@@ -45,4 +45,15 @@ context('React Archer', () => {
       cy.matchImageSnapshot();
     });
   });
+
+  describe('Fourth example page', () => {
+    beforeEach(() => {
+      cy.contains('Example 4').click();
+      cy.get('h2').contains('Example 4');
+    });
+
+    it('should draw arrows with an offset', () => {
+      cy.matchImageSnapshot();
+    });
+  });
 });
