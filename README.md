@@ -105,8 +105,8 @@ The `Relation` type has the following shape:
 ```javascript
 {
   targetId: string,
-  targetAnchor: 'top' | 'bottom' | 'left' | 'right',
-  sourceAnchor: 'top' | 'bottom' | 'left' | 'right',
+  targetAnchor: 'top' | 'bottom' | 'left' | 'right' | 'middle',
+  sourceAnchor: 'top' | 'bottom' | 'left' | 'right' | 'middle',
   label: React.Node,
   style: Style,
 }
