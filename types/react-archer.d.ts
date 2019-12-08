@@ -52,7 +52,7 @@ export interface ArrowStyle {
   noCurves?: boolean;
 }
 
-export type AnchorPosition = 'top' | 'bottom' | 'left' | 'right';
+export type AnchorPosition = 'top' | 'bottom' | 'left' | 'right' | 'middle';
 
 export interface Relation {
   targetId: string;

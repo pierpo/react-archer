@@ -112,6 +112,9 @@ The `Relation` type has the following shape:
 }
 ```
 
+> Please note that the `middle` anchor does not look very good: the curve won't look nice and the arrow marker will have a little offset.
+> The issue won't be solved before a long time.
+
 The `Style` type has the following shape:
 
 ```javascript
