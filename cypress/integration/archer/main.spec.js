@@ -56,4 +56,15 @@ context('React Archer', () => {
       cy.matchImageSnapshot();
     });
   });
+
+  describe('Fifth example page', () => {
+    beforeEach(() => {
+      cy.contains('Example 5').click();
+      cy.get('h2').contains('Example 5');
+    });
+
+    it('should draw arrows with a middle anchor', () => {
+      cy.matchImageSnapshot();
+    });
+  });
 });
