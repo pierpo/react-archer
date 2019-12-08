@@ -61,6 +61,8 @@ function computeCoordinatesFromAnchorPosition(
       return rectToPoint(rect).add(new Point(0, rect.height / 2));
     case 'right':
       return rectToPoint(rect).add(new Point(rect.width, rect.height / 2));
+    case 'middle':
+      return rectToPoint(rect).add(new Point(rect.width / 2, rect.height / 2));
     default:
       return new Point(0, 0);
   }
