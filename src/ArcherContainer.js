@@ -42,6 +42,7 @@ const defaultSvgContainerStyle = {
   height: '100%',
   top: 0,
   left: 0,
+  pointerEvents: 'none'
 };
 
 function rectToPoint(rect: ClientRect) {
@@ -327,14 +328,14 @@ export class ArcherContainer extends React.Component<Props, State> {
         }}
       >
         <div style={{ ...this.props.style, position: 'relative' }} className={this.props.className}>
+          <div style={{ height: '100%' }} ref={this.storeParent}>
+            {this.props.children}
+          </div>
+      
           <svg style={this.svgContainerStyle()}>
             <defs>{this.generateAllArrowMarkers()}</defs>
             {SvgArrows}
           </svg>
-
-          <div style={{ height: '100%' }} ref={this.storeParent}>
-            {this.props.children}
-          </div>
         </div>
       </ArcherContainerContextProvider>
     );
