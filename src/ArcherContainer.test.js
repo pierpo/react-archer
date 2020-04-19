@@ -90,7 +90,7 @@ describe('ArcherContainer', () => {
         const wrapper: ShallowWrapper = shallowRenderAndSetState();
         const uniquePrefix: string = wrapper.instance().arrowMarkerUniquePrefix;
 
-        const arrow = wrapper.instance().computeArrows();
+        const arrow = wrapper.instance()._computeArrows();
 
         const tree = renderer.create(arrow).toJSON();
 
@@ -118,7 +118,7 @@ describe('ArcherContainer', () => {
         const wrapper: ShallowWrapper = shallowRenderAndSetState();
         const uniquePrefix: string = wrapper.instance().arrowMarkerUniquePrefix;
 
-        const marker = wrapper.instance().generateAllArrowMarkers();
+        const marker = wrapper.instance()._generateAllArrowMarkers();
 
         const tree = renderer.create(marker).toJSON();
 
