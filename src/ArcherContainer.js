@@ -225,7 +225,11 @@ export class ArcherContainer extends React.Component<Props, State> {
     return this.getSourceToTargets().map(({ source, target, label, style }: SourceToTargetType) => {
       const strokeColor = (style && style.strokeColor) || this.props.strokeColor;
 
-      const arrowLength = (style && style.arrowLength) || this.props.arrowLength;
+      // Actual arrowLength value might be 0, which can't work with a simple 'actualValue || defaultValue'
+      let arrowLength = this.props.arrowLength;
+      if (style && (style.arrowLength || style.arrowLength === 0)) {
+        arrowLength = style.arrowLength;
+      }
 
       const strokeWidth = (style && style.strokeWidth) || this.props.strokeWidth;
 
@@ -288,7 +292,11 @@ export class ArcherContainer extends React.Component<Props, State> {
     return this.getSourceToTargets().map(({ source, target, label, style }: SourceToTargetType) => {
       const strokeColor = (style && style.strokeColor) || this.props.strokeColor;
 
-      const arrowLength = (style && style.arrowLength) || this.props.arrowLength;
+      // Actual arrowLength value might be 0, which can't work with a simple 'actualValue || defaultValue'
+      let arrowLength = this.props.arrowLength;
+      if (style && (style.arrowLength || style.arrowLength === 0)) {
+        arrowLength = style.arrowLength;
+      }
 
       const arrowThickness = (style && style.arrowThickness) || this.props.arrowThickness;
 
