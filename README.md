@@ -81,6 +81,8 @@ export default App;
 
 ### `ArcherContainer`
 
+#### Props
+
 | Name | Type | Description |
 | - | - | - |
 | `strokeColor` | `string` | A color string `'#ff0000'`
@@ -91,6 +93,12 @@ export default App;
 | `arrowLength` | `number` | A size in `px`
 | `arrowThickness` | `number` | A size in `px`
 | `children` | `React.Node` |
+
+#### Instance methods
+
+If you access to the ref of your `ArcherContainer`, you will access the `refreshScreen` method.
+This will allow you to have more control on when you want to re-draw the arrows.
+
 
 ### `ArcherElement`
 
@@ -127,6 +135,12 @@ The `Style` type has the following shape:
   noCurves: boolean,
 }
 ```
+
+## Troubleshooting
+
+#### My arrows don't re-render correctly...
+
+Try using the `refreshScreen` instance method on your `ArcherContainer` element. Call it when the event that you need is triggered (`onScroll` etc.).
 
 ## TODO
 
