@@ -140,7 +140,9 @@ The `Style` type has the following shape:
 
 #### My arrows don't re-render correctly...
 
-Try using the `refreshScreen` instance method on your `ArcherContainer` element. Call it when the event that you need is triggered (`onScroll` etc.).
+Try using the `refreshScreen` instance method on your `ArcherContainer` element. You can access it through the [ref of the component](https://reactjs.org/docs/refs-and-the-dom.html).
+
+Call `refreshScreen` when the event that you need is triggered (`onScroll` etc.).
 
 ## TODO
 
