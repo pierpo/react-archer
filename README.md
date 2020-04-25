@@ -92,6 +92,7 @@ export default App;
 | `offset` | `number` | Optional number for space between element and start/end of stroke
 | `arrowLength` | `number` | A size in `px`
 | `arrowThickness` | `number` | A size in `px`
+| `svgContainerStyle` | `Style` | Style of the SVG container element. Useful if you want to add a z-index to your SVG container to draw the arrows under your elements, for example.
 | `children` | `React.Node` |
 
 #### Instance methods
