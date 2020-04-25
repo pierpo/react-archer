@@ -6,6 +6,7 @@ const examplePath = path.resolve(__dirname, 'example');
 module.exports = {
   mode: 'development',
   entry: path.resolve(examplePath, 'index.js'),
+  devtool: 'cheap-module-eval-source-map',
   output: {
     path: examplePath,
     filename: 'bundle.js',
