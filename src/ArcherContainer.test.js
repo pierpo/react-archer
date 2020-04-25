@@ -78,7 +78,7 @@ describe('ArcherContainer', () => {
       refY: 15,
       orient: 'auto',
       markerUnits: 'strokeWidth',
-      children: <path d="M0,0 L0,30 L9,15 z" fill="rgb(123, 234, 123)" />,
+      children: <path d="M0,0 L0,30 L10,15 z" fill="rgb(123, 234, 123)" />,
     };
 
     expect(markerProps).toMatchObject(expectedProps);
@@ -133,7 +133,7 @@ describe('ArcherContainer', () => {
   refY={15}
 >
   <path
-    d="M0,0 L0,30 L9,15 z"
+    d="M0,0 L0,30 L10,15 z"
     fill="rgb(123, 234, 123)"
   />
 </marker>
