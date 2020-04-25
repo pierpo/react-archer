@@ -303,7 +303,7 @@ export class ArcherContainer extends React.Component<Props, State> {
 
         const arrowThickness = (style && style.arrowThickness) || this.props.arrowThickness;
 
-        const arrowPath = `M0,0 L0,${arrowThickness} L${arrowLength - 1},${arrowThickness / 2} z`;
+        const arrowPath = `M0,0 L0,${arrowThickness} L${arrowLength},${arrowThickness / 2} z`;
 
         return (
           <marker

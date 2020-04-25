@@ -105,7 +105,7 @@ This will allow you to have more control on when you want to re-draw the arrows.
 | Name | Type | Description |
 | - | - | - |
 | `id` | `string` | The id that will identify the Archer Element. Should only contain alphanumeric characters and standard characters that you can find in HTML ids.
-| `children` | `React.Node` |
+| `children` | `React.Node` | :warning: Must be a **single** element
 | `relations` | `Array<Relation>` |
 
 The `Relation` type has the following shape:
