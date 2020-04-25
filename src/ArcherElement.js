@@ -8,9 +8,7 @@ import { type ArcherContainerContextType, ArcherContainerContextConsumer } from 
 type OuterProps = {
   id: string,
   relations: Array<RelationType>,
-  style?: Object,
-  className?: string,
-  children: React$Node,
+  children: React$Element<any>,
 };
 
 type InnerProps = OuterProps & {
@@ -102,15 +100,16 @@ export class ArcherElementNoContext extends React.Component<InnerProps> {
   };
 
   render() {
-    return (
-      <div
-        style={{ ...this.props.style, position: 'relative' }}
-        className={this.props.className}
-        ref={this.onRefUpdate}
-      >
-        {this.props.children}
-      </div>
-    );
+    // Check that we only have one child to ArcherElement
+    React.Children.only(this.props.children);
+
+    // Now, we'll render this child by getting its ref. The ref will be used to compute the element's position.
+    // I'm pretty sure there's a cleaner way to get the ref of the child... feel free to suggest it!
+    const child = this.props.children;
+    return React.cloneElement(child, {
+      ...child.props,
+      ref: this.onRefUpdate,
+    });
   }
 }
 
