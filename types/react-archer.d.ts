@@ -87,4 +87,4 @@ export interface ArcherElementProps {
   label?: React.ReactNode;
 }
 
-export const ArcherElement: React.ComponentType<ArcherElementProps>;
+export class ArcherElement extends React.Component<ArcherElementProps> {}
