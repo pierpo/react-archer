@@ -36,12 +36,26 @@ export interface ArcherContainerProps {
 
   style?: React.CSSProperties;
 
+  /**
+   * Style of the SVG container element. Useful if you want to add a z-index to your SVG container to draw the arrows under your elements, for example.
+   */
   svgContainerStyle?: React.CSSProperties;
 
   className?: string;
+
+  /**
+   * Optional number for space between element and start/end of stroke
+   */
+  offset?: number;
 }
 
-export const ArcherContainer: React.ComponentType<ArcherContainerProps>;
+export class ArcherContainer extends React.Component<ArcherContainerProps> {
+  /**
+   * Use this to recompute all the arrow positions. Useful if arrows do not properly rerender
+   * after the viewport or some elements moved.
+   */
+  refreshScreen: () => void;
+}
 
 export interface ArrowStyle {
   strokeColor?: string;
@@ -73,4 +87,4 @@ export interface ArcherElementProps {
   label?: React.ReactNode;
 }
 
-export const ArcherElement: React.ComponentType<ArcherElementProps>;
+export class ArcherElement extends React.Component<ArcherElementProps> {}
