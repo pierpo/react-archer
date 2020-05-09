@@ -49,7 +49,13 @@ export interface ArcherContainerProps {
   offset?: number;
 }
 
-export const ArcherContainer: React.ComponentType<ArcherContainerProps>;
+export class ArcherContainer extends React.Component<ArcherContainerProps> {
+  /**
+   * Use this to recompute all the arrow positions. Useful if arrows do not properly rerender
+   * after the viewport or some elements moved.
+   */
+  refreshScreen: () => void;
+}
 
 export interface ArrowStyle {
   strokeColor?: string;
