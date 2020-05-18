@@ -4,6 +4,7 @@ import SecondExample from './SecondExample';
 import ThirdExample from './ThirdExample';
 import FourthExample from './FourthExample';
 import FifthExample from './FifthExample';
+import SixthExample from './SixthExample';
 
 class App extends React.Component {
   state = { currentExample: 1 };
@@ -20,6 +21,8 @@ class App extends React.Component {
         return FourthExample;
       case 5:
         return FifthExample;
+      case 6:
+        return SixthExample;
       default:
         return SecondExample;
     }
@@ -41,6 +44,7 @@ class App extends React.Component {
           <button onClick={this.changeExample(3)}>Example 3</button>
           <button onClick={this.changeExample(4)}>Example 4</button>
           <button onClick={this.changeExample(5)}>Example 5</button>
+          <button onClick={this.changeExample(6)}>Example 6</button>
         </div>
         <hr />
         <Example />

@@ -331,6 +331,14 @@ export class ArcherContainer extends React.Component<Props, State> {
   render() {
     const SvgArrows = this._computeArrows();
 
+    let children;
+    console.log('Container children: ', this.props.children);
+    if (typeof this.props.children === 'function') {
+      children = this.props.children(ArcherContainerContext);
+    } else {
+      children = this.props.children;
+    }
+
     return (
       <ArcherContainerContextProvider
         value={{
@@ -347,7 +355,7 @@ export class ArcherContainer extends React.Component<Props, State> {
           </svg>
 
           <div style={{ height: '100%' }} ref={this._storeParent}>
-            {this.props.children}
+            {children}
           </div>
         </div>
       </ArcherContainerContextProvider>
