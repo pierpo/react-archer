@@ -1,15 +1,21 @@
 // @flow
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { type ShallowWrapper, shallow } from 'enzyme';
+import { type ShallowWrapper, type ReactWrapper, shallow, mount } from 'enzyme';
 
+import ArcherElement from './ArcherElement';
 import ArcherContainer from './ArcherContainer';
 
-describe('ArcherContainer', () => {
-  const children = <div>child</div>;
+const rootStyle = { display: 'flex', justifyContent: 'center' };
+const rowStyle = {
+  margin: '200px 0',
+  display: 'flex',
+  justifyContent: 'space-between',
+};
+const boxStyle = { padding: '10px', border: '1px solid black' };
 
+describe('ArcherContainer', () => {
   const defaultProps = {
-    children,
     arrowLength: 10,
     arrowThickness: 30,
     strokeColor: 'rgb(123, 234, 123)',
@@ -40,7 +46,11 @@ describe('ArcherContainer', () => {
   };
 
   const shallowRenderAndSetState = (newState?: WrapperState) => {
-    const wrapper = shallow(<ArcherContainer {...defaultProps} />);
+    const wrapper = shallow(
+      <ArcherContainer {...defaultProps}>
+        <div>child</div>
+      </ArcherContainer>,
+    );
 
     wrapper.setState(newState || defaultState);
 
@@ -154,6 +164,105 @@ describe('ArcherContainer', () => {
       wrapper.unmount();
 
       expect(global.window.removeEventListener).toBeCalledWith('resize', expect.anything());
+    });
+  });
+
+  type ItemRendererType = () => React$Node;
+  type ThirdPartyComponentProps = { ItemRenderer: ItemRendererType };
+
+  describe('Uses a functional child API to work with third party renderers', () => {
+    const ThirdPartyComponent = ({
+      ItemRenderer,
+    }: ThirdPartyComponentProps): React$Element<'div'> => (
+      <div>
+        <ItemRenderer />
+      </div>
+    );
+
+    const RootElement = (): React$Element<'div'> => (
+      <div style={rootStyle}>
+        <ArcherElement
+          id="root"
+          relations={[
+            {
+              targetId: 'element2',
+              targetAnchor: 'top',
+              sourceAnchor: 'bottom',
+              style: { strokeDasharray: '5,5' },
+            },
+          ]}
+        >
+          <div style={boxStyle}>Root</div>
+        </ArcherElement>
+      </div>
+    );
+
+    const ElementTwo = (): React$Element<typeof ArcherElement> => (
+      <ArcherElement
+        id="element2"
+        relations={[
+          {
+            targetId: 'element3',
+            targetAnchor: 'left',
+            sourceAnchor: 'right',
+            style: { strokeColor: 'blue', strokeWidth: 1 },
+            label: <div style={{ marginTop: '-20px' }}>Arrow 2</div>,
+          },
+        ]}
+      >
+        <div style={boxStyle}>Element 2</div>
+      </ArcherElement>
+    );
+
+    const ElementThree = (): React$Element<typeof ArcherElement> => (
+      <ArcherElement id="element3" relations={[]}>
+        <div style={boxStyle}>Element 3</div>
+      </ArcherElement>
+    );
+
+    const ElementFour = (): React$Element<typeof ArcherElement> => (
+      <ArcherElement
+        id="element4"
+        relations={[
+          {
+            targetId: 'root',
+            targetAnchor: 'right',
+            sourceAnchor: 'left',
+            label: 'Arrow 3',
+          },
+        ]}
+      >
+        <div style={boxStyle}>Element 4</div>
+      </ArcherElement>
+    );
+
+    const ItemRendererComponent = () => (
+      <div style={{ height: '500px', margin: '50px' }}>
+        <ArcherContainer strokeColor="red">
+          {ArcherContext => (
+            <ThirdPartyComponent
+              ItemRenderer={() => (
+                <ArcherContext.Provider>
+                  <>
+                    <RootElement />
+                    <div style={rowStyle}>
+                      <ElementTwo />
+                      <ElementThree />
+                      <ElementFour />
+                    </div>
+                  </>
+                </ArcherContext.Provider>
+              )}
+            />
+          )}
+        </ArcherContainer>
+      </div>
+    );
+
+    it('render items', () => {
+      const wrapper: ReactWrapper = mount(<ItemRendererComponent {...defaultProps} />);
+
+      expect(wrapper).toEqual(true);
     });
   });
 });
