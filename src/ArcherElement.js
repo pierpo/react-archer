@@ -42,7 +42,7 @@ export class ArcherElementNoContext extends React.Component<InnerProps> {
   registerTransitions = (newRelations: Array<RelationType>) => {
     const newSourceToTarget = this.generateSourceToTarget(newRelations);
 
-    if (!this.props.context.registerTransitions) {
+    if (!this.props.context || (this.props.context && !this.props.context.registerTransitions)) {
       throw new Error(
         `Could not find "registerTransition" in the context of ` +
           `<ArcherElement>. Wrap the component in a <ArcherContainer>.`,
@@ -66,7 +66,7 @@ export class ArcherElementNoContext extends React.Component<InnerProps> {
   };
 
   unregisterTransitions = () => {
-    if (!this.props.context.unregisterTransitions) {
+    if (!this.props.context || (this.props.context && !this.props.context.unregisterTransitions)) {
       throw new Error(
         `Could not find "unregisterTransitions" in the context of ` +
           `<ArcherElement>. Wrap the component in a <ArcherContainer>.`,
@@ -78,7 +78,7 @@ export class ArcherElementNoContext extends React.Component<InnerProps> {
 
   onRefUpdate = (ref: ?HTMLElement) => {
     if (!ref) return;
-    if (!this.props.context.registerChild) {
+    if (!this.props.context || (this.props.context && !this.props.context.registerChild)) {
       throw new Error(
         `Could not find "registerChild" in the context of ` +
           `<ArcherElement>. Wrap the component in a <ArcherContainer>.`,
@@ -89,7 +89,7 @@ export class ArcherElementNoContext extends React.Component<InnerProps> {
   };
 
   unregisterChild = () => {
-    if (!this.props.context.unregisterChild) {
+    if (!this.props.context || (this.props.context && !this.props.context.unregisterChild)) {
       throw new Error(
         `Could not find "unregisterChild" in the context of ` +
           `<ArcherElement>. Wrap the component in a <ArcherContainer>.`,

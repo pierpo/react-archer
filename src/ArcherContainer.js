@@ -7,13 +7,13 @@ import Point from './Point';
 import SvgArrow from './SvgArrow';
 
 export type ArcherContainerContextType = {
-  registerChild?: (string, HTMLElement) => void,
-  registerTransitions?: (string, Array<SourceToTargetType>) => void,
-  unregisterChild?: string => void,
-  unregisterTransitions?: string => void,
-};
+  registerChild: (string, HTMLElement) => void,
+  registerTransitions: (string, Array<SourceToTargetType>) => void,
+  unregisterChild: string => void,
+  unregisterTransitions: string => void,
+} | null;
 
-type FunctionChild = (context: ArcherContainerContextType) => React$Node;
+type FunctionChild = (context: React$Context<ArcherContainerContextType>) => React$Node;
 
 type Props = {
   arrowLength: number,
@@ -85,7 +85,7 @@ function computeCoordinatesFromAnchorPosition(
   }
 }
 
-const ArcherContainerContext = React.createContext<ArcherContainerContextType>({});
+const ArcherContainerContext = React.createContext<ArcherContainerContextType>(null);
 
 export const ArcherContainerContextProvider = ArcherContainerContext.Provider;
 export const ArcherContainerContextConsumer = ArcherContainerContext.Consumer;
@@ -343,7 +343,6 @@ export class ArcherContainer extends React.Component<Props, State> {
     let children: ?React$Node;
 
     if (typeof this.props.children === 'function') {
-      // $FlowFixMe
       children = this.props.children(ArcherContainerContext);
     } else {
       children = this.props.children;

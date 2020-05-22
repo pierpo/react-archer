@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { type ShallowWrapper, type ReactWrapper, shallow, mount } from 'enzyme';
+import { type ShallowWrapper, shallow, mount } from 'enzyme';
 
 import ArcherElement from './ArcherElement';
 import ArcherContainer from './ArcherContainer';
@@ -167,17 +167,12 @@ describe('ArcherContainer', () => {
     });
   });
 
-  type ItemRendererType = () => React$Node;
-  type ThirdPartyComponentProps = { ItemRenderer: ItemRendererType };
+  type ThirdPartyComponentProps = { ItemRenderer: React$Node };
 
   describe('Uses a functional child API to work with third party renderers', () => {
     const ThirdPartyComponent = ({
       ItemRenderer,
-    }: ThirdPartyComponentProps): React$Element<'div'> => (
-      <div>
-        <ItemRenderer />
-      </div>
-    );
+    }: ThirdPartyComponentProps): React$Element<'div'> => <div>{ItemRenderer}</div>;
 
     const RootElement = (): React$Element<'div'> => (
       <div style={rootStyle}>
@@ -240,29 +235,31 @@ describe('ArcherContainer', () => {
       <div style={{ height: '500px', margin: '50px' }}>
         <ArcherContainer strokeColor="red">
           {ArcherContext => (
-            <ThirdPartyComponent
-              ItemRenderer={() => (
-                <ArcherContext.Provider>
-                  <>
-                    <RootElement />
-                    <div style={rowStyle}>
-                      <ElementTwo />
-                      <ElementThree />
-                      <ElementFour />
-                    </div>
-                  </>
-                </ArcherContext.Provider>
+            <ArcherContext.Consumer>
+              {contextValue => (
+                <ThirdPartyComponent
+                  ItemRenderer={
+                    <ArcherContext.Provider value={contextValue}>
+                      <>
+                        <RootElement />
+                        <div style={rowStyle}>
+                          <ElementTwo />
+                          <ElementThree />
+                          <ElementFour />
+                        </div>
+                      </>
+                    </ArcherContext.Provider>
+                  }
+                />
               )}
-            />
+            </ArcherContext.Consumer>
           )}
         </ArcherContainer>
       </div>
     );
 
-    it('render items', () => {
-      const wrapper: ReactWrapper = mount(<ItemRendererComponent {...defaultProps} />);
-
-      expect(wrapper).toEqual(true);
+    it('renders items', () => {
+      mount(<ItemRendererComponent {...defaultProps} />);
     });
   });
 });
