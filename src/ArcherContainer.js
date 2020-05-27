@@ -8,7 +8,7 @@ import SvgArrow from './SvgArrow';
 
 export type ArcherContainerContextType = {
   registerChild: (string, HTMLElement) => void,
-  registerTransitions: (string, Array<SourceToTargetType>) => void,
+  registerTransitions: (string, SourceToTargetType[]) => void,
   unregisterChild: string => void,
   unregisterTransitions: string => void,
 } | null;
@@ -29,10 +29,10 @@ type Props = {
   offset?: number,
 };
 
-type SourceToTargetsArrayType = Array<SourceToTargetType>;
+type SourceToTargetsArrayType = SourceToTargetType[];
 
 // For typing when munging sourceToTargetsMap
-type JaggedSourceToTargetsArrayType = Array<SourceToTargetsArrayType>;
+type JaggedSourceToTargetsArrayType = SourceToTargetsArrayType[];
 
 type State = {
   refs: {
@@ -178,7 +178,7 @@ export class ArcherContainer extends React.Component<Props, State> {
 
   _registerTransitions = (
     elementId: string,
-    newSourceToTargets: Array<SourceToTargetType>,
+    newSourceToTargets: SourceToTargetType[],
   ): void => {
     this.setState((prevState: State) => ({
       sourceToTargetsMap: {
@@ -217,7 +217,7 @@ export class ArcherContainer extends React.Component<Props, State> {
     });
   };
 
-  _getSourceToTargets = (): Array<SourceToTargetType> => {
+  _getSourceToTargets = (): SourceToTargetType[] => {
     const { sourceToTargetsMap } = this.state;
 
     // Object.values is unavailable in IE11

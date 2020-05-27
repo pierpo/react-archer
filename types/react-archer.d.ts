@@ -81,7 +81,7 @@ export interface ArcherElementProps {
    * The id that will identify the Archer Element. Should only contain alphanumeric characters and standard characters that you can find in HTML ids.
    */
   id: string;
-  relations?: Array<Relation>;
+  relations?: Relation[];
   style?: React.CSSProperties;
   className?: string;
   label?: React.ReactNode;

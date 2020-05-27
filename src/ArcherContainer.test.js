@@ -5,14 +5,7 @@ import { type ShallowWrapper, shallow, mount } from 'enzyme';
 
 import ArcherElement from './ArcherElement';
 import ArcherContainer from './ArcherContainer';
-
-const rootStyle = { display: 'flex', justifyContent: 'center' };
-const rowStyle = {
-  margin: '200px 0',
-  display: 'flex',
-  justifyContent: 'space-between',
-};
-const boxStyle = { padding: '10px', border: '1px solid black' };
+import { rootStyle, rowStyle, boxStyle } from './testHelper';
 
 describe('ArcherContainer', () => {
   const defaultProps = {
@@ -24,7 +17,7 @@ describe('ArcherContainer', () => {
 
   type WrapperState = {
     sourceToTargetsMap: {
-      [string]: Array<SourceToTargetType>,
+      [string]: SourceToTargetType[],
     },
   };
 
@@ -164,102 +157,6 @@ describe('ArcherContainer', () => {
       wrapper.unmount();
 
       expect(global.window.removeEventListener).toBeCalledWith('resize', expect.anything());
-    });
-  });
-
-  type ThirdPartyComponentProps = { ItemRenderer: React$Node };
-
-  describe('Uses a functional child API to work with third party renderers', () => {
-    const ThirdPartyComponent = ({
-      ItemRenderer,
-    }: ThirdPartyComponentProps): React$Element<'div'> => <div>{ItemRenderer}</div>;
-
-    const RootElement = (): React$Element<'div'> => (
-      <div style={rootStyle}>
-        <ArcherElement
-          id="root"
-          relations={[
-            {
-              targetId: 'element2',
-              targetAnchor: 'top',
-              sourceAnchor: 'bottom',
-              style: { strokeDasharray: '5,5' },
-            },
-          ]}
-        >
-          <div style={boxStyle}>Root</div>
-        </ArcherElement>
-      </div>
-    );
-
-    const ElementTwo = (): React$Element<typeof ArcherElement> => (
-      <ArcherElement
-        id="element2"
-        relations={[
-          {
-            targetId: 'element3',
-            targetAnchor: 'left',
-            sourceAnchor: 'right',
-            style: { strokeColor: 'blue', strokeWidth: 1 },
-            label: <div style={{ marginTop: '-20px' }}>Arrow 2</div>,
-          },
-        ]}
-      >
-        <div style={boxStyle}>Element 2</div>
-      </ArcherElement>
-    );
-
-    const ElementThree = (): React$Element<typeof ArcherElement> => (
-      <ArcherElement id="element3" relations={[]}>
-        <div style={boxStyle}>Element 3</div>
-      </ArcherElement>
-    );
-
-    const ElementFour = (): React$Element<typeof ArcherElement> => (
-      <ArcherElement
-        id="element4"
-        relations={[
-          {
-            targetId: 'root',
-            targetAnchor: 'right',
-            sourceAnchor: 'left',
-            label: 'Arrow 3',
-          },
-        ]}
-      >
-        <div style={boxStyle}>Element 4</div>
-      </ArcherElement>
-    );
-
-    const ItemRendererComponent = () => (
-      <div style={{ height: '500px', margin: '50px' }}>
-        <ArcherContainer strokeColor="red">
-          {ArcherContext => (
-            <ArcherContext.Consumer>
-              {contextValue => (
-                <ThirdPartyComponent
-                  ItemRenderer={
-                    <ArcherContext.Provider value={contextValue}>
-                      <>
-                        <RootElement />
-                        <div style={rowStyle}>
-                          <ElementTwo />
-                          <ElementThree />
-                          <ElementFour />
-                        </div>
-                      </>
-                    </ArcherContext.Provider>
-                  }
-                />
-              )}
-            </ArcherContext.Consumer>
-          )}
-        </ArcherContainer>
-      </div>
-    );
-
-    it('renders items', () => {
-      mount(<ItemRendererComponent {...defaultProps} />);
     });
   });
 });
