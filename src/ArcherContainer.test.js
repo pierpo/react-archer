@@ -1,11 +1,9 @@
 // @flow
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { type ShallowWrapper, shallow, mount } from 'enzyme';
+import { type ShallowWrapper, shallow } from 'enzyme';
 
-import ArcherElement from './ArcherElement';
 import ArcherContainer from './ArcherContainer';
-import { rootStyle, rowStyle, boxStyle } from './testHelper';
 
 describe('ArcherContainer', () => {
   const defaultProps = {

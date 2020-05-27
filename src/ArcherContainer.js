@@ -176,10 +176,7 @@ export class ArcherContainer extends React.Component<Props, State> {
     return absolutePosition.substract(parentCoordinates);
   };
 
-  _registerTransitions = (
-    elementId: string,
-    newSourceToTargets: SourceToTargetType[],
-  ): void => {
+  _registerTransitions = (elementId: string, newSourceToTargets: SourceToTargetType[]): void => {
     this.setState((prevState: State) => ({
       sourceToTargetsMap: {
         ...prevState.sourceToTargetsMap,

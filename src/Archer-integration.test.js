@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
-import renderer from 'react-test-renderer';
-import { type ShallowWrapper, shallow, mount } from 'enzyme';
+import { type ReactWrapper, mount } from 'enzyme';
 
 import ArcherElement from './ArcherElement';
 import ArcherContainer from './ArcherContainer';
@@ -107,7 +106,7 @@ describe('Archer Integration', () => {
     );
 
     it('renders elements', () => {
-      const component = mount(<ItemRendererComponent {...defaultProps} />);
+      const component: ReactWrapper = mount(<ItemRendererComponent {...defaultProps} />);
 
       expect(component.find(ArcherElement).length).toEqual(4);
     });
