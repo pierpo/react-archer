@@ -21,10 +21,10 @@ declare type SourceToTargetType = {
 };
 
 declare type ArrowStyleType = {
-  arrowLength: number,
-  arrowThickness: number,
-  strokeColor: string,
-  strokeWidth: number,
+  arrowLength?: number,
+  arrowThickness?: number,
+  strokeColor?: string,
+  strokeWidth?: number,
   strokeDasharray?: string,
   noCurves?: boolean,
 };

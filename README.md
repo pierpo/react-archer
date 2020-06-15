@@ -106,8 +106,8 @@ This will allow you to have more control on when you want to re-draw the arrows.
 | Name | Type | Description |
 | - | - | - |
 | `id` | `string` | The id that will identify the Archer Element. Should only contain alphanumeric characters and standard characters that you can find in HTML ids.
-| `children` | `React.Node` | :warning: Must be a **single** element! :warning: You might face some issues if the child is a custom component. It's doable but not documented yet. You might check the 2.0 release note to got some help for now.
-| `relations` | `Array<Relation>` |
+| `children` | `React.Node|(ArcherContext) => React.Node` | :warning: Must be a **single** element or a function of the internal context
+| `relations` | `Relation[]` |
 
 The `Relation` type has the following shape:
 

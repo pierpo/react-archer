@@ -6,10 +6,7 @@ import { type ShallowWrapper, shallow } from 'enzyme';
 import ArcherContainer from './ArcherContainer';
 
 describe('ArcherContainer', () => {
-  const children = <div>child</div>;
-
   const defaultProps = {
-    children,
     arrowLength: 10,
     arrowThickness: 30,
     strokeColor: 'rgb(123, 234, 123)',
@@ -18,7 +15,7 @@ describe('ArcherContainer', () => {
 
   type WrapperState = {
     sourceToTargetsMap: {
-      [string]: Array<SourceToTargetType>,
+      [string]: SourceToTargetType[],
     },
   };
 
@@ -40,7 +37,11 @@ describe('ArcherContainer', () => {
   };
 
   const shallowRenderAndSetState = (newState?: WrapperState) => {
-    const wrapper = shallow(<ArcherContainer {...defaultProps} />);
+    const wrapper = shallow(
+      <ArcherContainer {...defaultProps}>
+        <div>child</div>
+      </ArcherContainer>,
+    );
 
     wrapper.setState(newState || defaultState);
 

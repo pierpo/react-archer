@@ -10,7 +10,7 @@ const rowStyle = {
 };
 const boxStyle = { padding: '10px', border: '1px solid black' };
 
-const FirstExample = () => {
+const FourthExample = () => {
   return (
     <div style={{ height: '500px', margin: '50px' }}>
       <ArcherContainer strokeColor="red" offset={10}>
@@ -69,4 +69,4 @@ const FirstExample = () => {
   );
 };
 
-export default FirstExample;
+export default FourthExample;
