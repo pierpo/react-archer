@@ -16,10 +16,7 @@ export type ArcherContainerContextType = {
 type FunctionChild = (context: React$Context<ArcherContainerContextType>) => React$Node;
 
 type Props = {
-  arrow: {
-    arrowLength: number,
-    arrowThickness: number,
-  },
+  endShape?: ShapeType,
   strokeColor: string,
   strokeWidth: number,
   strokeDasharray?: string,
@@ -87,6 +84,19 @@ function computeCoordinatesFromAnchorPosition(
   }
 }
 
+const possibleShapes: Array<ValidShapeTypes> = ['arrow', 'circle'];
+
+const getEndShapeFromStyle = (shapeObj: LineType) => {
+  if (!shapeObj.endShape) {
+    return possibleShapes[0];
+  }
+
+  return (
+    Object.keys(shapeObj.endShape).filter(key => possibleShapes.includes(key))[0] ||
+    possibleShapes[0]
+  );
+};
+
 const ArcherContainerContext = React.createContext<ArcherContainerContextType>(null);
 
 export const ArcherContainerContextProvider = ArcherContainerContext.Provider;
@@ -117,9 +127,17 @@ export class ArcherContainer extends React.Component<Props, State> {
   }
 
   static defaultProps = {
-    arrow: {
-      arrowLength: 10,
-      arrowThickness: 6,
+    endShape: {
+      arrow: {
+        arrowLength: 10,
+        arrowThickness: 6,
+      },
+      circle: {
+        radius: 2,
+        fillColor: '#f00',
+        strokeColor: '#0ff',
+        strokeWidth: 1,
+      },
     },
     strokeColor: '#f00',
     strokeWidth: 2,
@@ -230,26 +248,40 @@ export class ArcherContainer extends React.Component<Props, State> {
     return [].concat.apply([], jaggedSourceToTargets);
   };
 
+  _createShapeObj = (style: LineType) => {
+    const chosenEndShape = getEndShapeFromStyle(style);
+    const shapeObjMap = {
+      arrow: () => ({
+        arrow: {
+          ...this.props.endShape?.arrow,
+          ...style.endShape?.arrow,
+        },
+      }),
+      circle: () => ({
+        circle: {
+          ...this.props.endShape?.circle,
+          ...style.endShape?.circle,
+        },
+      }),
+    };
+
+    return shapeObjMap[chosenEndShape]();
+  };
+
   _computeArrows = (): React$Element<typeof SvgArrow>[] => {
     const parentCoordinates = this._getParentCoordinates();
 
     return this._getSourceToTargets().map(
-      ({ source, target, label, style }: SourceToTargetType) => {
-        const strokeColor = style?.strokeColor || this.props.strokeColor;
+      ({ source, target, label, style = {} }: SourceToTargetType) => {
+        const endShape = this._createShapeObj(style);
 
-        // Actual arrowLength value might be 0, which can't work with a simple 'actualValue || defaultValue'
-        let arrowLength = this.props.arrow.arrowLength;
-        if (style && style.arrow && (style.arrow.arrowLength || style.arrow.arrowLength === 0)) {
-          arrowLength = style.arrow.arrowLength;
-        }
+        const strokeColor = style.strokeColor || this.props.strokeColor;
 
-        const strokeWidth = style?.strokeWidth || this.props.strokeWidth;
+        const strokeWidth = style.strokeWidth || this.props.strokeWidth;
 
-        const strokeDasharray = style?.strokeDasharray || this.props.strokeDasharray;
+        const strokeDasharray = style.strokeDasharray || this.props.strokeDasharray;
 
-        const arrowThickness = style?.arrow?.arrowThickness || this.props.arrow.arrowThickness;
-
-        const noCurves = style?.noCurves || this.props.noCurves;
+        const noCurves = style.noCurves || this.props.noCurves;
 
         const offset = this.props.offset || 0;
 
@@ -275,18 +307,87 @@ export class ArcherContainer extends React.Component<Props, State> {
             endingPoint={endingPoint}
             endingAnchorOrientation={endingAnchorOrientation}
             strokeColor={strokeColor}
-            arrowLength={arrowLength}
             strokeWidth={strokeWidth}
             strokeDasharray={strokeDasharray}
             arrowLabel={label}
-            arrowThickness={arrowThickness}
             arrowMarkerId={this._getMarkerId(source, target)}
             noCurves={!!noCurves}
             offset={offset}
+            endShape={endShape}
           />
         );
       },
     );
+  };
+
+  _buildShape = (
+    style: LineType,
+  ): {
+    markerHeight: number,
+    markerWidth: number,
+    path: React$Node,
+    refX: number,
+    refY: number,
+  } => {
+    const chosenEndShape = getEndShapeFromStyle(style);
+    const getProp = (shape: ValidShapeTypes, prop: string) => {
+      return (
+        style.endShape?.[shape]?.[prop] ||
+        this.props.endShape?.[shape]?.[prop] ||
+        ArcherContainer.defaultProps.endShape[shape][prop]
+      );
+    };
+
+    const shapeMap = {
+      circle: () => {
+        const radius = getProp('circle', 'radius');
+        const strokeWidth = getProp('circle', 'strokeWidth');
+        const strokeColor = getProp('circle', 'strokeColor');
+        const fillColor = getProp('circle', 'fillColor');
+
+        return {
+          markerWidth: radius * 4,
+          markerHeight: radius * 4,
+          refX: radius * 2 + strokeWidth,
+          refY: radius * 2,
+          path: (
+            <circle
+              cx={radius * 2}
+              cy={radius * 2}
+              r={radius}
+              fill={fillColor}
+              stroke={strokeColor}
+              strokeWidth={strokeWidth}
+            />
+          ),
+        };
+      },
+      arrow: () => {
+        const strokeColor = style.strokeColor || this.props.strokeColor;
+
+        const arrowLength =
+          style.endShape?.arrow?.arrowLength ??
+          this.props.endShape?.arrow?.arrowLength ??
+          ArcherContainer.defaultProps.endShape.arrow.arrowLength;
+
+        const arrowThickness =
+          style.endShape?.arrow?.arrowThickness ||
+          this.props.endShape?.arrow?.arrowThickness ||
+          ArcherContainer.defaultProps.endShape.arrow.arrowThickness;
+
+        const arrowPath = `M0,0 L0,${arrowThickness} L${arrowLength},${arrowThickness / 2} z`;
+
+        return {
+          markerWidth: arrowLength,
+          markerHeight: arrowThickness,
+          refX: 0,
+          refY: arrowThickness / 2,
+          path: <path d={arrowPath} fill={strokeColor} />,
+        };
+      },
+    };
+
+    return shapeMap[chosenEndShape]();
   };
 
   /** Generates an id for an arrow marker
@@ -302,31 +403,21 @@ export class ArcherContainer extends React.Component<Props, State> {
    * a different color or size
    * */
   _generateAllArrowMarkers = (): React$Element<'marker'>[] => {
-    return this._getSourceToTargets().map(({ source, target, style }: SourceToTargetType) => {
-      const strokeColor = (style && style.strokeColor) || this.props.strokeColor;
-
-      // Actual arrowLength value might be 0, which can't work with a simple 'actualValue || defaultValue'
-      let arrowLength = this.props.arrow.arrowLength;
-      if (style && style.arrow && (style.arrow.arrowLength || style.arrow.arrowLength === 0)) {
-        arrowLength = style.arrow.arrowLength;
-      }
-
-      const arrowThickness = style?.arrow?.arrowThickness || this.props.arrow.arrowThickness;
-
-      const arrowPath = `M0,0 L0,${arrowThickness} L${arrowLength},${arrowThickness / 2} z`;
+    return this._getSourceToTargets().map(({ source, target, style = {} }: SourceToTargetType) => {
+      const { markerHeight, markerWidth, path, refX, refY } = this._buildShape(style);
 
       return (
         <marker
           id={this._getMarkerId(source, target)}
           key={this._getMarkerId(source, target)}
-          markerWidth={arrowLength}
-          markerHeight={arrowThickness}
-          refX="0"
-          refY={arrowThickness / 2}
+          markerWidth={markerWidth}
+          markerHeight={markerHeight}
+          refX={refX}
+          refY={refY}
           orient="auto"
           markerUnits="strokeWidth"
         >
-          <path d={arrowPath} fill={strokeColor} />
+          {path}
         </marker>
       );
     });

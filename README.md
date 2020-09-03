@@ -90,10 +90,9 @@ export default App;
 | `strokeDasharray` | `string` | Adds dashes to the stroke. It has to be a string representing an array of sizes. See some [SVG strokes documentation](https://www.w3schools.com/graphics/svg_stroking.asp).
 | `noCurves` | `boolean` | Set this to true if you want angles instead of curves
 | `offset` | `number` | Optional number for space between element and start/end of stroke
-| `arrowLength` | `number` | A size in `px`
-| `arrowThickness` | `number` | A size in `px`
 | `svgContainerStyle` | `Style` | Style of the SVG container element. Useful if you want to add a z-index to your SVG container to draw the arrows under your elements, for example.
 | `children` | `React.Node` |
+| `endShape` | `Object` | An object containing the props to configure the "end shape" of the arrow. Can be one of `arrow` (default) or `circle`. See [`ShapeType`](flow-typed/archer-types.js) for a complete list of available options.
 
 #### Instance methods
 
@@ -131,9 +130,8 @@ The `ArcherStyle` type has the following shape:
   strokeColor: string,
   strokeWidth: number,
   strokeDasharray: number,
-  arrowLength: number,
-  arrowThickness: number,
   noCurves: boolean,
+  endShape: Object
 }
 ```
 

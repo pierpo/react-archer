@@ -5,7 +5,7 @@ declare type RelationType = {
   targetAnchor: AnchorPositionType,
   sourceAnchor: AnchorPositionType,
   label?: ?React$Node,
-  style?: ArrowStyleType,
+  style?: LineType,
 };
 
 declare type EntityRelationType = {
@@ -17,16 +17,28 @@ declare type SourceToTargetType = {
   source: EntityRelationType,
   target: EntityRelationType,
   label?: ?React$Node,
-  style?: ArrowStyleType,
+  style?: LineType,
 };
 
-declare type ArrowStyleType = {
-  arrow: {
+declare type ShapeType = {
+  arrow?: {
     arrowLength?: number,
     arrowThickness?: number,
   },
+  circle?: {
+    radius?: number,
+    fillColor?: string,
+    strokeColor?: string,
+    strokeWidth?: number,
+  },
+};
+
+declare type LineType = {
+  endShape?: ShapeType,
   strokeColor?: string,
   strokeWidth?: number,
   strokeDasharray?: string,
   noCurves?: boolean,
 };
+
+type ValidShapeTypes = 'arrow' | 'circle';
