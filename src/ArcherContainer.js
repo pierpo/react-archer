@@ -16,8 +16,10 @@ export type ArcherContainerContextType = {
 type FunctionChild = (context: React$Context<ArcherContainerContextType>) => React$Node;
 
 type Props = {
-  arrowLength: number,
-  arrowThickness: number,
+  arrow: {
+    arrowLength: number,
+    arrowThickness: number,
+  },
   strokeColor: string,
   strokeWidth: number,
   strokeDasharray?: string,
@@ -115,8 +117,10 @@ export class ArcherContainer extends React.Component<Props, State> {
   }
 
   static defaultProps = {
-    arrowLength: 10,
-    arrowThickness: 6,
+    arrow: {
+      arrowLength: 10,
+      arrowThickness: 6,
+    },
     strokeColor: '#f00',
     strokeWidth: 2,
     svgContainerStyle: {},
@@ -231,21 +235,21 @@ export class ArcherContainer extends React.Component<Props, State> {
 
     return this._getSourceToTargets().map(
       ({ source, target, label, style }: SourceToTargetType) => {
-        const strokeColor = (style && style.strokeColor) || this.props.strokeColor;
+        const strokeColor = style?.strokeColor || this.props.strokeColor;
 
         // Actual arrowLength value might be 0, which can't work with a simple 'actualValue || defaultValue'
-        let arrowLength = this.props.arrowLength;
-        if (style && (style.arrowLength || style.arrowLength === 0)) {
-          arrowLength = style.arrowLength;
+        let arrowLength = this.props.arrow.arrowLength;
+        if (style && style.arrow && (style.arrow.arrowLength || style.arrow.arrowLength === 0)) {
+          arrowLength = style.arrow.arrowLength;
         }
 
-        const strokeWidth = (style && style.strokeWidth) || this.props.strokeWidth;
+        const strokeWidth = style?.strokeWidth || this.props.strokeWidth;
 
-        const strokeDasharray = (style && style.strokeDasharray) || this.props.strokeDasharray;
+        const strokeDasharray = style?.strokeDasharray || this.props.strokeDasharray;
 
-        const arrowThickness = (style && style.arrowThickness) || this.props.arrowThickness;
+        const arrowThickness = style?.arrow?.arrowThickness || this.props.arrow.arrowThickness;
 
-        const noCurves = (style && style.noCurves) || this.props.noCurves;
+        const noCurves = style?.noCurves || this.props.noCurves;
 
         const offset = this.props.offset || 0;
 
@@ -298,36 +302,34 @@ export class ArcherContainer extends React.Component<Props, State> {
    * a different color or size
    * */
   _generateAllArrowMarkers = (): React$Element<'marker'>[] => {
-    return this._getSourceToTargets().map(
-      ({ source, target, label, style }: SourceToTargetType) => {
-        const strokeColor = (style && style.strokeColor) || this.props.strokeColor;
+    return this._getSourceToTargets().map(({ source, target, style }: SourceToTargetType) => {
+      const strokeColor = (style && style.strokeColor) || this.props.strokeColor;
 
-        // Actual arrowLength value might be 0, which can't work with a simple 'actualValue || defaultValue'
-        let arrowLength = this.props.arrowLength;
-        if (style && (style.arrowLength || style.arrowLength === 0)) {
-          arrowLength = style.arrowLength;
-        }
+      // Actual arrowLength value might be 0, which can't work with a simple 'actualValue || defaultValue'
+      let arrowLength = this.props.arrow.arrowLength;
+      if (style && style.arrow && (style.arrow.arrowLength || style.arrow.arrowLength === 0)) {
+        arrowLength = style.arrow.arrowLength;
+      }
 
-        const arrowThickness = (style && style.arrowThickness) || this.props.arrowThickness;
+      const arrowThickness = style?.arrow?.arrowThickness || this.props.arrow.arrowThickness;
 
-        const arrowPath = `M0,0 L0,${arrowThickness} L${arrowLength},${arrowThickness / 2} z`;
+      const arrowPath = `M0,0 L0,${arrowThickness} L${arrowLength},${arrowThickness / 2} z`;
 
-        return (
-          <marker
-            id={this._getMarkerId(source, target)}
-            key={this._getMarkerId(source, target)}
-            markerWidth={arrowLength}
-            markerHeight={arrowThickness}
-            refX="0"
-            refY={arrowThickness / 2}
-            orient="auto"
-            markerUnits="strokeWidth"
-          >
-            <path d={arrowPath} fill={strokeColor} />
-          </marker>
-        );
-      },
-    );
+      return (
+        <marker
+          id={this._getMarkerId(source, target)}
+          key={this._getMarkerId(source, target)}
+          markerWidth={arrowLength}
+          markerHeight={arrowThickness}
+          refX="0"
+          refY={arrowThickness / 2}
+          orient="auto"
+          markerUnits="strokeWidth"
+        >
+          <path d={arrowPath} fill={strokeColor} />
+        </marker>
+      );
+    });
   };
 
   _svgContainerStyle = (): Object => ({

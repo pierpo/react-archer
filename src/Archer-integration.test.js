@@ -8,8 +8,11 @@ import { rootStyle, rowStyle, boxStyle } from './testHelper';
 
 describe('Archer Integration', () => {
   const defaultProps = {
-    arrowLength: 10,
-    arrowThickness: 30,
+    arrow: {
+      arrowLength: 10,
+      arrowThickness: 30,
+    },
+
     strokeColor: 'rgb(123, 234, 123)',
     strokeDasharray: '5,5',
   };
