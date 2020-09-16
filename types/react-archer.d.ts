@@ -1,16 +1,19 @@
 import * as React from 'react';
 
+export interface ShapeType {
+  arrow?: {
+    arrowLength?: number;
+    arrowThickness?: number;
+  };
+  circle?: {
+    radius?: number;
+    fillColor?: string;
+    strokeColor?: string;
+    strokeWidth?: number;
+  };
+}
+
 export interface ArcherContainerProps {
-  /**
-   * A size in px
-   */
-  arrowLength?: number;
-
-  /**
-   * A size in px
-   */
-  arrowThickness?: number;
-
   /**
    * A color string
    *
@@ -47,6 +50,11 @@ export interface ArcherContainerProps {
    * Optional number for space between element and start/end of stroke
    */
   offset?: number;
+
+  /**
+   * Customize the end shape of the line. Defaults to a traditional "arrow" (triangle) shape.
+   */
+  endShape?: ShapeType;
 }
 
 export class ArcherContainer extends React.Component<ArcherContainerProps> {
@@ -57,23 +65,24 @@ export class ArcherContainer extends React.Component<ArcherContainerProps> {
   refreshScreen: () => void;
 }
 
-export interface ArrowStyle {
+export interface LineStyle {
   strokeColor?: string;
   strokeWidth?: number;
   strokeDasharray?: string;
-  arrowLength?: number;
-  arrowThickness?: number;
   noCurves?: boolean;
+  endShape?: ShapeType;
 }
 
 export type AnchorPosition = 'top' | 'bottom' | 'left' | 'right' | 'middle';
+
+export type ValidShapeTypes = 'arrow' | 'circle';
 
 export interface Relation {
   targetId: string;
   targetAnchor: AnchorPosition;
   sourceAnchor: AnchorPosition;
   label?: React.ReactNode;
-  style?: ArrowStyle;
+  style?: LineStyle;
 }
 
 export interface ArcherElementProps {
