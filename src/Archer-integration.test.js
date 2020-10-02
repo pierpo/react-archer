@@ -8,8 +8,10 @@ import { rootStyle, rowStyle, boxStyle } from './testHelper';
 
 describe('Archer Integration', () => {
   const defaultProps = {
-    arrowLength: 10,
-    arrowThickness: 30,
+    arrow: {
+      arrowLength: 10,
+      arrowThickness: 30,
+    },
     strokeColor: 'rgb(123, 234, 123)',
     strokeDasharray: '5,5',
   };
@@ -47,7 +49,13 @@ describe('Archer Integration', () => {
             targetId: 'element3',
             targetAnchor: 'left',
             sourceAnchor: 'right',
-            style: { strokeColor: 'blue', strokeWidth: 1 },
+            style: {
+              strokeColor: 'blue',
+              strokeWidth: 1,
+              endShape: {
+                circle: { radius: 3, strokeWidth: 1, fillColor: 'blue', strokeColor: 'black' },
+              },
+            },
             label: <div style={{ marginTop: '-20px' }}>Arrow 2</div>,
           },
         ]}
@@ -71,6 +79,16 @@ describe('Archer Integration', () => {
             targetAnchor: 'right',
             sourceAnchor: 'left',
             label: 'Arrow 3',
+            style: {
+              endShape: {
+                circle: {
+                  radius: 2,
+                  strokeWidth: 1,
+                  fillColor: '#c0ffee',
+                  strokeColor: 'tomato',
+                },
+              },
+            },
           },
         ]}
       >

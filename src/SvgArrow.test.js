@@ -197,10 +197,14 @@ describe('SvgArrow', () => {
       endingPoint: new Point(30, 30),
       endingAnchorOrientation: 'top',
       strokeColor: 'blue',
-      arrowLength: 10,
       strokeWidth: 2,
       arrowMarkerId: 'arrow123123',
       noCurves: false,
+      endShape: {
+        arrow: {
+          arrowLength: 10,
+        },
+      },
     };
 
     beforeEach(() => {

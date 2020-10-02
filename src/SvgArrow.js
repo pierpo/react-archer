@@ -9,13 +9,13 @@ type Props = {
   endingPoint: Point,
   endingAnchorOrientation: AnchorPositionType,
   strokeColor: string,
-  arrowLength: number,
   strokeWidth: number,
   strokeDasharray?: string,
   arrowLabel?: ?React$Node,
   arrowMarkerId: string,
   noCurves: boolean,
   offset?: number,
+  endShape: Object,
 };
 
 function computeEndingArrowDirectionVector(endingAnchorOrientation) {
@@ -160,22 +160,23 @@ function computePathString({
     `${xEnd},${yEnd}`
   );
 }
-
 const SvgArrow = ({
   startingPoint,
   startingAnchorOrientation,
   endingPoint,
   endingAnchorOrientation,
   strokeColor,
-  arrowLength,
   strokeWidth,
   strokeDasharray,
   arrowLabel,
   arrowMarkerId,
   noCurves,
   offset,
+  endShape,
 }: Props) => {
-  const actualArrowLength = arrowLength * 2;
+  const actualArrowLength = endShape.circle
+    ? endShape.circle.radius * 2
+    : endShape.arrow.arrowLength * 2;
 
   const xStart = startingPoint.x;
   const yStart = startingPoint.y;
