@@ -58,6 +58,7 @@ const defaultSvgContainerStyle: SVGContainerStyle = {
   height: '100%',
   top: 0,
   left: 0,
+  pointerEvents: 'none',
 };
 
 function rectToPoint(rect: ClientRect): Point {
