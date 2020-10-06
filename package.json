@@ -4,7 +4,7 @@
   "main": "lib/react-archer.js",
   "module": "lib/react-archer.js",
   "types": "types/react-archer.d.ts",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "license": "MIT",
   "dependencies": {
     "react-fast-compare": "^2.0.4",
