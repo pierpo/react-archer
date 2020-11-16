@@ -137,6 +137,7 @@ function computePathString({
   xEnd: number,
   yEnd: number,
   noCurves: boolean,
+  shortestPath: boolean,
   offset?: number,
 |}): string {
   const curveMarker = noCurves ? '' : 'C';
@@ -156,7 +157,7 @@ function computePathString({
 
   return (
     `M${xStart},${yStart} ` +
-    `${curveMarker}${xAnchor1},${yAnchor1} ${xAnchor2},${yAnchor2} ` +
+    (shortestPath ? '' : `${curveMarker}${xAnchor1},${yAnchor1} ${xAnchor2},${yAnchor2} `) +
     `${xEnd},${yEnd}`
   );
 }
