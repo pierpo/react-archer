@@ -11,5 +11,6 @@ flow-typed
 [options]
 esproposal.optional_chaining=enable
 esproposal.nullish_coalescing=enable
+types_first=false
 
 [strict]
