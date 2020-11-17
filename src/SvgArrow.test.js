@@ -189,7 +189,7 @@ describe('SvgArrow', () => {
   });
 
   describe('component', () => {
-    let wrapper: ShallowWrapper;
+    let wrapper: ShallowWrapper<typeof SvgArrow>;
 
     const props = {
       startingPoint: new Point(10, 10),

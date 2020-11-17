@@ -67,7 +67,7 @@ describe('ArcherElement', () => {
   const mountContainer = (
     relations: Array<RelationType>,
     newRelations: Array<RelationType>,
-  ): ReactWrapper => {
+  ): ReactWrapper<typeof MockArcherContainer> => {
     const props = { ...defaultProps, id: 'foo' };
 
     return mount(
@@ -92,7 +92,7 @@ describe('ArcherElement', () => {
   it('should register and unregister child on mounting ref callback', () => {
     const relations = [];
 
-    const wrapper: ReactWrapper = mountContainer(relations, []);
+    const wrapper: ReactWrapper<typeof MockArcherContainer> = mountContainer(relations, []);
 
     // See we register the child
     expect(registerChildMock).toHaveBeenCalledWith('foo', expect.anything());
@@ -122,7 +122,10 @@ describe('ArcherElement', () => {
         },
       ];
 
-      const wrapper: ReactWrapper = mountContainer(relations, newRelations);
+      const wrapper: ReactWrapper<typeof MockArcherContainer> = mountContainer(
+        relations,
+        newRelations,
+      );
 
       // Trigger update in ArcherElement
       wrapper
@@ -139,7 +142,10 @@ describe('ArcherElement', () => {
       const relations = [{ targetId: 'toto', targetAnchor: 'top', sourceAnchor: 'left' }];
       const newRelations = [{ targetId: 'toto', targetAnchor: 'top', sourceAnchor: 'left' }];
 
-      const wrapper: ReactWrapper = mountContainer(relations, newRelations);
+      const wrapper: ReactWrapper<typeof MockArcherContainer> = mountContainer(
+        relations,
+        newRelations,
+      );
 
       // Will get called on mount regardless
       registerTransitionsMock.mockReset();
@@ -167,7 +173,7 @@ describe('ArcherElement', () => {
         },
       ];
 
-      const wrapper: ReactWrapper = mountContainer(relations, []);
+      const wrapper: ReactWrapper<typeof MockArcherContainer> = mountContainer(relations, []);
 
       wrapper.update();
 
@@ -177,7 +183,7 @@ describe('ArcherElement', () => {
     it('should not call registerTransitions on mount if no relations', () => {
       const relations = [];
 
-      const wrapper: ReactWrapper = mountContainer(relations, []);
+      const wrapper: ReactWrapper<typeof MockArcherContainer> = mountContainer(relations, []);
 
       wrapper.update();
 

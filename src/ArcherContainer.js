@@ -254,12 +254,14 @@ export class ArcherContainer extends React.Component<Props, State> {
     const shapeObjMap = {
       arrow: () => ({
         arrow: {
+          // $FlowFixMe new error since flow upgrade
           ...this.props.endShape?.arrow,
           ...style.endShape?.arrow,
         },
       }),
       circle: () => ({
         circle: {
+          // $FlowFixMe new error since flow upgrade
           ...this.props.endShape?.circle,
           ...style.endShape?.circle,
         },

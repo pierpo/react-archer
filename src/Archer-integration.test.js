@@ -124,7 +124,9 @@ describe('Archer Integration', () => {
     );
 
     it('renders elements', () => {
-      const component: ReactWrapper = mount(<ItemRendererComponent {...defaultProps} />);
+      const component: ReactWrapper<typeof ItemRendererComponent> = mount(
+        <ItemRendererComponent {...defaultProps} />,
+      );
 
       expect(component.find(ArcherElement).length).toEqual(4);
     });
