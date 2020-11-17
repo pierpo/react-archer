@@ -80,7 +80,7 @@ describe('ArcherContainer', () => {
   };
 
   it('should render given children and a svg element', () => {
-    const wrapper: ShallowWrapper = shallowRenderAndSetState();
+    const wrapper: ShallowWrapper<typeof ArcherContainer> = shallowRenderAndSetState();
 
     expect(
       wrapper
@@ -99,7 +99,7 @@ describe('ArcherContainer', () => {
 
   describe('rendering an svg with the marker element used to draw an svg arrow', () => {
     it('should render the arrow with an arrow end by default', () => {
-      const wrapper: ShallowWrapper = shallowRenderAndSetState();
+      const wrapper: ShallowWrapper<typeof ArcherContainer> = shallowRenderAndSetState();
       const marker = wrapper.find('marker');
       const markerProps = marker.props();
 
@@ -118,7 +118,9 @@ describe('ArcherContainer', () => {
     });
 
     it('should render the arrow with a circle end when provided', () => {
-      const wrapper: ShallowWrapper = shallowRenderAndSetState(circleEndShapeDefaultState);
+      const wrapper: ShallowWrapper<typeof ArcherContainer> = shallowRenderAndSetState(
+        circleEndShapeDefaultState,
+      );
       const marker = wrapper.find('marker');
       const markerProps = marker.props();
 
@@ -141,11 +143,12 @@ describe('ArcherContainer', () => {
     describe('computeArrows', () => {
       describe('with default end shape', () => {
         it('renders an SVG arrow', () => {
-          const wrapper: ShallowWrapper = shallowRenderAndSetState();
+          const wrapper: ShallowWrapper<typeof ArcherContainer> = shallowRenderAndSetState();
           const uniquePrefix: string = wrapper.instance().arrowMarkerUniquePrefix;
 
           const arrow = wrapper.instance()._computeArrows();
 
+          // $FlowFixMe TODO new error since flow upgrade
           const tree = renderer.create(arrow).toJSON();
 
           expect(tree).toMatchInlineSnapshot(`
@@ -169,11 +172,14 @@ describe('ArcherContainer', () => {
 
       describe('with a circle end shape', () => {
         it('renders an SVG arrow', () => {
-          const wrapper: ShallowWrapper = shallowRenderAndSetState(circleEndShapeDefaultState);
+          const wrapper: ShallowWrapper<typeof ArcherContainer> = shallowRenderAndSetState(
+            circleEndShapeDefaultState,
+          );
           const uniquePrefix: string = wrapper.instance().arrowMarkerUniquePrefix;
 
           const arrow = wrapper.instance()._computeArrows();
 
+          // $FlowFixMe TODO new error since flow upgrade
           const tree = renderer.create(arrow).toJSON();
 
           expect(tree).toMatchInlineSnapshot(`
@@ -199,11 +205,12 @@ describe('ArcherContainer', () => {
     describe('generateAllArrowMarkers', () => {
       describe('with default end shape', () => {
         it('renders an SVG marker', () => {
-          const wrapper: ShallowWrapper = shallowRenderAndSetState();
+          const wrapper: ShallowWrapper<typeof ArcherContainer> = shallowRenderAndSetState();
           const uniquePrefix: string = wrapper.instance().arrowMarkerUniquePrefix;
 
           const marker = wrapper.instance()._generateAllArrowMarkers();
 
+          // $FlowFixMe TODO new error since flow upgrade
           const tree = renderer.create(marker).toJSON();
 
           expect(tree).toMatchInlineSnapshot(`
@@ -227,11 +234,14 @@ describe('ArcherContainer', () => {
 
       describe('with a circle end shape', () => {
         it('renders an SVG marker', () => {
-          const wrapper: ShallowWrapper = shallowRenderAndSetState(circleEndShapeDefaultState);
+          const wrapper: ShallowWrapper<typeof ArcherContainer> = shallowRenderAndSetState(
+            circleEndShapeDefaultState,
+          );
           const uniquePrefix: string = wrapper.instance().arrowMarkerUniquePrefix;
 
           const marker = wrapper.instance()._generateAllArrowMarkers();
 
+          // $FlowFixMe TODO new error since flow upgrade
           const tree = renderer.create(marker).toJSON();
 
           expect(tree).toMatchInlineSnapshot(`
@@ -264,7 +274,7 @@ describe('ArcherContainer', () => {
       global.window.addEventListener = jest.fn();
       global.window.removeEventListener = jest.fn();
 
-      const wrapper: ShallowWrapper = shallowRenderAndSetState();
+      const wrapper: ShallowWrapper<typeof ArcherContainer> = shallowRenderAndSetState();
 
       expect(global.window.addEventListener).toBeCalledWith('resize', expect.anything());
 
