@@ -6,7 +6,7 @@ context('React Archer', () => {
 
   describe('First example page', () => {
     beforeEach(() => {
-      cy.contains('Example 1').click();
+      cy.visit('/?example=1');
     });
 
     it('should draw arrows', () => {
@@ -16,8 +16,7 @@ context('React Archer', () => {
 
   describe('Second example page', () => {
     beforeEach(() => {
-      cy.contains('Example 2').click();
-      cy.contains('Change labels').click();
+      cy.visit('/?example=2');
     });
 
     it('should draw arrows', () => {
@@ -37,8 +36,7 @@ context('React Archer', () => {
 
   describe('Third example page', () => {
     beforeEach(() => {
-      cy.contains('Example 3').click();
-      cy.get('h2').contains('Example 3');
+      cy.visit('/?example=3');
     });
 
     it('should draw non curvy arrows', () => {
@@ -48,8 +46,7 @@ context('React Archer', () => {
 
   describe('Fourth example page', () => {
     beforeEach(() => {
-      cy.contains('Example 4').click();
-      cy.get('h2').contains('Example 4');
+      cy.visit('/?example=4');
     });
 
     it('should draw arrows with an offset', () => {
@@ -59,8 +56,7 @@ context('React Archer', () => {
 
   describe('Fifth example page', () => {
     beforeEach(() => {
-      cy.contains('Example 5').click();
-      cy.get('h2').contains('Example 5');
+      cy.visit('/?example=5');
     });
 
     it('should draw arrows with a middle anchor', () => {
@@ -70,8 +66,7 @@ context('React Archer', () => {
 
   describe('Seventh example page', () => {
     beforeEach(() => {
-      cy.contains('Example 7').click();
-      cy.get('h2').contains('Example 7');
+      cy.visit('/?example=7');
     });
 
     it('should draw arrows with circle end shapes', () => {
