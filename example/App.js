@@ -29,21 +29,27 @@ const getExample = id => {
 };
 
 const App = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const exampleFromUrl = Number(urlParams.get('example'));
+
   const [exampleId, setExampleId] = React.useState(1);
-  const Example = getExample(exampleId);
+  const Example = getExample(exampleFromUrl || exampleId);
+
   return (
     <div>
-      <div>
-        <h2>Example {exampleId}</h2>
-        <p>Choose an example:</p>
-        <button onClick={() => setExampleId(1)}>Example 1</button>
-        <button onClick={() => setExampleId(2)}>Example 2</button>
-        <button onClick={() => setExampleId(3)}>Example 3</button>
-        <button onClick={() => setExampleId(4)}>Example 4</button>
-        <button onClick={() => setExampleId(5)}>Example 5</button>
-        <button onClick={() => setExampleId(6)}>Example 6</button>
-        <button onClick={() => setExampleId(7)}>Example 7</button>
-      </div>
+      {!exampleFromUrl && (
+        <div>
+          <h2>Example {exampleId}</h2>
+          <p>Choose an example:</p>
+          <button onClick={() => setExampleId(1)}>Example 1</button>
+          <button onClick={() => setExampleId(2)}>Example 2</button>
+          <button onClick={() => setExampleId(3)}>Example 3</button>
+          <button onClick={() => setExampleId(4)}>Example 4</button>
+          <button onClick={() => setExampleId(5)}>Example 5</button>
+          <button onClick={() => setExampleId(6)}>Example 6</button>
+          <button onClick={() => setExampleId(7)}>Example 7</button>
+        </div>
+      )}
       <hr />
       <Example />
     </div>
