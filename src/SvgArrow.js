@@ -14,6 +14,7 @@ type Props = {
   arrowLabel?: ?React$Node,
   arrowMarkerId: string,
   noCurves: boolean,
+  shortestPath: boolean,
   offset?: number,
   endShape: Object,
 };
@@ -126,7 +127,9 @@ function computePathString({
   xEnd,
   yEnd,
   noCurves,
+  shortestPath,
   offset,
+  endingAnchorOrientation,
 }: {|
   xStart: number,
   yStart: number,
@@ -139,6 +142,7 @@ function computePathString({
   noCurves: boolean,
   shortestPath: boolean,
   offset?: number,
+  endingAnchorOrientation?: AnchorPositionType,
 |}): string {
   const curveMarker = noCurves ? '' : 'C';
 
@@ -155,9 +159,25 @@ function computePathString({
     yEnd = yEnd - yOffset;
   }
 
+  function computeArrowDirection(endingAnchorOrientation) {
+    switch (endingAnchorOrientation) {
+      case 'left':
+        return `${xEnd - 1},${yEnd} `;
+      case 'right':
+        return `${xEnd + 1},${yEnd} `;
+      case 'top':
+        return `${xEnd},${yEnd - 1} `;
+      case 'bottom':
+        return `${xEnd},${yEnd + 1} `;
+      default:
+        return '';
+    }
+  }
+  
+  const convertArrowDirectionParams = computeArrowDirection(endingAnchorOrientation)
   return (
     `M${xStart},${yStart} ` +
-    (shortestPath ? '' : `${curveMarker}${xAnchor1},${yAnchor1} ${xAnchor2},${yAnchor2} `) +
+    (shortestPath ? convertArrowDirectionParams : `${curveMarker}${xAnchor1},${yAnchor1} ${xAnchor2},${yAnchor2} `) +
     `${xEnd},${yEnd}`
   );
 }
@@ -172,6 +192,7 @@ const SvgArrow = ({
   arrowLabel,
   arrowMarkerId,
   noCurves,
+  shortestPath,
   offset,
   endShape,
 }: Props) => {
@@ -219,7 +240,9 @@ const SvgArrow = ({
     xEnd,
     yEnd,
     noCurves,
+    shortestPath,
     offset,
+    endingAnchorOrientation,
   });
 
   const { xLabel, yLabel, labelWidth, labelHeight } = computeLabelDimensions(
