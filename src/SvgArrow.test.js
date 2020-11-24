@@ -241,5 +241,12 @@ describe('SvgArrow', () => {
         },
       });
     });
+
+    it('should not render path if target is not in the view', () => {
+      wrapper.setProps({ endingPoint: new Point(0, 0) });
+      wrapper.update();
+      const path = wrapper.find('path');
+      expect(path).toMatchObject({});
+    });
   });
 });

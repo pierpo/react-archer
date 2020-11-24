@@ -181,6 +181,14 @@ const SvgArrow = ({
   const xStart = startingPoint.x;
   const yStart = startingPoint.y;
 
+  /**
+   * If the target is not in the view, endingPoint.x and endingPoint.y are zero.
+   * In this case, do not render the SvgArrow.
+   */
+  if (endingPoint.x === 0 && endingPoint.y === 0) {
+    return null;
+  }
+
   const endingPointWithArrow = computeEndingPointAccordingToArrowHead(
     endingPoint.x,
     endingPoint.y,
