@@ -243,7 +243,13 @@ describe('SvgArrow', () => {
     });
 
     it('should not render path if target is not in the view', () => {
-      wrapper.setProps({ endingPoint: new Point(0, 0) });
+      wrapper.setProps({ endingPoint: new Point(NaN, NaN) });
+      wrapper.update();
+      const path = wrapper.find('path');
+      expect(path).toMatchObject({});
+    });
+    it('should not render path if origin is not in the view', () => {
+      wrapper.setProps({ startingPoint: new Point(NaN, NaN) });
       wrapper.update();
       const path = wrapper.find('path');
       expect(path).toMatchObject({});

@@ -192,7 +192,7 @@ export class ArcherContainer extends React.Component<Props, State> {
     const rect = this._getRectFromRef(this.state.refs[index]);
 
     if (!rect) {
-      return new Point(0, 0);
+      return new Point(NaN, NaN);
     }
     const absolutePosition = computeCoordinatesFromAnchorPosition(position, rect);
 

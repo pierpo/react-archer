@@ -178,16 +178,21 @@ const SvgArrow = ({
     ? endShape.circle.radius * 2
     : endShape.arrow.arrowLength * 2;
 
-  const xStart = startingPoint.x;
-  const yStart = startingPoint.y;
-
   /**
-   * If the target is not in the view, endingPoint.x and endingPoint.y are zero.
-   * In this case, do not render the SvgArrow.
+   * If the target or origin is not in the view, i.e. x and y coordinates are NaN.
+   * do not render the SvgArrow.
    */
-  if (endingPoint.x === 0 && endingPoint.y === 0) {
+  if (
+    isNaN(endingPoint.x) ||
+    isNaN(endingPoint.y) ||
+    isNaN(startingPoint.x) ||
+    isNaN(startingPoint.y)
+  ) {
     return null;
   }
+
+  const xStart = startingPoint.x;
+  const yStart = startingPoint.y;
 
   const endingPointWithArrow = computeEndingPointAccordingToArrowHead(
     endingPoint.x,
