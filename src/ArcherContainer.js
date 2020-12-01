@@ -217,13 +217,13 @@ export class ArcherContainer extends React.Component<Props, State> {
   };
 
   _registerChild = (id: string, ref: HTMLElement): void => {
-    if (!this.state.refs[id]) {
-      this.state.observer.observe(ref);
+    // if (!this.state.refs[id]) {
+    this.state.observer.observe(ref);
 
-      this.setState((currentState: State) => ({
-        refs: { ...currentState.refs, [id]: ref },
-      }));
-    }
+    this.setState((currentState: State) => ({
+      refs: { ...currentState.refs, [id]: ref },
+    }));
+    // }
   };
 
   _unregisterChild = (id: string): void => {
