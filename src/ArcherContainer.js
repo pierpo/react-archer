@@ -16,6 +16,7 @@ export type ArcherContainerContextType = {
 type FunctionChild = (context: React$Context<ArcherContainerContextType>) => React$Node;
 
 type Props = {
+  startMarker?: boolean,
   endShape?: ShapeType,
   strokeColor: string,
   strokeWidth: number,
@@ -276,6 +277,8 @@ export class ArcherContainer extends React.Component<Props, State> {
 
     return this._getSourceToTargets().map(
       ({ source, target, label, style = {} }: SourceToTargetType) => {
+        const startMarker = style.startMarker || this.props.startMarker;
+
         const endShape = this._createShapeObj(style);
 
         const strokeColor = style.strokeColor || this.props.strokeColor;
@@ -316,6 +319,7 @@ export class ArcherContainer extends React.Component<Props, State> {
             arrowMarkerId={this._getMarkerId(source, target)}
             noCurves={!!noCurves}
             offset={offset}
+            enableStartMarker={!!startMarker}
             endShape={endShape}
           />
         );
@@ -417,7 +421,7 @@ export class ArcherContainer extends React.Component<Props, State> {
           markerHeight={markerHeight}
           refX={refX}
           refY={refY}
-          orient="auto"
+          orient="auto-start-reverse"
           markerUnits="strokeWidth"
         >
           {path}

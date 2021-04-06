@@ -69,6 +69,7 @@ export interface LineStyle {
   strokeColor?: string;
   strokeWidth?: number;
   strokeDasharray?: string;
+  startMarker?: boolean;
   noCurves?: boolean;
   endShape?: ShapeType;
 }
