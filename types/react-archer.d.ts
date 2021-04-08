@@ -1,3 +1,4 @@
+// @noflow
 import * as React from 'react';
 
 export interface ShapeType {
@@ -55,6 +56,11 @@ export interface ArcherContainerProps {
    * Customize the end shape of the line. Defaults to a traditional "arrow" (triangle) shape.
    */
   endShape?: ShapeType;
+
+  /**
+   * Set this to true of you want to render a marker at the start of the line
+   */
+  startMarker?: boolean;
 }
 
 export class ArcherContainer extends React.Component<ArcherContainerProps> {

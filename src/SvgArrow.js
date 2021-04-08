@@ -19,8 +19,8 @@ type Props = {
   endShape: Object,
 };
 
-function computeStartingArrowDirectionVector(startingAnchorOrientation) {
-  switch (startingAnchorOrientation) {
+function computeArrowDirectionVector(anchorOrientation) {
+  switch (anchorOrientation) {
     case 'left':
       return { arrowX: -1, arrowY: 0 };
     case 'right':
@@ -34,53 +34,19 @@ function computeStartingArrowDirectionVector(startingAnchorOrientation) {
   }
 }
 
-function computeEndingArrowDirectionVector(endingAnchorOrientation) {
-  switch (endingAnchorOrientation) {
-    case 'left':
-      return { arrowX: -1, arrowY: 0 };
-    case 'right':
-      return { arrowX: 1, arrowY: 0 };
-    case 'top':
-      return { arrowX: 0, arrowY: -1 };
-    case 'bottom':
-      return { arrowX: 0, arrowY: 1 };
-    default:
-      return { arrowX: 0, arrowY: 0 };
-  }
-}
-
-export function computeStartingPointAccordingToArrowHead(
-  xArrowHeadStart: number,
-  yArrowHeadStart: number,
-  arrowLength: number,
-  strokeWidth: number,
-  startingAnchorOrientation: AnchorPositionType,
-) {
-  const startingVector = computeStartingArrowDirectionVector(startingAnchorOrientation);
-
-  const { arrowX, arrowY } = startingVector;
-
-  const xStart = xArrowHeadStart + (arrowX * arrowLength * strokeWidth) / 2;
-  const yStart = yArrowHeadStart + (arrowY * arrowLength * strokeWidth) / 2;
-
-  return { xStart, yStart };
-}
-
-export function computeEndingPointAccordingToArrowHead(
-  xArrowHeadEnd: number,
-  yArrowHeadEnd: number,
+export function computeArrowPointAccordingToArrowHead(
+  xArrowHeadPoint: number,
+  yArrowHeadPoint: number,
   arrowLength: number,
   strokeWidth: number,
   endingAnchorOrientation: AnchorPositionType,
 ) {
-  const endingVector = computeEndingArrowDirectionVector(endingAnchorOrientation);
+  const { arrowX, arrowY } = computeArrowDirectionVector(endingAnchorOrientation);
 
-  const { arrowX, arrowY } = endingVector;
+  const xPoint = xArrowHeadPoint + (arrowX * arrowLength * strokeWidth) / 2;
+  const yPoint = yArrowHeadPoint + (arrowY * arrowLength * strokeWidth) / 2;
 
-  const xEnd = xArrowHeadEnd + (arrowX * arrowLength * strokeWidth) / 2;
-  const yEnd = yArrowHeadEnd + (arrowY * arrowLength * strokeWidth) / 2;
-
-  return { xEnd, yEnd };
+  return { xPoint, yPoint };
 }
 
 export function computeStartingAnchorPosition(
@@ -212,41 +178,41 @@ const SvgArrow = ({
     ? endShape.circle.radius * 2
     : endShape.arrow.arrowLength * 2;
 
-  const startingPointWithArrow = computeStartingPointAccordingToArrowHead(
+  // Starting point with arrow
+  const { xPoint: xStart, yPoint: yStart } = computeArrowPointAccordingToArrowHead(
     startingPoint.x,
     startingPoint.y,
     enableStartMarker ? actualArrowLength : 0,
     strokeWidth,
     startingAnchorOrientation,
   );
-  const { xStart, yStart } = startingPointWithArrow;
 
-  const endingPointWithArrow = computeEndingPointAccordingToArrowHead(
+  // Ending point with arrow
+  const { xPoint: xEnd, yPoint: yEnd } = computeArrowPointAccordingToArrowHead(
     endingPoint.x,
     endingPoint.y,
     actualArrowLength,
     strokeWidth,
     endingAnchorOrientation,
   );
-  const { xEnd, yEnd } = endingPointWithArrow;
 
-  const startingPosition = computeStartingAnchorPosition(
+  // Starting position
+  const { xAnchor1, yAnchor1 } = computeStartingAnchorPosition(
     xStart,
     yStart,
     xEnd,
     yEnd,
     startingAnchorOrientation,
   );
-  const { xAnchor1, yAnchor1 } = startingPosition;
 
-  const endingPosition = computeEndingAnchorPosition(
+  // Ending position
+  const { xAnchor2, yAnchor2 } = computeEndingAnchorPosition(
     xStart,
     yStart,
     xEnd,
     yEnd,
     endingAnchorOrientation,
   );
-  const { xAnchor2, yAnchor2 } = endingPosition;
 
   const pathString = computePathString({
     xStart,
@@ -268,15 +234,15 @@ const SvgArrow = ({
     yEnd,
   );
 
+  const markerUrl = `url(${location.href.split('#')[0]}#${arrowMarkerId})`;
+
   return (
     <g>
       <path
         d={pathString}
         style={{ fill: 'none', stroke: strokeColor, strokeWidth, strokeDasharray }}
-        markerStart={
-          enableStartMarker ? `url(${location.href.split('#')[0]}#${arrowMarkerId})` : undefined
-        }
-        markerEnd={`url(${location.href.split('#')[0]}#${arrowMarkerId})`}
+        markerStart={enableStartMarker ? markerUrl : undefined}
+        markerEnd={markerUrl}
       />
       {arrowLabel && (
         <foreignObject
