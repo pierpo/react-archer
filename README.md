@@ -1,4 +1,5 @@
 # react-archer
+
 [![CircleCI](https://circleci.com/gh/pierpo/react-archer.svg?style=svg)](https://circleci.com/gh/pierpo/react-archer)
 
 🏹 Draw arrows between DOM elements in React 🖋
@@ -14,11 +15,11 @@
 ![Example](https://raw.githubusercontent.com/pierpo/react-archer/master/example.png)
 
 ```jsx
-import { ArcherContainer, ArcherElement } from 'react-archer';
+import { ArcherContainer, ArcherElement } from 'react-archer';
 
 const rootStyle = { display: 'flex', justifyContent: 'center' };
-const rowStyle = { margin: '200px 0', display: 'flex', justifyContent: 'space-between', }
-const boxStyle = { padding: '10px', border: '1px solid black', };
+const rowStyle = { margin: '200px 0', display: 'flex', justifyContent: 'space-between' };
+const boxStyle = { padding: '10px', border: '1px solid black' };
 
 const App = () => {
   return (
@@ -77,7 +78,7 @@ const App = () => {
       </ArcherContainer>
     </div>
   );
-}
+};
 
 export default App;
 ```
@@ -88,12 +89,14 @@ export default App;
 
 #### Props
 
+<!-- prettier-ignore -->
 | Name | Type | Description |
 | - | - | - |
 | `strokeColor` | `string` | A color string `'#ff0000'`
 | `strokeWidth` | `number` | A size in `px`
 | `strokeDasharray` | `string` | Adds dashes to the stroke. It has to be a string representing an array of sizes. See some [SVG strokes documentation](https://www.w3schools.com/graphics/svg_stroking.asp).
 | `noCurves` | `boolean` | Set this to true if you want angles instead of curves
+| `lineStyle` | `string` | Can be one of `angle`, `curve` or `straight`. Setting this overrides `noCurves`.
 | `offset` | `number` | Optional number for space between element and start/end of stroke
 | `svgContainerStyle` | `Style` | Style of the SVG container element. Useful if you want to add a z-index to your SVG container to draw the arrows under your elements, for example.
 | `children` | `React.Node` |
@@ -104,9 +107,9 @@ export default App;
 If you access to the ref of your `ArcherContainer`, you will access the `refreshScreen` method.
 This will allow you to have more control on when you want to re-draw the arrows.
 
-
 ### `ArcherElement`
 
+<!-- prettier-ignore -->
 | Name | Type | Description |
 | - | - | - |
 | `id` | `string` | The id that will identify the Archer Element. Should only contain alphanumeric characters and standard characters that you can find in HTML ids.
@@ -136,13 +139,14 @@ The `ArcherStyle` type has the following shape:
   strokeWidth: number,
   strokeDasharray: number,
   noCurves: boolean,
+  lineStyle: string,
   endShape: Object
 }
 ```
 
 ## Troubleshooting
 
-#### My arrows don't re-render correctly...
+### My arrows don't re-render correctly...
 
 Try using the `refreshScreen` instance method on your `ArcherContainer` element. You can access it through the [ref of the component](https://reactjs.org/docs/refs-and-the-dom.html).
 
