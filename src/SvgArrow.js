@@ -15,11 +15,12 @@ type Props = {
   arrowMarkerId: string,
   noCurves: boolean,
   offset?: number,
+  enableStartMarker?: boolean,
   endShape: Object,
 };
 
-function computeEndingArrowDirectionVector(endingAnchorOrientation) {
-  switch (endingAnchorOrientation) {
+function computeArrowDirectionVector(anchorOrientation) {
+  switch (anchorOrientation) {
     case 'left':
       return { arrowX: -1, arrowY: 0 };
     case 'right':
@@ -33,21 +34,19 @@ function computeEndingArrowDirectionVector(endingAnchorOrientation) {
   }
 }
 
-export function computeEndingPointAccordingToArrowHead(
-  xArrowHeadEnd: number,
-  yArrowHeadEnd: number,
+export function computeArrowPointAccordingToArrowHead(
+  xArrowHeadPoint: number,
+  yArrowHeadPoint: number,
   arrowLength: number,
   strokeWidth: number,
   endingAnchorOrientation: AnchorPositionType,
 ) {
-  const endingVector = computeEndingArrowDirectionVector(endingAnchorOrientation);
+  const { arrowX, arrowY } = computeArrowDirectionVector(endingAnchorOrientation);
 
-  const { arrowX, arrowY } = endingVector;
+  const xPoint = xArrowHeadPoint + (arrowX * arrowLength * strokeWidth) / 2;
+  const yPoint = yArrowHeadPoint + (arrowY * arrowLength * strokeWidth) / 2;
 
-  const xEnd = xArrowHeadEnd + (arrowX * arrowLength * strokeWidth) / 2;
-  const yEnd = yArrowHeadEnd + (arrowY * arrowLength * strokeWidth) / 2;
-
-  return { xEnd, yEnd };
+  return { xPoint, yPoint };
 }
 
 export function computeStartingAnchorPosition(
@@ -172,41 +171,48 @@ const SvgArrow = ({
   arrowMarkerId,
   noCurves,
   offset,
+  enableStartMarker,
   endShape,
 }: Props) => {
   const actualArrowLength = endShape.circle
     ? endShape.circle.radius * 2
     : endShape.arrow.arrowLength * 2;
 
-  const xStart = startingPoint.x;
-  const yStart = startingPoint.y;
+  // Starting point with arrow
+  const { xPoint: xStart, yPoint: yStart } = computeArrowPointAccordingToArrowHead(
+    startingPoint.x,
+    startingPoint.y,
+    enableStartMarker ? actualArrowLength : 0,
+    strokeWidth,
+    startingAnchorOrientation,
+  );
 
-  const endingPointWithArrow = computeEndingPointAccordingToArrowHead(
+  // Ending point with arrow
+  const { xPoint: xEnd, yPoint: yEnd } = computeArrowPointAccordingToArrowHead(
     endingPoint.x,
     endingPoint.y,
     actualArrowLength,
     strokeWidth,
     endingAnchorOrientation,
   );
-  const { xEnd, yEnd } = endingPointWithArrow;
 
-  const startingPosition = computeStartingAnchorPosition(
+  // Starting position
+  const { xAnchor1, yAnchor1 } = computeStartingAnchorPosition(
     xStart,
     yStart,
     xEnd,
     yEnd,
     startingAnchorOrientation,
   );
-  const { xAnchor1, yAnchor1 } = startingPosition;
 
-  const endingPosition = computeEndingAnchorPosition(
+  // Ending position
+  const { xAnchor2, yAnchor2 } = computeEndingAnchorPosition(
     xStart,
     yStart,
     xEnd,
     yEnd,
     endingAnchorOrientation,
   );
-  const { xAnchor2, yAnchor2 } = endingPosition;
 
   const pathString = computePathString({
     xStart,
@@ -228,12 +234,15 @@ const SvgArrow = ({
     yEnd,
   );
 
+  const markerUrl = `url(${location.href.split('#')[0]}#${arrowMarkerId})`;
+
   return (
     <g>
       <path
         d={pathString}
         style={{ fill: 'none', stroke: strokeColor, strokeWidth, strokeDasharray }}
-        markerEnd={`url(${location.href.split('#')[0]}#${arrowMarkerId})`}
+        markerStart={enableStartMarker ? markerUrl : undefined}
+        markerEnd={markerUrl}
       />
       {arrowLabel && (
         <foreignObject

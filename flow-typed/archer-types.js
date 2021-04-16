@@ -39,6 +39,7 @@ declare type LineType = {
   strokeWidth?: number,
   strokeDasharray?: string,
   noCurves?: boolean,
+  startMarker?: boolean,
 };
 
 type ValidShapeTypes = 'arrow' | 'circle';

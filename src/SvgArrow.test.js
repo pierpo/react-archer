@@ -2,7 +2,7 @@
 import React from 'react';
 import { type ShallowWrapper, shallow } from 'enzyme';
 import SvgArrow, {
-  computeEndingPointAccordingToArrowHead,
+  computeArrowPointAccordingToArrowHead,
   computeStartingAnchorPosition,
   computeEndingAnchorPosition,
   computeLabelDimensions,
@@ -21,7 +21,7 @@ describe('SvgArrow', () => {
           strokeWidth: 2,
           endingAnchor: 'top',
         },
-        expected: { xEnd: 10, yEnd: 15 },
+        expected: { xPoint: 10, yPoint: 15 },
       },
       {
         message: 2,
@@ -32,7 +32,7 @@ describe('SvgArrow', () => {
           strokeWidth: 2,
           endingAnchor: 'top',
         },
-        expected: { xEnd: 10, yEnd: 18 },
+        expected: { xPoint: 10, yPoint: 18 },
       },
       {
         message: 3,
@@ -43,7 +43,7 @@ describe('SvgArrow', () => {
           strokeWidth: 1,
           endingAnchor: 'top',
         },
-        expected: { xEnd: 10, yEnd: 17.5 },
+        expected: { xPoint: 10, yPoint: 17.5 },
       },
       {
         message: 4,
@@ -54,14 +54,14 @@ describe('SvgArrow', () => {
           strokeWidth: 2,
           endingAnchor: 'bottom',
         },
-        expected: { xEnd: 10, yEnd: 25 },
+        expected: { xPoint: 10, yPoint: 25 },
       },
     ];
 
     dataSet.forEach(data => {
       it(`should compute coordinates of destination point excluding the arrow [data ${data.message}]`, () => {
         const { xEnd, yEnd, arrowLength, strokeWidth, endingAnchor } = data.input;
-        const result = computeEndingPointAccordingToArrowHead(
+        const result = computeArrowPointAccordingToArrowHead(
           xEnd,
           yEnd,
           arrowLength,

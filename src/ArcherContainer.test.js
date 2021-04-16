@@ -67,6 +67,34 @@ describe('ArcherContainer', () => {
     },
   };
 
+  const MarkerAtBothEndsState: WrapperState = {
+    sourceToTargetsMap: {
+      bar: [
+        {
+          source: {
+            anchor: 'top',
+            id: 'first-element',
+          },
+          target: {
+            anchor: 'bottom',
+            id: 'second-element',
+          },
+          style: {
+            startMarker: true,
+            endShape: {
+              circle: {
+                radius: 11,
+                strokeWidth: 2,
+                strokeColor: 'tomato',
+                fillColor: '#c0ffee',
+              },
+            },
+          },
+        },
+      ],
+    },
+  };
+
   const shallowRenderAndSetState = (newState?: WrapperState) => {
     const wrapper = shallow(
       <ArcherContainer {...defaultProps}>
@@ -109,7 +137,7 @@ describe('ArcherContainer', () => {
         markerHeight: 30,
         refX: 0,
         refY: 15,
-        orient: 'auto',
+        orient: 'auto-start-reverse',
         markerUnits: 'strokeWidth',
         children: <path d="M0,0 L0,30 L10,15 z" fill="rgb(123, 234, 123)" />,
       };
@@ -130,7 +158,7 @@ describe('ArcherContainer', () => {
         markerHeight: 44,
         refX: 24,
         refY: 22,
-        orient: 'auto',
+        orient: 'auto-start-reverse',
         markerUnits: 'strokeWidth',
         children: <circle cx={22} cy={22} r={11} fill="#c0ffee" stroke="tomato" strokeWidth={2} />,
       };
@@ -152,21 +180,21 @@ describe('ArcherContainer', () => {
           const tree = renderer.create(arrow).toJSON();
 
           expect(tree).toMatchInlineSnapshot(`
-  <g>
-    <path
-      d="M0,0 C0,10 0,10 0,20"
-      markerEnd="url(http://localhost/#${uniquePrefix}first-elementsecond-element)"
-      style={
-        Object {
-          "fill": "none",
-          "stroke": "rgb(123, 234, 123)",
-          "strokeDasharray": "5,5",
-          "strokeWidth": 2,
-        }
-      }
-    />
-  </g>
-  `);
+            <g>
+              <path
+                d="M0,0 C0,10 0,10 0,20"
+                markerEnd="url(http://localhost/#${uniquePrefix}first-elementsecond-element)"
+                style={
+                  Object {
+                    "fill": "none",
+                    "stroke": "rgb(123, 234, 123)",
+                    "strokeDasharray": "5,5",
+                    "strokeWidth": 2,
+                  }
+                }
+              />
+            </g>
+          `);
         });
       });
 
@@ -183,21 +211,53 @@ describe('ArcherContainer', () => {
           const tree = renderer.create(arrow).toJSON();
 
           expect(tree).toMatchInlineSnapshot(`
-<g>
-  <path
-    d="M0,0 C0,11 0,11 0,22"
-    markerEnd="url(http://localhost/#${uniquePrefix}first-elementsecond-element)"
-    style={
-      Object {
-        "fill": "none",
-        "stroke": "rgb(123, 234, 123)",
-        "strokeDasharray": "5,5",
-        "strokeWidth": 2,
-      }
-    }
-  />
-</g>
-`);
+            <g>
+              <path
+                d="M0,0 C0,11 0,11 0,22"
+                markerEnd="url(http://localhost/#${uniquePrefix}first-elementsecond-element)"
+                style={
+                  Object {
+                    "fill": "none",
+                    "stroke": "rgb(123, 234, 123)",
+                    "strokeDasharray": "5,5",
+                    "strokeWidth": 2,
+                  }
+                }
+              />
+            </g>
+          `);
+        });
+      });
+
+      describe('with a marker at start', () => {
+        it('renders an SVG arrow on both ends', () => {
+          const wrapper: ShallowWrapper<typeof ArcherContainer> = shallowRenderAndSetState(
+            MarkerAtBothEndsState,
+          );
+          const uniquePrefix: string = wrapper.instance().arrowMarkerUniquePrefix;
+
+          const arrow = wrapper.instance()._computeArrows();
+
+          // $FlowFixMe TODO new error since flow upgrade
+          const tree = renderer.create(arrow).toJSON();
+
+          expect(tree).toMatchInlineSnapshot(`
+          <g>
+            <path
+              d="M0,-22 C0,0 0,0 0,22"
+              markerEnd="url(http://localhost/#${uniquePrefix}first-elementsecond-element)"
+              markerStart="url(http://localhost/#${uniquePrefix}first-elementsecond-element)"
+              style={
+                Object {
+                  "fill": "none",
+                  "stroke": "rgb(123, 234, 123)",
+                  "strokeDasharray": "5,5",
+                  "strokeWidth": 2,
+                }
+              }
+            />
+          </g>
+        `);
         });
       });
     });
@@ -212,23 +272,22 @@ describe('ArcherContainer', () => {
 
           // $FlowFixMe TODO new error since flow upgrade
           const tree = renderer.create(marker).toJSON();
-
           expect(tree).toMatchInlineSnapshot(`
-<marker
-  id="${uniquePrefix}first-elementsecond-element"
-  markerHeight={30}
-  markerUnits="strokeWidth"
-  markerWidth={10}
-  orient="auto"
-  refX={0}
-  refY={15}
->
-  <path
-    d="M0,0 L0,30 L10,15 z"
-    fill="rgb(123, 234, 123)"
-  />
-</marker>
-`);
+            <marker
+              id="${uniquePrefix}first-elementsecond-element"
+              markerHeight={30}
+              markerUnits="strokeWidth"
+              markerWidth={10}
+              orient="auto-start-reverse"
+              refX={0}
+              refY={15}
+            >
+              <path
+                d="M0,0 L0,30 L10,15 z"
+                fill="rgb(123, 234, 123)"
+              />
+            </marker>
+          `);
         });
       });
 
@@ -245,25 +304,25 @@ describe('ArcherContainer', () => {
           const tree = renderer.create(marker).toJSON();
 
           expect(tree).toMatchInlineSnapshot(`
-          <marker
-            id="${uniquePrefix}first-elementsecond-element"
-            markerHeight={44}
-            markerUnits="strokeWidth"
-            markerWidth={44}
-            orient="auto"
-            refX={24}
-            refY={22}
-          >
-            <circle
-              cx={22}
-              cy={22}
-              fill="#c0ffee"
-              r={11}
-              stroke="tomato"
-              strokeWidth={2}
-            />
-          </marker>
-        `);
+            <marker
+              id="${uniquePrefix}first-elementsecond-element"
+              markerHeight={44}
+              markerUnits="strokeWidth"
+              markerWidth={44}
+              orient="auto-start-reverse"
+              refX={24}
+              refY={22}
+            >
+              <circle
+                cx={22}
+                cy={22}
+                fill="#c0ffee"
+                r={11}
+                stroke="tomato"
+                strokeWidth={2}
+              />
+            </marker>
+          `);
         });
       });
     });
