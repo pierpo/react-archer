@@ -33,7 +33,7 @@
   "peerDependencies": {
     "@types/react": "^16.8.8",
     "prop-types": "^15.6.2",
-    "react": "^16.9.0"
+    "react": "^16.9.0 || ^17"
   },
   "devDependencies": {
     "@babel/core": "7.6.2",
