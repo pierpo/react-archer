@@ -22,6 +22,7 @@ type Props = {
   strokeWidth: number,
   strokeDasharray?: string,
   noCurves?: boolean,
+  lineStyle?: string,
   children: React$Node | FunctionChild,
   style?: Object,
   svgContainerStyle?: Object,
@@ -287,7 +288,9 @@ export class ArcherContainer extends React.Component<Props, State> {
 
         const strokeDasharray = style.strokeDasharray || this.props.strokeDasharray;
 
-        const noCurves = style.noCurves || this.props.noCurves;
+        const noCurves = !!(style.noCurves || this.props.noCurves);
+
+        const lineStyle = style.lineStyle || this.props.lineStyle || (noCurves ? 'angle' : 'curve');
 
         const offset = this.props.offset || 0;
 
@@ -317,7 +320,7 @@ export class ArcherContainer extends React.Component<Props, State> {
             strokeDasharray={strokeDasharray}
             arrowLabel={label}
             arrowMarkerId={this._getMarkerId(source, target)}
-            noCurves={!!noCurves}
+            lineStyle={lineStyle}
             offset={offset}
             enableStartMarker={!!startMarker}
             endShape={endShape}

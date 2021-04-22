@@ -13,7 +13,7 @@ type Props = {
   strokeDasharray?: string,
   arrowLabel?: ?React$Node,
   arrowMarkerId: string,
-  noCurves: boolean,
+  lineStyle: string,
   offset?: number,
   enableStartMarker?: boolean,
   endShape: Object,
@@ -40,8 +40,18 @@ export function computeArrowPointAccordingToArrowHead(
   arrowLength: number,
   strokeWidth: number,
   endingAnchorOrientation: AnchorPositionType,
+  lineStyle?: string,
+  xArrowStart?: number,
+  yArrowStart?: number,
 ) {
-  const { arrowX, arrowY } = computeArrowDirectionVector(endingAnchorOrientation);
+  let { arrowX, arrowY } = computeArrowDirectionVector(endingAnchorOrientation);
+
+  if (lineStyle === 'straight' && xArrowStart !== undefined && yArrowStart !== undefined) {
+    const angle = Math.atan2(yArrowStart - yArrowHeadPoint, xArrowStart - xArrowHeadPoint);
+
+    arrowX = Math.cos(angle);
+    arrowY = Math.sin(angle);
+  }
 
   const xPoint = xArrowHeadPoint + (arrowX * arrowLength * strokeWidth) / 2;
   const yPoint = yArrowHeadPoint + (arrowY * arrowLength * strokeWidth) / 2;
@@ -124,7 +134,7 @@ function computePathString({
   yAnchor2,
   xEnd,
   yEnd,
-  noCurves,
+  lineStyle,
   offset,
 }: {|
   xStart: number,
@@ -135,29 +145,37 @@ function computePathString({
   yAnchor2: number,
   xEnd: number,
   yEnd: number,
-  noCurves: boolean,
+  lineStyle: string,
   offset?: number,
 |}): string {
-  const curveMarker = noCurves ? '' : 'C';
-
   if (offset && offset > 0) {
-    const angle = Math.atan2(yAnchor1 - yStart, xAnchor1 - xStart);
+    const angle =
+      lineStyle === 'straight'
+        ? Math.atan2(yEnd - yStart, xEnd - xStart)
+        : Math.atan2(yAnchor1 - yStart, xAnchor1 - xStart);
 
     const xOffset = offset * Math.cos(angle);
     const yOffset = offset * Math.sin(angle);
 
-    xStart = xStart + xOffset;
-    xEnd = xEnd - xOffset;
+    if (lineStyle !== 'straight') {
+      xStart = xStart + xOffset;
+      yStart = yStart + yOffset;
+    }
 
-    yStart = yStart + yOffset;
+    xEnd = xEnd - xOffset;
     yEnd = yEnd - yOffset;
   }
 
-  return (
-    `M${xStart},${yStart} ` +
-    `${curveMarker}${xAnchor1},${yAnchor1} ${xAnchor2},${yAnchor2} ` +
-    `${xEnd},${yEnd}`
-  );
+  let linePath = `M${xStart},${yStart} `;
+
+  if (['curve', 'angle'].includes(lineStyle)) {
+    linePath += `${
+      lineStyle === 'curve' ? 'C' : ''
+    }${xAnchor1},${yAnchor1} ${xAnchor2},${yAnchor2} `;
+  }
+  linePath += `${xEnd},${yEnd}`;
+
+  return linePath;
 }
 const SvgArrow = ({
   startingPoint,
@@ -169,7 +187,7 @@ const SvgArrow = ({
   strokeDasharray,
   arrowLabel,
   arrowMarkerId,
-  noCurves,
+  lineStyle,
   offset,
   enableStartMarker,
   endShape,
@@ -185,6 +203,9 @@ const SvgArrow = ({
     enableStartMarker ? actualArrowLength : 0,
     strokeWidth,
     startingAnchorOrientation,
+    lineStyle,
+    endingPoint.x,
+    endingPoint.y,
   );
 
   // Ending point with arrow
@@ -194,6 +215,9 @@ const SvgArrow = ({
     actualArrowLength,
     strokeWidth,
     endingAnchorOrientation,
+    lineStyle,
+    startingPoint.x,
+    startingPoint.y,
   );
 
   // Starting position
@@ -223,7 +247,7 @@ const SvgArrow = ({
     yAnchor2,
     xEnd,
     yEnd,
-    noCurves,
+    lineStyle,
     offset,
   });
 

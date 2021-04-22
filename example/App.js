@@ -6,6 +6,7 @@ import FourthExample from './FourthExample';
 import FifthExample from './FifthExample';
 import SixthExample from './SixthExample';
 import SeventhExample from './SeventhExample';
+import EighthExample from './EighthExample';
 
 const getExample = id => {
   switch (id) {
@@ -23,6 +24,8 @@ const getExample = id => {
       return SixthExample;
     case 7:
       return SeventhExample;
+    case 8:
+      return EighthExample;
     default:
       return SecondExample;
   }
@@ -48,6 +51,7 @@ const App = () => {
           <button onClick={() => setExampleId(5)}>Example 5</button>
           <button onClick={() => setExampleId(6)}>Example 6</button>
           <button onClick={() => setExampleId(7)}>Example 7</button>
+          <button onClick={() => setExampleId(8)}>Example 8</button>
         </div>
       )}
       <hr />

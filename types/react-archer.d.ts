@@ -14,6 +14,8 @@ export interface ShapeType {
   };
 }
 
+export type ValidLineStyles = 'angle' | 'straight' | 'curve';
+
 export interface ArcherContainerProps {
   /**
    * A color string
@@ -32,11 +34,6 @@ export interface ArcherContainerProps {
    * See https://www.w3schools.com/graphics/svg_stroking.asp
    */
   strokeDasharray?: string;
-
-  /**
-   * Set this to true if you want angles instead of curves
-   */
-  noCurves?: boolean;
 
   style?: React.CSSProperties;
 
@@ -61,6 +58,12 @@ export interface ArcherContainerProps {
    * Set this to true of you want to render a marker at the start of the line
    */
   startMarker?: boolean;
+
+  /**
+   * Define how the line is drawn, grid for angles, straight for direct line and curve for curves
+   */
+
+  lineStyle?: ValidLineStyles;
 }
 
 export class ArcherContainer extends React.Component<ArcherContainerProps> {
@@ -78,6 +81,7 @@ export interface LineStyle {
   startMarker?: boolean;
   noCurves?: boolean;
   endShape?: ShapeType;
+  lineStyle?: ValidLineStyles;
 }
 
 export type AnchorPosition = 'top' | 'bottom' | 'left' | 'right' | 'middle';

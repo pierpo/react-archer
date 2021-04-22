@@ -199,7 +199,7 @@ describe('SvgArrow', () => {
       strokeColor: 'blue',
       strokeWidth: 2,
       arrowMarkerId: 'arrow123123',
-      noCurves: false,
+      lineStyle: 'curve',
       endShape: {
         arrow: {
           arrowLength: 10,
@@ -228,12 +228,27 @@ describe('SvgArrow', () => {
     });
 
     it('should render path with no curves coordinates', () => {
-      wrapper.setProps({ noCurves: true });
+      wrapper.setProps({ lineStyle: 'angle' });
       wrapper.update();
       const path = wrapper.find('path');
 
       expect(path.props()).toMatchObject({
         d: 'M10,10 10,10 30,10 30,10',
+        markerEnd: 'url(http://localhost/#arrow123123)',
+        style: {
+          strokeWidth: 2,
+          stroke: 'blue',
+        },
+      });
+    });
+
+    it('should render path with straight line coordinates', () => {
+      wrapper.setProps({ lineStyle: 'straight' });
+      wrapper.update();
+      const path = wrapper.find('path');
+
+      expect(path.props()).toMatchObject({
+        d: 'M10,10 15.85786437626905,15.857864376269049',
         markerEnd: 'url(http://localhost/#arrow123123)',
         style: {
           strokeWidth: 2,
