@@ -73,4 +73,14 @@ context('React Archer', () => {
       cy.matchImageSnapshot();
     });
   });
+
+  describe('Eigth example page', () => {
+    beforeEach(() => {
+      cy.visit('/?example=8');
+    });
+
+    it('should draw arrows with straight lines and start markers', () => {
+      cy.matchImageSnapshot();
+    });
+  });
 });
