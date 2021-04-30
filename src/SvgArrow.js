@@ -214,7 +214,7 @@ const SvgArrow = ({
   const { xPoint: xEnd, yPoint: yEnd } = computeArrowPointAccordingToArrowHead(
     endingPoint.x,
     endingPoint.y,
-    actualArrowLength,
+    disableEndMarker ? 0 : actualArrowLength,
     strokeWidth,
     endingAnchorOrientation,
     lineStyle,
