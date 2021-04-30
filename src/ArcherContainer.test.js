@@ -95,6 +95,35 @@ describe('ArcherContainer', () => {
     },
   };
 
+  const MarkerOnlyAtStartState: WrapperState = {
+    sourceToTargetsMap: {
+      bar: [
+        {
+          source: {
+            anchor: 'top',
+            id: 'first-element',
+          },
+          target: {
+            anchor: 'bottom',
+            id: 'second-element',
+          },
+          style: {
+            startMarker: true,
+            endMarker: false,
+            endShape: {
+              circle: {
+                radius: 11,
+                strokeWidth: 2,
+                strokeColor: 'tomato',
+                fillColor: '#c0ffee',
+              },
+            },
+          },
+        },
+      ],
+    },
+  };
+
   const shallowRenderAndSetState = (newState?: WrapperState) => {
     const wrapper = shallow(
       <ArcherContainer {...defaultProps}>
@@ -246,6 +275,37 @@ describe('ArcherContainer', () => {
             <path
               d="M0,-22 C0,0 0,0 0,22"
               markerEnd="url(http://localhost/#${uniquePrefix}first-elementsecond-element)"
+              markerStart="url(http://localhost/#${uniquePrefix}first-elementsecond-element)"
+              style={
+                Object {
+                  "fill": "none",
+                  "stroke": "rgb(123, 234, 123)",
+                  "strokeDasharray": "5,5",
+                  "strokeWidth": 2,
+                }
+              }
+            />
+          </g>
+        `);
+        });
+      });
+
+      describe('with a marker only at start', () => {
+        it('renders an SVG arrow only on start', () => {
+          const wrapper: ShallowWrapper<typeof ArcherContainer> = shallowRenderAndSetState(
+            MarkerOnlyAtStartState,
+          );
+          const uniquePrefix: string = wrapper.instance().arrowMarkerUniquePrefix;
+
+          const arrow = wrapper.instance()._computeArrows();
+
+          // $FlowFixMe TODO new error since flow upgrade
+          const tree = renderer.create(arrow).toJSON();
+
+          expect(tree).toMatchInlineSnapshot(`
+          <g>
+            <path
+              d="M0,-22 C0,0 0,0 0,22"
               markerStart="url(http://localhost/#${uniquePrefix}first-elementsecond-element)"
               style={
                 Object {

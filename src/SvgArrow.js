@@ -16,6 +16,7 @@ type Props = {
   lineStyle: string,
   offset?: number,
   enableStartMarker?: boolean,
+  disableEndMarker?: boolean,
   endShape: Object,
 };
 
@@ -190,6 +191,7 @@ const SvgArrow = ({
   lineStyle,
   offset,
   enableStartMarker,
+  disableEndMarker,
   endShape,
 }: Props) => {
   const actualArrowLength = endShape.circle
@@ -266,7 +268,7 @@ const SvgArrow = ({
         d={pathString}
         style={{ fill: 'none', stroke: strokeColor, strokeWidth, strokeDasharray }}
         markerStart={enableStartMarker ? markerUrl : undefined}
-        markerEnd={markerUrl}
+        markerEnd={disableEndMarker ? undefined : markerUrl}
       />
       {arrowLabel && (
         <foreignObject
