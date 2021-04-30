@@ -305,7 +305,7 @@ describe('ArcherContainer', () => {
           expect(tree).toMatchInlineSnapshot(`
           <g>
             <path
-              d="M0,-22 C0,0 0,0 0,22"
+              d="M0,-22 C0,-11 0,-11 0,0"
               markerStart="url(http://localhost/#${uniquePrefix}first-elementsecond-element)"
               style={
                 Object {
