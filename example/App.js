@@ -7,6 +7,7 @@ import FifthExample from './FifthExample';
 import SixthExample from './SixthExample';
 import SeventhExample from './SeventhExample';
 import EighthExample from './EighthExample';
+import NinthExample from './NinthExample';
 
 const getExample = id => {
   switch (id) {
@@ -26,6 +27,8 @@ const getExample = id => {
       return SeventhExample;
     case 8:
       return EighthExample;
+    case 9:
+      return NinthExample;
     default:
       return SecondExample;
   }
@@ -44,14 +47,11 @@ const App = () => {
         <div>
           <h2>Example {exampleId}</h2>
           <p>Choose an example:</p>
-          <button onClick={() => setExampleId(1)}>Example 1</button>
-          <button onClick={() => setExampleId(2)}>Example 2</button>
-          <button onClick={() => setExampleId(3)}>Example 3</button>
-          <button onClick={() => setExampleId(4)}>Example 4</button>
-          <button onClick={() => setExampleId(5)}>Example 5</button>
-          <button onClick={() => setExampleId(6)}>Example 6</button>
-          <button onClick={() => setExampleId(7)}>Example 7</button>
-          <button onClick={() => setExampleId(8)}>Example 8</button>
+          {[...Array(9).keys()].map(value => (
+            <button key={value} onClick={() => setExampleId(value + 1)} style={{ marginRight: 8 }}>
+              `Example ${value + 1}`
+            </button>
+          ))}
         </div>
       )}
       <hr />
