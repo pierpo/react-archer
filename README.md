@@ -142,9 +142,9 @@ The `ArcherStyle` type has the following shape:
   strokeDasharray: number,
   noCurves: boolean,
   lineStyle: string,
-  endShape: Object
-  startMarker: boolean;
-  endMarker: boolean;
+  endShape: Object,
+  startMarker: boolean,
+  endMarker: boolean,
 }
 ```
 
