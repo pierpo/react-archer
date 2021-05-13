@@ -17,6 +17,7 @@ type FunctionChild = (context: React$Context<ArcherContainerContextType>) => Rea
 
 type Props = {
   startMarker?: boolean,
+  endMarker?: boolean,
   endShape?: ShapeType,
   strokeColor: string,
   strokeWidth: number,
@@ -280,6 +281,8 @@ export class ArcherContainer extends React.Component<Props, State> {
       ({ source, target, label, style = {} }: SourceToTargetType) => {
         const startMarker = style.startMarker || this.props.startMarker;
 
+        const endMarker = style.endMarker ?? this.props.endMarker ?? true;
+
         const endShape = this._createShapeObj(style);
 
         const strokeColor = style.strokeColor || this.props.strokeColor;
@@ -323,6 +326,7 @@ export class ArcherContainer extends React.Component<Props, State> {
             lineStyle={lineStyle}
             offset={offset}
             enableStartMarker={!!startMarker}
+            disableEndMarker={!endMarker}
             endShape={endShape}
           />
         );

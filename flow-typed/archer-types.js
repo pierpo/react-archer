@@ -40,6 +40,7 @@ declare type LineType = {
   strokeDasharray?: string,
   noCurves?: boolean,
   startMarker?: boolean,
+  endMarker?: boolean,
   lineStyle?: string,
 };
 

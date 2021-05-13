@@ -60,6 +60,11 @@ export interface ArcherContainerProps {
   startMarker?: boolean;
 
   /**
+   * Set this to false of you do not want to render a marker at the end of the line
+   */
+  endMarker?: boolean;
+
+  /**
    * Define how the line is drawn, grid for angles, straight for direct line and curve for curves
    */
 
@@ -79,6 +84,7 @@ export interface LineStyle {
   strokeWidth?: number;
   strokeDasharray?: string;
   startMarker?: boolean;
+  endMarker?: boolean;
   noCurves?: boolean;
   endShape?: ShapeType;
   lineStyle?: ValidLineStyles;
