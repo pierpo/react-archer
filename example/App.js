@@ -49,7 +49,7 @@ const App = () => {
           <p>Choose an example:</p>
           {[...Array(9).keys()].map(value => (
             <button key={value} onClick={() => setExampleId(value + 1)} style={{ marginRight: 8 }}>
-            {`Example ${value + 1}`}
+              {`Example ${value + 1}`}
             </button>
           ))}
         </div>
