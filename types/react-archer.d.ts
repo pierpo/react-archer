@@ -69,6 +69,11 @@ export interface ArcherContainerProps {
    */
 
   lineStyle?: ValidLineStyles;
+
+  /**
+   * Set this to true if you want angles instead of curves
+   */
+  noCurves?: boolean;
 }
 
 export class ArcherContainer extends React.Component<ArcherContainerProps> {
