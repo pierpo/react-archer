@@ -31,7 +31,7 @@
     "test": "jest --coverage ./src/"
   },
   "peerDependencies": {
-    "@types/react": "^16.8.8",
+    "@types/react": "^16.8.8 || ^17",
     "prop-types": "^15.6.2",
     "react": "^16.9.0 || ^17"
   },
