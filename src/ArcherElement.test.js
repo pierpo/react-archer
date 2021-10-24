@@ -117,6 +117,7 @@ describe('ArcherElement', () => {
         {
           source: { id: 'foo', anchor: 'left' },
           target: { id: 'toto', anchor: 'top' },
+          order: 0,
           label: undefined,
           style: undefined,
         },
@@ -168,6 +169,7 @@ describe('ArcherElement', () => {
         {
           source: { id: 'foo', anchor: 'left' },
           target: { id: 'toto', anchor: 'top' },
+          order: 0,
           label: undefined,
           style: undefined,
         },

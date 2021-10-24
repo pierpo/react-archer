@@ -56,11 +56,12 @@ export class ArcherElementNoContext extends React.Component<InnerProps> {
     const { id } = this.props;
 
     return relations.map(
-      ({ targetId, sourceAnchor, targetAnchor, label, style }: RelationType) => ({
+      ({ targetId, sourceAnchor, targetAnchor, label, style, order = 0 }: RelationType) => ({
         source: { id, anchor: sourceAnchor },
         target: { id: targetId, anchor: targetAnchor },
         label,
         style,
+        order,
       }),
     );
   };

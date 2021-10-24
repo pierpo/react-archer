@@ -249,7 +249,7 @@ export class ArcherContainer extends React.Component<Props, State> {
     ).map((key: string) => sourceToTargetsMap[key]);
 
     // Flatten
-    return [].concat.apply([], jaggedSourceToTargets);
+    return [].concat.apply([], jaggedSourceToTargets).sort((a, b) => a.order - b.order);
   };
 
   _createShapeObj = (style: LineType) => {

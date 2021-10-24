@@ -35,6 +35,7 @@ describe('ArcherContainer', () => {
             anchor: 'bottom',
             id: 'second-element',
           },
+          order: 0,
         },
       ],
     },
@@ -52,6 +53,7 @@ describe('ArcherContainer', () => {
             anchor: 'bottom',
             id: 'second-element',
           },
+          order: 0,
           style: {
             endShape: {
               circle: {
@@ -79,6 +81,7 @@ describe('ArcherContainer', () => {
             anchor: 'bottom',
             id: 'second-element',
           },
+          order: 0,
           style: {
             startMarker: true,
             endShape: {
@@ -107,6 +110,7 @@ describe('ArcherContainer', () => {
             anchor: 'bottom',
             id: 'second-element',
           },
+          order: 0,
           style: {
             startMarker: true,
             endMarker: false,
