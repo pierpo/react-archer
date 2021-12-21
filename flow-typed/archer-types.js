@@ -4,6 +4,7 @@ declare type RelationType = {
   targetId: string,
   targetAnchor: AnchorPositionType,
   sourceAnchor: AnchorPositionType,
+  order?: number,
   label?: ?React$Node,
   style?: LineType,
 };
@@ -16,6 +17,7 @@ declare type EntityRelationType = {
 declare type SourceToTargetType = {
   source: EntityRelationType,
   target: EntityRelationType,
+  order: number,
   label?: ?React$Node,
   style?: LineType,
 };

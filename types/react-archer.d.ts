@@ -103,6 +103,7 @@ export interface Relation {
   targetId: string;
   targetAnchor: AnchorPosition;
   sourceAnchor: AnchorPosition;
+  order?: number;
   label?: React.ReactNode;
   style?: LineStyle;
 }
