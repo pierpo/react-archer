@@ -159,5 +159,5 @@ Call `refreshScreen` when the event that you need is triggered (`onScroll` etc.)
 
 ## TODO
 
-- Automatic anchoring option
-- Add a Code Sandbox
+- Rewrite the core to use hooks. It would probably make contributing easier, and allow more decoupling in the code.
+- Maybe migrate everything to Typescript instead of Flow. Flow is lovely but Typescript is more adopted, so it would encourage contributions as well.
