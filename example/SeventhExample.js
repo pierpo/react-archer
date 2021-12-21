@@ -22,6 +22,8 @@ const SeventhExample = () => {
                 targetId: 'element2',
                 targetAnchor: 'top',
                 sourceAnchor: 'bottom',
+                // Draws this arrow on top
+                order: 100,
                 style: {
                   strokeColor: 'blue',
                   endShape: { circle: { radius: 3 } },
