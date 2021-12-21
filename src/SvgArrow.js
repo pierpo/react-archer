@@ -149,7 +149,7 @@ function computePathString({
   lineStyle: string,
   offset?: number,
 |}): string {
-  if (offset && offset > 0) {
+  if (offset && offset !== 0) {
     const angle =
       lineStyle === 'straight'
         ? Math.atan2(yEnd - yStart, xEnd - xStart)
