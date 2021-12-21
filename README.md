@@ -14,7 +14,7 @@
 
 ![Example](https://raw.githubusercontent.com/pierpo/react-archer/master/example.png)
 
-```jsx
+```javascript
 import { ArcherContainer, ArcherElement } from 'react-archer';
 
 const rootStyle = { display: 'flex', justifyContent: 'center' };
@@ -126,6 +126,7 @@ The `Relation` type has the following shape:
   targetAnchor: 'top' | 'bottom' | 'left' | 'right' | 'middle',
   sourceAnchor: 'top' | 'bottom' | 'left' | 'right' | 'middle',
   label: React.Node,
+  order?: number, // higher order means arrow will be drawn on top of the others
   style: ArcherStyle,
 }
 ```
