@@ -23,6 +23,7 @@ const SeventhExample = () => {
                 targetAnchor: 'top',
                 sourceAnchor: 'bottom',
                 style: {
+                  strokeColor: 'blue',
                   endShape: { circle: { radius: 3 } },
                 },
               },
