@@ -42,6 +42,7 @@
     "@babel/plugin-proposal-optional-chaining": "^7.11.0",
     "@babel/preset-env": "7.6.2",
     "@babel/preset-react": "7.0.0",
+    "@babel/preset-typescript": "7.16.7",
     "@types/enzyme": "3.10.11",
     "@types/jest": "27.4.1",
     "@types/react": "17.0.43",
