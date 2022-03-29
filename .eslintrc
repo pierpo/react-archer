@@ -3,16 +3,13 @@
   "plugins": [
     "prettier",
     "react",
-    "flowtype"
+    "@typescript-eslint",
   ],
   "extends": [
-    "standard",
     "plugin:cypress/recommended",
-    "standard-react",
     "plugin:prettier/recommended",
-    "plugin:flowtype/recommended"
   ],
-  "parser": "babel-eslint",
+  "parser": "@typescript-eslint/parser",
   "env": {
     "browser": true
   },
