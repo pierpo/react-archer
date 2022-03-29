@@ -1,5 +1,6 @@
 import React from 'react';
 import Point from './Point';
+
 type Props = {
   startingPoint: Point;
   startingAnchorOrientation: AnchorPositionType;
@@ -76,6 +77,7 @@ export function computeArrowPointAccordingToArrowHead(
     yPoint,
   };
 }
+
 export function computeStartingAnchorPosition(
   xStart: number,
   yStart: number,
@@ -105,6 +107,7 @@ export function computeStartingAnchorPosition(
     yAnchor1: yStart,
   };
 }
+
 export function computeEndingAnchorPosition(
   xStart: number,
   yStart: number,
@@ -134,6 +137,7 @@ export function computeEndingAnchorPosition(
     yAnchor2: yEnd,
   };
 }
+
 export function computeLabelDimensions(
   xStart: number,
   yStart: number,
@@ -228,6 +232,7 @@ const SvgArrow = ({
   const actualArrowLength = endShape.circle
     ? endShape.circle.radius * 2
     : endShape.arrow.arrowLength * 2;
+
   // Starting point with arrow
   const { xPoint: xStart, yPoint: yStart } = computeArrowPointAccordingToArrowHead(
     startingPoint.x,
@@ -239,6 +244,7 @@ const SvgArrow = ({
     endingPoint.x,
     endingPoint.y,
   );
+
   // Ending point with arrow
   const { xPoint: xEnd, yPoint: yEnd } = computeArrowPointAccordingToArrowHead(
     endingPoint.x,
@@ -250,6 +256,7 @@ const SvgArrow = ({
     startingPoint.x,
     startingPoint.y,
   );
+
   // Starting position
   const { xAnchor1, yAnchor1 } = computeStartingAnchorPosition(
     xStart,
@@ -258,6 +265,7 @@ const SvgArrow = ({
     yEnd,
     startingAnchorOrientation,
   );
+
   // Ending position
   const { xAnchor2, yAnchor2 } = computeEndingAnchorPosition(
     xStart,
@@ -266,6 +274,7 @@ const SvgArrow = ({
     yEnd,
     endingAnchorOrientation,
   );
+
   const pathString = computePathString({
     xStart,
     yStart,
@@ -278,13 +287,16 @@ const SvgArrow = ({
     lineStyle,
     offset,
   });
+
   const { xLabel, yLabel, labelWidth, labelHeight } = computeLabelDimensions(
     xStart,
     yStart,
     xEnd,
     yEnd,
   );
+
   const markerUrl = `url(${location.href.split('#')[0]}#${arrowMarkerId})`;
+
   return (
     <g>
       <path
