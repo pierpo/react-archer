@@ -229,7 +229,7 @@ describe('SvgArrow', () => {
       const path = wrapper.find('path');
       expect(path.props()).toMatchObject({
         d: 'M10,10 C10,10 30,10 30,10',
-        markerEnd: 'url(http://localhost/#arrow123123)',
+        markerEnd: 'url(about:blank#arrow123123)',
         style: {
           strokeWidth: 2,
           stroke: 'blue',
@@ -244,7 +244,7 @@ describe('SvgArrow', () => {
       const path = wrapper.find('path');
       expect(path.props()).toMatchObject({
         d: 'M10,10 10,10 30,10 30,10',
-        markerEnd: 'url(http://localhost/#arrow123123)',
+        markerEnd: 'url(about:blank#arrow123123)',
         style: {
           strokeWidth: 2,
           stroke: 'blue',
@@ -259,7 +259,7 @@ describe('SvgArrow', () => {
       const path = wrapper.find('path');
       expect(path.props()).toMatchObject({
         d: 'M10,10 15.85786437626905,15.857864376269049',
-        markerEnd: 'url(http://localhost/#arrow123123)',
+        markerEnd: 'url(about:blank#arrow123123)',
         style: {
           strokeWidth: 2,
           stroke: 'blue',
