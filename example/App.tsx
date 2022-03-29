@@ -9,26 +9,35 @@ import SeventhExample from './SeventhExample';
 import EighthExample from './EighthExample';
 import NinthExample from './NinthExample';
 
-const getExample = id => {
+const getExample = (id) => {
   switch (id) {
     case 1:
       return FirstExample;
+
     case 2:
       return SecondExample;
+
     case 3:
       return ThirdExample;
+
     case 4:
       return FourthExample;
+
     case 5:
       return FifthExample;
+
     case 6:
       return SixthExample;
+
     case 7:
       return SeventhExample;
+
     case 8:
       return EighthExample;
+
     case 9:
       return NinthExample;
+
     default:
       return SecondExample;
   }
@@ -37,18 +46,22 @@ const getExample = id => {
 const App = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const exampleFromUrl = Number(urlParams.get('example'));
-
   const [exampleId, setExampleId] = React.useState(1);
   const Example = getExample(exampleFromUrl || exampleId);
-
   return (
     <div>
       {!exampleFromUrl && (
         <div>
           <h2>Example {exampleId}</h2>
           <p>Choose an example:</p>
-          {[...Array(9).keys()].map(value => (
-            <button key={value} onClick={() => setExampleId(value + 1)} style={{ marginRight: 8 }}>
+          {[...Array(9).keys()].map((value) => (
+            <button
+              key={value}
+              onClick={() => setExampleId(value + 1)}
+              style={{
+                marginRight: 8,
+              }}
+            >
               {`Example ${value + 1}`}
             </button>
           ))}

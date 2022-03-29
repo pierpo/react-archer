@@ -1,19 +1,29 @@
 import React from 'react';
 import ArcherContainer from '../src/ArcherContainer';
 import ArcherElement from '../src/ArcherElement';
-
-const rootStyle = { display: 'flex', justifyContent: 'center' };
+const rootStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+};
 const rowStyle = {
   margin: '200px 0',
   display: 'flex',
   justifyContent: 'space-between',
 };
-const boxStyle = { padding: '10px', border: '1px solid black' };
+const boxStyle = {
+  padding: '10px',
+  border: '1px solid black',
+};
 
 const SixthExample = () => (
-  <div style={{ height: '500px', margin: '50px' }}>
+  <div
+    style={{
+      height: '500px',
+      margin: '50px',
+    }}
+  >
     <ArcherContainer strokeColor="red">
-      {ArcherContext => (
+      {(ArcherContext) => (
         <>
           <div style={rootStyle}>
             <ArcherElement
@@ -23,7 +33,9 @@ const SixthExample = () => (
                   targetId: 'element2',
                   targetAnchor: 'top',
                   sourceAnchor: 'bottom',
-                  style: { strokeDasharray: '5,5' },
+                  style: {
+                    strokeDasharray: '5,5',
+                  },
                 },
               ]}
             >
@@ -39,8 +51,19 @@ const SixthExample = () => (
                   targetId: 'element3',
                   targetAnchor: 'left',
                   sourceAnchor: 'right',
-                  style: { strokeColor: 'blue', strokeWidth: 1 },
-                  label: <div style={{ marginTop: '-20px' }}>Arrow 2</div>,
+                  style: {
+                    strokeColor: 'blue',
+                    strokeWidth: 1,
+                  },
+                  label: (
+                    <div
+                      style={{
+                        marginTop: '-20px',
+                      }}
+                    >
+                      Arrow 2
+                    </div>
+                  ),
                 },
               ]}
             >

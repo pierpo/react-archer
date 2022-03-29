@@ -1,18 +1,28 @@
 import React from 'react';
 import ArcherContainer from '../src/ArcherContainer';
 import ArcherElement from '../src/ArcherElement';
-
-const rootStyle = { display: 'flex', justifyContent: 'center' };
+const rootStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+};
 const rowStyle = {
   margin: '200px 0',
   display: 'flex',
   justifyContent: 'space-between',
 };
-const boxStyle = { padding: '10px', border: '1px solid black' };
+const boxStyle = {
+  padding: '10px',
+  border: '1px solid black',
+};
 
 const SeventhExample = () => {
   return (
-    <div style={{ height: '500px', margin: '50px' }}>
+    <div
+      style={{
+        height: '500px',
+        margin: '50px',
+      }}
+    >
       <ArcherContainer strokeColor="red">
         <div style={rootStyle}>
           <ArcherElement
@@ -26,7 +36,11 @@ const SeventhExample = () => {
                 order: 100,
                 style: {
                   strokeColor: 'blue',
-                  endShape: { circle: { radius: 3 } },
+                  endShape: {
+                    circle: {
+                      radius: 3,
+                    },
+                  },
                 },
               },
               {
