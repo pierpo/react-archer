@@ -1,18 +1,20 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import ArcherElement from './ArcherElement';
 import { ArcherContainerContextProvider } from './ArcherContainer';
 describe('ArcherElement', () => {
-  let registerChildMock;
-  let unregisterChildMock;
-  let registerTransitionsMock;
-  let unregisterTransitionsMock;
+  let registerChildMock: jest.Mock<any, any>;
+  let unregisterChildMock: jest.Mock<any, any>;
+  let registerTransitionsMock: jest.Mock<any, any>;
+  let unregisterTransitionsMock: jest.Mock<any, any>;
+
   const children = <div>hi</div>;
   const defaultProps = {
     relations: [],
     id: '',
     children,
   };
+
   type MockArcherContainerType = {
     registerTransitions: (...args: Array<any>) => any;
     unregisterTransitions: (...args: Array<any>) => any;
@@ -40,7 +42,10 @@ describe('ArcherElement', () => {
     </ArcherContainerContextProvider>
   ); // For triggering relations props changes in a less contrived way
 
-  class PassThrough extends React.Component<any, any> {
+  class PassThrough extends React.Component<
+    { relations: RelationType[]; newRelations: RelationType[]; id: string },
+    any
+  > {
     state = {
       relations: this.props.relations,
       newRelations: this.props.newRelations,
@@ -88,8 +93,9 @@ describe('ArcherElement', () => {
     registerTransitionsMock = jest.fn();
     unregisterTransitionsMock = jest.fn();
   });
+
   it('should register and unregister child on mounting ref callback', () => {
-    const relations = [];
+    const relations: RelationType[] = [];
     const wrapper: ReactWrapper<typeof MockArcherContainer> = mountContainer(relations, []);
     // See we register the child
     expect(registerChildMock).toHaveBeenCalledWith('foo', expect.anything());
@@ -101,10 +107,11 @@ describe('ArcherElement', () => {
     expect(unregisterChildMock).toHaveBeenCalledTimes(1);
     expect(unregisterTransitionsMock).toHaveBeenCalledTimes(1);
   });
+
   describe('lifecycle', () => {
     it('should call registerTransitions with sourceToTargets on update', () => {
-      const relations = [];
-      const newRelations = [
+      const relations: RelationType[] = [];
+      const newRelations: RelationType[] = [
         {
           targetId: 'toto',
           targetAnchor: 'top',
@@ -135,15 +142,16 @@ describe('ArcherElement', () => {
       wrapper.update();
       expect(registerTransitionsMock).toHaveBeenCalledWith('foo', sourceToTargets);
     });
+
     it('should not call registerTransitions on update if relation exists', () => {
-      const relations = [
+      const relations: RelationType[] = [
         {
           targetId: 'toto',
           targetAnchor: 'top',
           sourceAnchor: 'left',
         },
       ];
-      const newRelations = [
+      const newRelations: RelationType[] = [
         {
           targetId: 'toto',
           targetAnchor: 'top',
@@ -161,8 +169,9 @@ describe('ArcherElement', () => {
       wrapper.update();
       expect(registerTransitionsMock).not.toHaveBeenCalled();
     });
+
     it('should call registerTransitions with sourceToTargets on mount if relations', () => {
-      const relations = [
+      const relations: RelationType[] = [
         {
           targetId: 'toto',
           targetAnchor: 'top',
@@ -188,8 +197,9 @@ describe('ArcherElement', () => {
       wrapper.update();
       expect(registerTransitionsMock).toHaveBeenCalledWith('foo', sourceToTargets);
     });
+
     it('should not call registerTransitions on mount if no relations', () => {
-      const relations = [];
+      const relations: RelationType[] = [];
       const wrapper: ReactWrapper<typeof MockArcherContainer> = mountContainer(relations, []);
       wrapper.update();
       expect(registerTransitionsMock).not.toHaveBeenCalled();

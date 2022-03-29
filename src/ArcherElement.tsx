@@ -1,6 +1,6 @@
 import React from 'react';
 import isEqual from 'react-fast-compare';
-import { ArcherContainerContextConsumer } from './ArcherContainer';
+import { ArcherContainerContextConsumer, ArcherContainerContextType } from './ArcherContainer';
 type OuterProps = {
   id: string;
   relations: Array<RelationType>;

@@ -17,7 +17,7 @@ type Props = {
   endShape: Record<string, any>;
 };
 
-function computeArrowDirectionVector(anchorOrientation) {
+function computeArrowDirectionVector(anchorOrientation: AnchorPositionType) {
   switch (anchorOrientation) {
     case 'left':
       return {

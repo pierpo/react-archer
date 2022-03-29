@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import SvgArrow, {
   computeArrowPointAccordingToArrowHead,
   computeStartingAnchorPosition,
@@ -7,6 +7,7 @@ import SvgArrow, {
   computeLabelDimensions,
 } from './SvgArrow';
 import Point from './Point';
+
 describe('SvgArrow', () => {
   describe('computeEndingPointAccordingToArrow', () => {
     const dataSet = [
@@ -66,7 +67,8 @@ describe('SvgArrow', () => {
           yPoint: 25,
         },
       },
-    ];
+    ] as const;
+
     dataSet.forEach((data) => {
       it(`should compute coordinates of destination point excluding the arrow [data ${data.message}]`, () => {
         const { xEnd, yEnd, arrowLength, strokeWidth, endingAnchor } = data.input;
@@ -81,6 +83,7 @@ describe('SvgArrow', () => {
       });
     });
   });
+
   describe('computeStartingAnchorOrientation', () => {
     const dataSet = [
       {
@@ -111,7 +114,8 @@ describe('SvgArrow', () => {
           yAnchor1: 20,
         },
       },
-    ];
+    ] as const;
+
     dataSet.forEach((data) => {
       it(`should compute coordinates of source element's anchor [data ${data.message}]`, () => {
         const { xStart, yStart, xEnd, yEnd, endingAnchor } = data.input;
@@ -120,6 +124,7 @@ describe('SvgArrow', () => {
       });
     });
   });
+
   describe('computeEndingAnchorOrientation', () => {
     const dataSet = [
       {
@@ -150,7 +155,8 @@ describe('SvgArrow', () => {
           yAnchor2: 2,
         },
       },
-    ];
+    ] as const;
+
     dataSet.forEach((data) => {
       it(`should compute coordinates of destination element's anchor [data ${data.message}]`, () => {
         const { xStart, yStart, xEnd, yEnd, endingAnchor } = data.input;
@@ -159,6 +165,7 @@ describe('SvgArrow', () => {
       });
     });
   });
+
   describe('computeLabelDimensions', () => {
     const dataSet = [
       {
@@ -194,6 +201,7 @@ describe('SvgArrow', () => {
         },
       },
     ];
+
     dataSet.forEach((data) => {
       it(`should compute coordinates of  label foreignObject [data ${data.message}]`, () => {
         const { xStart, yStart, xEnd, yEnd } = data.input;
@@ -202,6 +210,7 @@ describe('SvgArrow', () => {
       });
     });
   });
+
   describe('component', () => {
     let wrapper: ShallowWrapper<typeof SvgArrow>;
     const props = {
@@ -218,10 +227,12 @@ describe('SvgArrow', () => {
           arrowLength: 10,
         },
       },
-    };
+    } as const;
+
     beforeEach(() => {
       wrapper = shallow(<SvgArrow {...props} />);
     });
+
     it('should render path with proper coordinates', () => {
       // The functions should be mocked otherwise the test is not a unit test
       // But they need to become component instance functions
@@ -236,6 +247,7 @@ describe('SvgArrow', () => {
         },
       });
     });
+
     it('should render path with no curves coordinates', () => {
       wrapper.setProps({
         lineStyle: 'angle',
@@ -251,6 +263,7 @@ describe('SvgArrow', () => {
         },
       });
     });
+
     it('should render path with straight line coordinates', () => {
       wrapper.setProps({
         lineStyle: 'straight',

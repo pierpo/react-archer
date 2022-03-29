@@ -1,7 +1,8 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import ArcherContainer from './ArcherContainer';
+
 describe('ArcherContainer', () => {
   const defaultProps = {
     endShape: {
@@ -13,9 +14,11 @@ describe('ArcherContainer', () => {
     strokeColor: 'rgb(123, 234, 123)',
     strokeDasharray: '5,5',
   };
+
   type WrapperState = {
     sourceToTargetsMap: Record<string, SourceToTargetType[]>;
   };
+
   const defaultState: WrapperState = {
     sourceToTargetsMap: {
       foo: [
@@ -33,6 +36,7 @@ describe('ArcherContainer', () => {
       ],
     },
   };
+
   const circleEndShapeDefaultState: WrapperState = {
     sourceToTargetsMap: {
       bar: [
@@ -60,6 +64,7 @@ describe('ArcherContainer', () => {
       ],
     },
   };
+
   const MarkerAtBothEndsState: WrapperState = {
     sourceToTargetsMap: {
       bar: [
@@ -88,6 +93,7 @@ describe('ArcherContainer', () => {
       ],
     },
   };
+
   const MarkerOnlyAtStartState: WrapperState = {
     sourceToTargetsMap: {
       bar: [
@@ -119,7 +125,7 @@ describe('ArcherContainer', () => {
   };
 
   const shallowRenderAndSetState = (newState?: WrapperState) => {
-    const wrapper = shallow(
+    const wrapper = shallow<ArcherContainer>(
       <ArcherContainer {...defaultProps}>
         <div>child</div>
       </ArcherContainer>,
@@ -129,13 +135,14 @@ describe('ArcherContainer', () => {
   };
 
   it('should render given children and a svg element', () => {
-    const wrapper: ShallowWrapper<typeof ArcherContainer> = shallowRenderAndSetState();
+    const wrapper = shallowRenderAndSetState();
     expect(wrapper.childAt(0).childAt(1).text()).toEqual('child');
     expect(wrapper.childAt(0).childAt(0).getElements()[0].type).toEqual('svg');
   });
+
   describe('rendering an svg with the marker element used to draw an svg arrow', () => {
     it('should render the arrow with an arrow end by default', () => {
-      const wrapper: ShallowWrapper<typeof ArcherContainer> = shallowRenderAndSetState();
+      const wrapper = shallowRenderAndSetState();
       const marker = wrapper.find('marker');
       const markerProps = marker.props();
       const expectedProps = {
@@ -150,10 +157,9 @@ describe('ArcherContainer', () => {
       };
       expect(markerProps).toMatchObject(expectedProps);
     });
+
     it('should render the arrow with a circle end when provided', () => {
-      const wrapper: ShallowWrapper<typeof ArcherContainer> = shallowRenderAndSetState(
-        circleEndShapeDefaultState,
-      );
+      const wrapper = shallowRenderAndSetState(circleEndShapeDefaultState);
       const marker = wrapper.find('marker');
       const markerProps = marker.props();
       const expectedProps = {
@@ -173,12 +179,12 @@ describe('ArcherContainer', () => {
     describe('computeArrows', () => {
       describe('with default end shape', () => {
         it('renders an SVG arrow', () => {
-          const wrapper: ShallowWrapper<typeof ArcherContainer> = shallowRenderAndSetState();
+          const wrapper = shallowRenderAndSetState();
           const uniquePrefix: string = wrapper.instance().arrowMarkerUniquePrefix;
 
           const arrow = wrapper.instance()._computeArrows();
 
-          // $FlowFixMe TODO new error since flow upgrade
+          // @ts-expect-error TODO we'll see about that later
           const tree = renderer.create(arrow).toJSON();
           expect(tree).toMatchInlineSnapshot(`
             <g>
@@ -200,14 +206,12 @@ describe('ArcherContainer', () => {
       });
       describe('with a circle end shape', () => {
         it('renders an SVG arrow', () => {
-          const wrapper: ShallowWrapper<typeof ArcherContainer> = shallowRenderAndSetState(
-            circleEndShapeDefaultState,
-          );
+          const wrapper = shallowRenderAndSetState(circleEndShapeDefaultState);
           const uniquePrefix: string = wrapper.instance().arrowMarkerUniquePrefix;
 
           const arrow = wrapper.instance()._computeArrows();
 
-          // $FlowFixMe TODO new error since flow upgrade
+          // @ts-expect-error TODO we'll see about that later
           const tree = renderer.create(arrow).toJSON();
           expect(tree).toMatchInlineSnapshot(`
             <g>
@@ -229,13 +233,12 @@ describe('ArcherContainer', () => {
       });
       describe('with a marker at start', () => {
         it('renders an SVG arrow on both ends', () => {
-          const wrapper: ShallowWrapper<typeof ArcherContainer> =
-            shallowRenderAndSetState(MarkerAtBothEndsState);
+          const wrapper = shallowRenderAndSetState(MarkerAtBothEndsState);
           const uniquePrefix: string = wrapper.instance().arrowMarkerUniquePrefix;
 
           const arrow = wrapper.instance()._computeArrows();
 
-          // $FlowFixMe TODO new error since flow upgrade
+          // @ts-expect-error TODO we'll see about that later
           const tree = renderer.create(arrow).toJSON();
           expect(tree).toMatchInlineSnapshot(`
           <g>
@@ -258,13 +261,12 @@ describe('ArcherContainer', () => {
       });
       describe('with a marker only at start', () => {
         it('renders an SVG arrow only on start', () => {
-          const wrapper: ShallowWrapper<typeof ArcherContainer> =
-            shallowRenderAndSetState(MarkerOnlyAtStartState);
+          const wrapper = shallowRenderAndSetState(MarkerOnlyAtStartState);
           const uniquePrefix: string = wrapper.instance().arrowMarkerUniquePrefix;
 
           const arrow = wrapper.instance()._computeArrows();
 
-          // $FlowFixMe TODO new error since flow upgrade
+          // @ts-expect-error TODO we'll see about that later
           const tree = renderer.create(arrow).toJSON();
           expect(tree).toMatchInlineSnapshot(`
           <g>
@@ -288,12 +290,12 @@ describe('ArcherContainer', () => {
     describe('generateAllArrowMarkers', () => {
       describe('with default end shape', () => {
         it('renders an SVG marker', () => {
-          const wrapper: ShallowWrapper<typeof ArcherContainer> = shallowRenderAndSetState();
+          const wrapper = shallowRenderAndSetState();
           const uniquePrefix: string = wrapper.instance().arrowMarkerUniquePrefix;
 
           const marker = wrapper.instance()._generateAllArrowMarkers();
 
-          // $FlowFixMe TODO new error since flow upgrade
+          // @ts-expect-error TODO we'll see about that later
           const tree = renderer.create(marker).toJSON();
           expect(tree).toMatchInlineSnapshot(`
             <marker
@@ -315,14 +317,12 @@ describe('ArcherContainer', () => {
       });
       describe('with a circle end shape', () => {
         it('renders an SVG marker', () => {
-          const wrapper: ShallowWrapper<typeof ArcherContainer> = shallowRenderAndSetState(
-            circleEndShapeDefaultState,
-          );
+          const wrapper = shallowRenderAndSetState(circleEndShapeDefaultState);
           const uniquePrefix: string = wrapper.instance().arrowMarkerUniquePrefix;
 
           const marker = wrapper.instance()._generateAllArrowMarkers();
 
-          // $FlowFixMe TODO new error since flow upgrade
+          // @ts-expect-error TODO we'll see about that later
           const tree = renderer.create(marker).toJSON();
           expect(tree).toMatchInlineSnapshot(`
             <marker
@@ -348,13 +348,18 @@ describe('ArcherContainer', () => {
       });
     });
   });
+
   describe('Event Listeners', () => {
     it('should add/remove resize listeners when mounting/unmounting', () => {
+      // @ts-expect-error TODO we'll see about that later
       global.window.addEventListener = jest.fn();
+      // @ts-expect-error TODO we'll see about that later
       global.window.removeEventListener = jest.fn();
-      const wrapper: ShallowWrapper<typeof ArcherContainer> = shallowRenderAndSetState();
+      const wrapper = shallowRenderAndSetState();
+      // @ts-expect-error TODO we'll see about that later
       expect(global.window.addEventListener).toBeCalledWith('resize', expect.anything());
       wrapper.unmount();
+      // @ts-expect-error TODO we'll see about that later
       expect(global.window.removeEventListener).toBeCalledWith('resize', expect.anything());
     });
   });

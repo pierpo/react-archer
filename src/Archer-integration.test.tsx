@@ -3,18 +3,12 @@ import { mount } from 'enzyme';
 import ArcherElement from './ArcherElement';
 import ArcherContainer from './ArcherContainer';
 import { rootStyle, rowStyle, boxStyle } from './testHelper';
+
 describe('Archer Integration', () => {
-  const defaultProps = {
-    arrow: {
-      arrowLength: 10,
-      arrowThickness: 30,
-    },
-    strokeColor: 'rgb(123, 234, 123)',
-    strokeDasharray: '5,5',
-  };
   type ThirdPartyComponentProps = {
     ItemRenderer: React.ReactNode;
   };
+
   describe('Uses a functional child API to work with third party renderers', () => {
     const ThirdPartyComponent = ({
       ItemRenderer,
@@ -152,9 +146,7 @@ describe('Archer Integration', () => {
     );
 
     it('renders elements', () => {
-      const component: ReactWrapper<typeof ItemRendererComponent> = mount(
-        <ItemRendererComponent {...defaultProps} />,
-      );
+      const component = mount(<ItemRendererComponent />);
       expect(component.find(ArcherElement).length).toEqual(4);
     });
   });

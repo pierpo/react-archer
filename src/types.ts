@@ -22,17 +22,21 @@ declare type SourceToTargetType = {
   style?: LineType;
 };
 
+declare type ArrowShapeType = {
+  arrowLength?: number;
+  arrowThickness?: number;
+};
+
+declare type CircleShapeType = {
+  radius?: number;
+  fillColor?: string;
+  strokeColor?: string;
+  strokeWidth?: number;
+};
+
 declare type ShapeType = {
-  arrow?: {
-    arrowLength?: number;
-    arrowThickness?: number;
-  };
-  circle?: {
-    radius?: number;
-    fillColor?: string;
-    strokeColor?: string;
-    strokeWidth?: number;
-  };
+  arrow?: ArrowShapeType;
+  circle?: CircleShapeType;
 };
 
 declare type LineType = {

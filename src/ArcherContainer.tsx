@@ -2,13 +2,16 @@ import React from 'react';
 import ResizeObserver from 'resize-observer-polyfill';
 import Point from './Point';
 import SvgArrow from './SvgArrow';
+
 export type ArcherContainerContextType = {
   registerChild: (arg0: string, arg1: HTMLElement) => void;
   registerTransitions: (arg0: string, arg1: SourceToTargetType[]) => void;
   unregisterChild: (arg0: string) => void;
   unregisterTransitions: (arg0: string) => void;
 } | null;
+
 type FunctionChild = (context: React.Context<ArcherContainerContextType>) => React.ReactNode;
+
 type Props = {
   startMarker?: boolean;
   endMarker?: boolean;
@@ -24,23 +27,20 @@ type Props = {
   className?: string;
   offset?: number;
 };
+
 type SourceToTargetsArrayType = SourceToTargetType[];
+
 // For typing when munging sourceToTargetsMap
 type JaggedSourceToTargetsArrayType = SourceToTargetsArrayType[];
+
 type State = {
   refs: Record<string, HTMLElement>;
   sourceToTargetsMap: Record<string, SourceToTargetsArrayType>;
   observer: ResizeObserver;
   parent: HTMLElement | null | undefined;
 };
-type SVGContainerStyle = {
-  position: string;
-  width: string;
-  height: string;
-  top: number;
-  left: number;
-};
-const defaultSvgContainerStyle: SVGContainerStyle = {
+
+const defaultSvgContainerStyle = {
   position: 'absolute',
   width: '100%',
   height: '100%',
@@ -86,8 +86,9 @@ const getEndShapeFromStyle = (shapeObj: LineType) => {
   }
 
   return (
-    Object.keys(shapeObj.endShape).filter((key) => possibleShapes.includes(key))[0] ||
-    possibleShapes[0]
+    (Object.keys(shapeObj.endShape) as ValidShapeTypes[]).filter((key) =>
+      possibleShapes.includes(key),
+    )[0] || possibleShapes[0]
   );
 };
 
@@ -214,11 +215,13 @@ export class ArcherContainer extends React.Component<Props, State> {
   _getSourceToTargets = (): SourceToTargetType[] => {
     const { sourceToTargetsMap } = this.state;
     // Object.values is unavailable in IE11
-    const jaggedSourceToTargets: JaggedSourceToTargetsArrayType = Object.keys(
-      sourceToTargetsMap,
-    ).map((key: string) => sourceToTargetsMap[key]);
+    const jaggedSourceToTargets = Object.keys(sourceToTargetsMap).map(
+      (key: string) => sourceToTargetsMap[key],
+    );
     // Flatten
-    return [].concat.apply([], jaggedSourceToTargets).sort((a, b) => a.order - b.order);
+    return ([] as SourceToTargetType[]).concat
+      .apply([], jaggedSourceToTargets)
+      .sort((a, b) => a.order - b.order);
   };
   _createShapeObj = (style: LineType) => {
     const chosenEndShape = getEndShapeFromStyle(style);
@@ -311,10 +314,16 @@ export class ArcherContainer extends React.Component<Props, State> {
   } => {
     const chosenEndShape = getEndShapeFromStyle(style);
 
-    const getProp = (shape: ValidShapeTypes, prop: string) => {
+    const getProp = (
+      shape: ValidShapeTypes,
+      prop: keyof ArrowShapeType | keyof CircleShapeType,
+    ) => {
       return (
+        // @ts-expect-error needs changes at runtime to fix the TS error
         style.endShape?.[shape]?.[prop] ||
+        // @ts-expect-error needs changes at runtime to fix the TS error
         this.props.endShape?.[shape]?.[prop] ||
+        // @ts-expect-error needs changes at runtime to fix the TS error
         ArcherContainer.defaultProps.endShape[shape][prop]
       );
     };
