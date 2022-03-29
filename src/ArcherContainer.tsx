@@ -30,9 +30,6 @@ type Props = {
 
 type SourceToTargetsArrayType = SourceToTargetType[];
 
-// For typing when munging sourceToTargetsMap
-type JaggedSourceToTargetsArrayType = SourceToTargetsArrayType[];
-
 type State = {
   refs: Record<string, HTMLElement>;
   sourceToTargetsMap: Record<string, SourceToTargetsArrayType>;
@@ -49,13 +46,13 @@ const defaultSvgContainerStyle = {
   pointerEvents: 'none',
 };
 
-function rectToPoint(rect: ClientRect): Point {
+function rectToPoint(rect: DOMRect): Point {
   return new Point(rect.left, rect.top);
 }
 
 function computeCoordinatesFromAnchorPosition(
   anchorPosition: AnchorPositionType,
-  rect: ClientRect,
+  rect: DOMRect,
 ): Point {
   switch (anchorPosition) {
     case 'top':
@@ -150,7 +147,7 @@ export class ArcherContainer extends React.Component<Props, State> {
     if (this.state.parent) return;
     this.setState((currentState) => ({ ...currentState, parent: ref }));
   };
-  _getRectFromRef = (ref: HTMLElement | null | undefined): ClientRect | null | undefined => {
+  _getRectFromRef = (ref: HTMLElement | null | undefined): DOMRect | null | undefined => {
     if (!ref) return null;
     return ref.getBoundingClientRect();
   };
