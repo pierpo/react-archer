@@ -46,6 +46,7 @@
     "@types/enzyme": "3.10.11",
     "@types/jest": "27.4.1",
     "@types/react": "17.0.43",
+    "@types/react-dom": "17.0.14",
     "@types/react-test-renderer": "17.0.1",
     "@typescript-eslint/eslint-plugin": "5.17.0",
     "@typescript-eslint/parser": "5.17.0",
