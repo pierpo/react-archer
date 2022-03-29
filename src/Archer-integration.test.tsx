@@ -1,11 +1,8 @@
-// @flow
 import React from 'react';
-import { type ReactWrapper, mount } from 'enzyme';
-
+import { mount } from 'enzyme';
 import ArcherElement from './ArcherElement';
 import ArcherContainer from './ArcherContainer';
 import { rootStyle, rowStyle, boxStyle } from './testHelper';
-
 describe('Archer Integration', () => {
   const defaultProps = {
     arrow: {
@@ -15,15 +12,17 @@ describe('Archer Integration', () => {
     strokeColor: 'rgb(123, 234, 123)',
     strokeDasharray: '5,5',
   };
-
-  type ThirdPartyComponentProps = { ItemRenderer: React$Node };
-
+  type ThirdPartyComponentProps = {
+    ItemRenderer: React.ReactNode;
+  };
   describe('Uses a functional child API to work with third party renderers', () => {
     const ThirdPartyComponent = ({
       ItemRenderer,
-    }: ThirdPartyComponentProps): React$Element<'div'> => <div>{ItemRenderer}</div>;
+    }: ThirdPartyComponentProps): React.ReactElement<React.ComponentProps<'div'>, 'div'> => (
+      <div>{ItemRenderer}</div>
+    );
 
-    const RootElement = (): React$Element<'div'> => (
+    const RootElement = (): React.ReactElement<React.ComponentProps<'div'>, 'div'> => (
       <div style={rootStyle}>
         <ArcherElement
           id="root"
@@ -32,7 +31,9 @@ describe('Archer Integration', () => {
               targetId: 'element2',
               targetAnchor: 'top',
               sourceAnchor: 'bottom',
-              style: { strokeDasharray: '5,5' },
+              style: {
+                strokeDasharray: '5,5',
+              },
             },
           ]}
         >
@@ -41,7 +42,10 @@ describe('Archer Integration', () => {
       </div>
     );
 
-    const ElementTwo = (): React$Element<typeof ArcherElement> => (
+    const ElementTwo = (): React.ReactElement<
+      React.ComponentProps<typeof ArcherElement>,
+      typeof ArcherElement
+    > => (
       <ArcherElement
         id="element2"
         relations={[
@@ -53,10 +57,23 @@ describe('Archer Integration', () => {
               strokeColor: 'blue',
               strokeWidth: 1,
               endShape: {
-                circle: { radius: 3, strokeWidth: 1, fillColor: 'blue', strokeColor: 'black' },
+                circle: {
+                  radius: 3,
+                  strokeWidth: 1,
+                  fillColor: 'blue',
+                  strokeColor: 'black',
+                },
               },
             },
-            label: <div style={{ marginTop: '-20px' }}>Arrow 2</div>,
+            label: (
+              <div
+                style={{
+                  marginTop: '-20px',
+                }}
+              >
+                Arrow 2
+              </div>
+            ),
           },
         ]}
       >
@@ -64,13 +81,19 @@ describe('Archer Integration', () => {
       </ArcherElement>
     );
 
-    const ElementThree = (): React$Element<typeof ArcherElement> => (
+    const ElementThree = (): React.ReactElement<
+      React.ComponentProps<typeof ArcherElement>,
+      typeof ArcherElement
+    > => (
       <ArcherElement id="element3" relations={[]}>
         <div style={boxStyle}>Element 3</div>
       </ArcherElement>
     );
 
-    const ElementFour = (): React$Element<typeof ArcherElement> => (
+    const ElementFour = (): React.ReactElement<
+      React.ComponentProps<typeof ArcherElement>,
+      typeof ArcherElement
+    > => (
       <ArcherElement
         id="element4"
         relations={[
@@ -97,11 +120,16 @@ describe('Archer Integration', () => {
     );
 
     const ItemRendererComponent = () => (
-      <div style={{ height: '500px', margin: '50px' }}>
+      <div
+        style={{
+          height: '500px',
+          margin: '50px',
+        }}
+      >
         <ArcherContainer strokeColor="red">
-          {ArcherContext => (
+          {(ArcherContext) => (
             <ArcherContext.Consumer>
-              {contextValue => (
+              {(contextValue) => (
                 <ThirdPartyComponent
                   ItemRenderer={
                     <ArcherContext.Provider value={contextValue}>
@@ -127,7 +155,6 @@ describe('Archer Integration', () => {
       const component: ReactWrapper<typeof ItemRendererComponent> = mount(
         <ItemRendererComponent {...defaultProps} />,
       );
-
       expect(component.find(ArcherElement).length).toEqual(4);
     });
   });

@@ -1,37 +1,53 @@
-// @flow
-
 import React from 'react';
 import Point from './Point';
-
 type Props = {
-  startingPoint: Point,
-  startingAnchorOrientation: AnchorPositionType,
-  endingPoint: Point,
-  endingAnchorOrientation: AnchorPositionType,
-  strokeColor: string,
-  strokeWidth: number,
-  strokeDasharray?: string,
-  arrowLabel?: ?React$Node,
-  arrowMarkerId: string,
-  lineStyle: string,
-  offset?: number,
-  enableStartMarker?: boolean,
-  disableEndMarker?: boolean,
-  endShape: Object,
+  startingPoint: Point;
+  startingAnchorOrientation: AnchorPositionType;
+  endingPoint: Point;
+  endingAnchorOrientation: AnchorPositionType;
+  strokeColor: string;
+  strokeWidth: number;
+  strokeDasharray?: string;
+  arrowLabel?: React.ReactNode | null | undefined;
+  arrowMarkerId: string;
+  lineStyle: string;
+  offset?: number;
+  enableStartMarker?: boolean;
+  disableEndMarker?: boolean;
+  endShape: Record<string, any>;
 };
 
 function computeArrowDirectionVector(anchorOrientation) {
   switch (anchorOrientation) {
     case 'left':
-      return { arrowX: -1, arrowY: 0 };
+      return {
+        arrowX: -1,
+        arrowY: 0,
+      };
+
     case 'right':
-      return { arrowX: 1, arrowY: 0 };
+      return {
+        arrowX: 1,
+        arrowY: 0,
+      };
+
     case 'top':
-      return { arrowX: 0, arrowY: -1 };
+      return {
+        arrowX: 0,
+        arrowY: -1,
+      };
+
     case 'bottom':
-      return { arrowX: 0, arrowY: 1 };
+      return {
+        arrowX: 0,
+        arrowY: 1,
+      };
+
     default:
-      return { arrowX: 0, arrowY: 0 };
+      return {
+        arrowX: 0,
+        arrowY: 0,
+      };
   }
 }
 
@@ -49,30 +65,34 @@ export function computeArrowPointAccordingToArrowHead(
 
   if (lineStyle === 'straight' && xArrowStart !== undefined && yArrowStart !== undefined) {
     const angle = Math.atan2(yArrowStart - yArrowHeadPoint, xArrowStart - xArrowHeadPoint);
-
     arrowX = Math.cos(angle);
     arrowY = Math.sin(angle);
   }
 
   const xPoint = xArrowHeadPoint + (arrowX * arrowLength * strokeWidth) / 2;
   const yPoint = yArrowHeadPoint + (arrowY * arrowLength * strokeWidth) / 2;
-
-  return { xPoint, yPoint };
+  return {
+    xPoint,
+    yPoint,
+  };
 }
-
 export function computeStartingAnchorPosition(
   xStart: number,
   yStart: number,
   xEnd: number,
   yEnd: number,
   startingAnchorOrientation: AnchorPositionType,
-): { xAnchor1: number, yAnchor1: number } {
+): {
+  xAnchor1: number;
+  yAnchor1: number;
+} {
   if (startingAnchorOrientation === 'top' || startingAnchorOrientation === 'bottom') {
     return {
       xAnchor1: xStart,
       yAnchor1: yStart + (yEnd - yStart) / 2,
     };
   }
+
   if (startingAnchorOrientation === 'left' || startingAnchorOrientation === 'right') {
     return {
       xAnchor1: xStart + (xEnd - xStart) / 2,
@@ -80,22 +100,28 @@ export function computeStartingAnchorPosition(
     };
   }
 
-  return { xAnchor1: xStart, yAnchor1: yStart };
+  return {
+    xAnchor1: xStart,
+    yAnchor1: yStart,
+  };
 }
-
 export function computeEndingAnchorPosition(
   xStart: number,
   yStart: number,
   xEnd: number,
   yEnd: number,
   endingAnchorOrientation: AnchorPositionType,
-): { xAnchor2: number, yAnchor2: number } {
+): {
+  xAnchor2: number;
+  yAnchor2: number;
+} {
   if (endingAnchorOrientation === 'top' || endingAnchorOrientation === 'bottom') {
     return {
       xAnchor2: xEnd,
       yAnchor2: yEnd - (yEnd - yStart) / 2,
     };
   }
+
   if (endingAnchorOrientation === 'left' || endingAnchorOrientation === 'right') {
     return {
       xAnchor2: xEnd - (xEnd - xStart) / 2,
@@ -103,21 +129,26 @@ export function computeEndingAnchorPosition(
     };
   }
 
-  return { xAnchor2: xEnd, yAnchor2: yEnd };
+  return {
+    xAnchor2: xEnd,
+    yAnchor2: yEnd,
+  };
 }
-
 export function computeLabelDimensions(
   xStart: number,
   yStart: number,
   xEnd: number,
   yEnd: number,
-): { xLabel: number, yLabel: number, labelWidth: number, labelHeight: number } {
+): {
+  xLabel: number;
+  yLabel: number;
+  labelWidth: number;
+  labelHeight: number;
+} {
   const labelWidth = Math.max(Math.abs(xEnd - xStart), 1);
   const labelHeight = Math.max(Math.abs(yEnd - yStart), 1);
-
   const xLabel = xEnd > xStart ? xStart : xEnd;
   const yLabel = yEnd > yStart ? yStart : yEnd;
-
   return {
     xLabel,
     yLabel,
@@ -137,24 +168,23 @@ function computePathString({
   yEnd,
   lineStyle,
   offset,
-}: {|
-  xStart: number,
-  yStart: number,
-  xAnchor1: number,
-  yAnchor1: number,
-  xAnchor2: number,
-  yAnchor2: number,
-  xEnd: number,
-  yEnd: number,
-  lineStyle: string,
-  offset?: number,
-|}): string {
+}: {
+  xStart: number;
+  yStart: number;
+  xAnchor1: number;
+  yAnchor1: number;
+  xAnchor2: number;
+  yAnchor2: number;
+  xEnd: number;
+  yEnd: number;
+  lineStyle: string;
+  offset?: number;
+}): string {
   if (offset && offset !== 0) {
     const angle =
       lineStyle === 'straight'
         ? Math.atan2(yEnd - yStart, xEnd - xStart)
         : Math.atan2(yAnchor1 - yStart, xAnchor1 - xStart);
-
     const xOffset = offset * Math.cos(angle);
     const yOffset = offset * Math.sin(angle);
 
@@ -174,10 +204,11 @@ function computePathString({
       lineStyle === 'curve' ? 'C' : ''
     }${xAnchor1},${yAnchor1} ${xAnchor2},${yAnchor2} `;
   }
-  linePath += `${xEnd},${yEnd}`;
 
+  linePath += `${xEnd},${yEnd}`;
   return linePath;
 }
+
 const SvgArrow = ({
   startingPoint,
   startingAnchorOrientation,
@@ -197,7 +228,6 @@ const SvgArrow = ({
   const actualArrowLength = endShape.circle
     ? endShape.circle.radius * 2
     : endShape.arrow.arrowLength * 2;
-
   // Starting point with arrow
   const { xPoint: xStart, yPoint: yStart } = computeArrowPointAccordingToArrowHead(
     startingPoint.x,
@@ -209,7 +239,6 @@ const SvgArrow = ({
     endingPoint.x,
     endingPoint.y,
   );
-
   // Ending point with arrow
   const { xPoint: xEnd, yPoint: yEnd } = computeArrowPointAccordingToArrowHead(
     endingPoint.x,
@@ -221,7 +250,6 @@ const SvgArrow = ({
     startingPoint.x,
     startingPoint.y,
   );
-
   // Starting position
   const { xAnchor1, yAnchor1 } = computeStartingAnchorPosition(
     xStart,
@@ -230,7 +258,6 @@ const SvgArrow = ({
     yEnd,
     startingAnchorOrientation,
   );
-
   // Ending position
   const { xAnchor2, yAnchor2 } = computeEndingAnchorPosition(
     xStart,
@@ -239,7 +266,6 @@ const SvgArrow = ({
     yEnd,
     endingAnchorOrientation,
   );
-
   const pathString = computePathString({
     xStart,
     yStart,
@@ -252,21 +278,23 @@ const SvgArrow = ({
     lineStyle,
     offset,
   });
-
   const { xLabel, yLabel, labelWidth, labelHeight } = computeLabelDimensions(
     xStart,
     yStart,
     xEnd,
     yEnd,
   );
-
   const markerUrl = `url(${location.href.split('#')[0]}#${arrowMarkerId})`;
-
   return (
     <g>
       <path
         d={pathString}
-        style={{ fill: 'none', stroke: strokeColor, strokeWidth, strokeDasharray }}
+        style={{
+          fill: 'none',
+          stroke: strokeColor,
+          strokeWidth,
+          strokeDasharray,
+        }}
         markerStart={enableStartMarker ? markerUrl : undefined}
         markerEnd={disableEndMarker ? undefined : markerUrl}
       />
@@ -276,7 +304,10 @@ const SvgArrow = ({
           y={yLabel}
           width={labelWidth}
           height={labelHeight}
-          style={{ overflow: 'visible', pointerEvents: 'none' }}
+          style={{
+            overflow: 'visible',
+            pointerEvents: 'none',
+          }}
         >
           <div
             style={{

@@ -1,6 +1,5 @@
-// @flow
 import React from 'react';
-import { type ShallowWrapper, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import SvgArrow, {
   computeArrowPointAccordingToArrowHead,
   computeStartingAnchorPosition,
@@ -8,7 +7,6 @@ import SvgArrow, {
   computeLabelDimensions,
 } from './SvgArrow';
 import Point from './Point';
-
 describe('SvgArrow', () => {
   describe('computeEndingPointAccordingToArrow', () => {
     const dataSet = [
@@ -21,7 +19,10 @@ describe('SvgArrow', () => {
           strokeWidth: 2,
           endingAnchor: 'top',
         },
-        expected: { xPoint: 10, yPoint: 15 },
+        expected: {
+          xPoint: 10,
+          yPoint: 15,
+        },
       },
       {
         message: 2,
@@ -32,7 +33,10 @@ describe('SvgArrow', () => {
           strokeWidth: 2,
           endingAnchor: 'top',
         },
-        expected: { xPoint: 10, yPoint: 18 },
+        expected: {
+          xPoint: 10,
+          yPoint: 18,
+        },
       },
       {
         message: 3,
@@ -43,7 +47,10 @@ describe('SvgArrow', () => {
           strokeWidth: 1,
           endingAnchor: 'top',
         },
-        expected: { xPoint: 10, yPoint: 17.5 },
+        expected: {
+          xPoint: 10,
+          yPoint: 17.5,
+        },
       },
       {
         message: 4,
@@ -54,11 +61,13 @@ describe('SvgArrow', () => {
           strokeWidth: 2,
           endingAnchor: 'bottom',
         },
-        expected: { xPoint: 10, yPoint: 25 },
+        expected: {
+          xPoint: 10,
+          yPoint: 25,
+        },
       },
     ];
-
-    dataSet.forEach(data => {
+    dataSet.forEach((data) => {
       it(`should compute coordinates of destination point excluding the arrow [data ${data.message}]`, () => {
         const { xEnd, yEnd, arrowLength, strokeWidth, endingAnchor } = data.input;
         const result = computeArrowPointAccordingToArrowHead(
@@ -72,7 +81,6 @@ describe('SvgArrow', () => {
       });
     });
   });
-
   describe('computeStartingAnchorOrientation', () => {
     const dataSet = [
       {
@@ -84,7 +92,10 @@ describe('SvgArrow', () => {
           yEnd: 2,
           endingAnchor: 'top',
         },
-        expected: { xAnchor1: 10, yAnchor1: 11 },
+        expected: {
+          xAnchor1: 10,
+          yAnchor1: 11,
+        },
       },
       {
         message: 2,
@@ -95,11 +106,13 @@ describe('SvgArrow', () => {
           yEnd: 2,
           endingAnchor: 'left',
         },
-        expected: { xAnchor1: 7.5, yAnchor1: 20 },
+        expected: {
+          xAnchor1: 7.5,
+          yAnchor1: 20,
+        },
       },
     ];
-
-    dataSet.forEach(data => {
+    dataSet.forEach((data) => {
       it(`should compute coordinates of source element's anchor [data ${data.message}]`, () => {
         const { xStart, yStart, xEnd, yEnd, endingAnchor } = data.input;
         const result = computeStartingAnchorPosition(xStart, yStart, xEnd, yEnd, endingAnchor);
@@ -107,7 +120,6 @@ describe('SvgArrow', () => {
       });
     });
   });
-
   describe('computeEndingAnchorOrientation', () => {
     const dataSet = [
       {
@@ -119,7 +131,10 @@ describe('SvgArrow', () => {
           yEnd: 2,
           endingAnchor: 'top',
         },
-        expected: { xAnchor2: 5, yAnchor2: 11 },
+        expected: {
+          xAnchor2: 5,
+          yAnchor2: 11,
+        },
       },
       {
         message: 2,
@@ -130,11 +145,13 @@ describe('SvgArrow', () => {
           yEnd: 2,
           endingAnchor: 'left',
         },
-        expected: { xAnchor2: 7.5, yAnchor2: 2 },
+        expected: {
+          xAnchor2: 7.5,
+          yAnchor2: 2,
+        },
       },
     ];
-
-    dataSet.forEach(data => {
+    dataSet.forEach((data) => {
       it(`should compute coordinates of destination element's anchor [data ${data.message}]`, () => {
         const { xStart, yStart, xEnd, yEnd, endingAnchor } = data.input;
         const result = computeEndingAnchorPosition(xStart, yStart, xEnd, yEnd, endingAnchor);
@@ -142,7 +159,6 @@ describe('SvgArrow', () => {
       });
     });
   });
-
   describe('computeLabelDimensions', () => {
     const dataSet = [
       {
@@ -178,8 +194,7 @@ describe('SvgArrow', () => {
         },
       },
     ];
-
-    dataSet.forEach(data => {
+    dataSet.forEach((data) => {
       it(`should compute coordinates of  label foreignObject [data ${data.message}]`, () => {
         const { xStart, yStart, xEnd, yEnd } = data.input;
         const result = computeLabelDimensions(xStart, yStart, xEnd, yEnd);
@@ -187,10 +202,8 @@ describe('SvgArrow', () => {
       });
     });
   });
-
   describe('component', () => {
     let wrapper: ShallowWrapper<typeof SvgArrow>;
-
     const props = {
       startingPoint: new Point(10, 10),
       startingAnchorOrientation: 'bottom',
@@ -206,17 +219,14 @@ describe('SvgArrow', () => {
         },
       },
     };
-
     beforeEach(() => {
       wrapper = shallow(<SvgArrow {...props} />);
     });
-
     it('should render path with proper coordinates', () => {
       // The functions should be mocked otherwise the test is not a unit test
       // But they need to become component instance functions
       // For now, let's not mock them
       const path = wrapper.find('path');
-
       expect(path.props()).toMatchObject({
         d: 'M10,10 C10,10 30,10 30,10',
         markerEnd: 'url(http://localhost/#arrow123123)',
@@ -226,12 +236,12 @@ describe('SvgArrow', () => {
         },
       });
     });
-
     it('should render path with no curves coordinates', () => {
-      wrapper.setProps({ lineStyle: 'angle' });
+      wrapper.setProps({
+        lineStyle: 'angle',
+      });
       wrapper.update();
       const path = wrapper.find('path');
-
       expect(path.props()).toMatchObject({
         d: 'M10,10 10,10 30,10 30,10',
         markerEnd: 'url(http://localhost/#arrow123123)',
@@ -241,12 +251,12 @@ describe('SvgArrow', () => {
         },
       });
     });
-
     it('should render path with straight line coordinates', () => {
-      wrapper.setProps({ lineStyle: 'straight' });
+      wrapper.setProps({
+        lineStyle: 'straight',
+      });
       wrapper.update();
       const path = wrapper.find('path');
-
       expect(path.props()).toMatchObject({
         d: 'M10,10 15.85786437626905,15.857864376269049',
         markerEnd: 'url(http://localhost/#arrow123123)',
