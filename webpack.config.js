@@ -16,7 +16,7 @@ module.exports = {
     rules: [
       {
         exclude: /node_modules/,
-        test: /\.(js|jsx)/,
+        test: /\.(js|jsx|ts|tsx)/,
         loader: 'babel-loader',
       },
       {
@@ -26,7 +26,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
