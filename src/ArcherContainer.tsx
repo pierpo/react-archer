@@ -31,7 +31,7 @@ export type ArcherContainerContextType = {
 
 type FunctionChild = (context: React.Context<ArcherContainerContextType>) => React.ReactNode;
 
-type Props = {
+type ArcherContainerProps = {
   /**
    * A color string
    *
@@ -93,6 +93,16 @@ type Props = {
   children?: React.ReactNode | FunctionChild;
 };
 
+type ArcherContainerHandle = {
+  /**
+   * Use this to recompute all the arrow positions. Useful if arrows do not properly rerender
+   * after the viewport or some elements moved.
+   */
+  refreshScreen: () => void;
+  /** Only for internal testing purposes */
+  arrowMarkerUniquePrefix: string;
+};
+
 type SourceToTargetsArrayType = SourceToTargetType[];
 
 type State = {
@@ -142,385 +152,398 @@ const endShapeDefaultProp = {
   },
 };
 
-export const ArcherContainer = ({
-  endShape = endShapeDefaultProp,
-  strokeColor = '#f00',
-  strokeWidth = 2,
-  svgContainerStyle = {},
-  noCurves,
-  children,
-  className,
-  endMarker,
-  lineStyle,
-  offset,
-  startMarker,
-  strokeDasharray,
-  style,
-}: Props) => {
-  const [refs, setRefs] = useState<Record<string, HTMLElement>>({});
-  const [sourceToTargetsMap, setSourceToTargetsMap] = useState<
-    Record<string, SourceToTargetsArrayType>
-  >({});
-  const observer = useRef<ResizeObserver>(
-    new ResizeObserver(() => {
-      refreshScreen();
-    }),
-  ).current;
+export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerProps>(
+  (
+    {
+      endShape = endShapeDefaultProp,
+      strokeColor = '#f00',
+      strokeWidth = 2,
+      svgContainerStyle = {},
+      noCurves,
+      children,
+      className,
+      endMarker,
+      lineStyle,
+      offset,
+      startMarker,
+      strokeDasharray,
+      style,
+    }: ArcherContainerProps,
+    archerContainerRef,
+  ) => {
+    const [refs, setRefs] = useState<Record<string, HTMLElement>>({});
+    const [sourceToTargetsMap, setSourceToTargetsMap] = useState<
+      Record<string, SourceToTargetsArrayType>
+    >({});
+    const observer = useRef<ResizeObserver>(
+      new ResizeObserver(() => {
+        refreshScreen();
+      }),
+    ).current;
 
-  const parent = useRef<HTMLDivElement>(null);
+    const parent = useRef<HTMLDivElement>(null);
 
-  const [, updateState] = React.useState<{}>();
+    const [, updateState] = React.useState<{}>();
 
-  const uniqueId = useRef<string>(`arrow${Math.random().toString().slice(2)}`);
+    const uniqueId = useRef<string>(`arrow${Math.random().toString().slice(2)}`).current;
 
-  /**
-   * Use this to recompute all the arrow positions. Useful if arrows do not properly rerender
-   * after the viewport or some elements moved.
-   */
-  const refreshScreen = React.useCallback(() => updateState({}), []);
-
-  const _getRectFromRef = (ref: HTMLElement | null | undefined): DOMRect | null | undefined => {
-    if (!ref) return null;
-    return ref.getBoundingClientRect();
-  };
-
-  const _getParentCoordinates = (): Point => {
-    const rectp = _getRectFromRef(parent.current);
-
-    if (!rectp) {
-      return new Point(0, 0);
-    }
-
-    return rectToPoint(rectp);
-  };
-
-  const _getPointCoordinatesFromAnchorPosition = (
-    position: AnchorPositionType,
-    index: string,
-    parentCoordinates: Point,
-  ): Point => {
-    const rect = _getRectFromRef(refs[index]);
-
-    if (!rect) {
-      return new Point(0, 0);
-    }
-
-    const absolutePosition = computeCoordinatesFromAnchorPosition(position, rect);
-    return absolutePosition.substract(parentCoordinates);
-  };
-
-  const _registerTransitions = useCallback(
-    (elementId: string, newSourceToTargets: SourceToTargetType[]): void => {
-      setSourceToTargetsMap((previousValue) => ({
-        ...previousValue,
-        [elementId]: newSourceToTargets,
-      }));
-    },
-    [],
-  );
-
-  const _unregisterTransitions = useCallback((elementId: string): void => {
-    setSourceToTargetsMap((previousValue) => {
-      const sourceToTargetsMapCopy = { ...previousValue };
-      delete sourceToTargetsMapCopy[elementId];
-      return sourceToTargetsMapCopy;
-    });
-  }, []);
-
-  const _registerChild = useCallback(
-    (id: string, ref: HTMLElement): void => {
-      if (!refs[id]) {
-        observer.observe(ref);
-        setRefs((currentRefs) => ({
-          ...currentRefs,
-          [id]: ref,
-        }));
-      }
-    },
-    [refs],
-  );
-
-  const _unregisterChild = useCallback((id: string): void => {
-    setRefs((currentRefs) => {
-      if (currentRefs[id]) {
-        observer.unobserve(currentRefs[id]);
-      }
-
-      const newRefs = { ...currentRefs };
-      delete newRefs[id];
-      return newRefs;
-    });
-  }, []);
-
-  const _getSourceToTargets = (): SourceToTargetType[] => {
-    // Object.values is unavailable in IE11
-    const jaggedSourceToTargets = Object.keys(sourceToTargetsMap).map(
-      (key: string) => sourceToTargetsMap[key],
+    useImperativeHandle(
+      archerContainerRef,
+      (): ArcherContainerHandle => ({
+        refreshScreen,
+        arrowMarkerUniquePrefix: uniqueId,
+      }),
     );
-    // Flatten
-    return ([] as SourceToTargetType[]).concat
-      .apply([], jaggedSourceToTargets)
-      .sort((a, b) => a.order - b.order);
-  };
 
-  const _createShapeObj = (style: LineType) => {
-    const chosenEndShape = getEndShapeFromStyle(style);
-    const shapeObjMap = {
-      arrow: () => ({
-        arrow: {
-          ...endShape?.arrow,
-          ...style.endShape?.arrow,
-        },
-      }),
-      circle: () => ({
-        circle: {
-          ...endShape?.circle,
-          ...style.endShape?.circle,
-        },
-      }),
+    /**
+     * Use this to recompute all the arrow positions. Useful if arrows do not properly rerender
+     * after the viewport or some elements moved.
+     */
+    const refreshScreen = React.useCallback(() => updateState({}), []);
+
+    const _getRectFromRef = (ref: HTMLElement | null | undefined): DOMRect | null | undefined => {
+      if (!ref) return null;
+      return ref.getBoundingClientRect();
     };
-    return shapeObjMap[chosenEndShape]();
-  };
 
-  const _computeArrows = (): React.ReactElement<
-    React.ComponentProps<typeof SvgArrow>,
-    typeof SvgArrow
-  >[] => {
-    const parentCoordinates = _getParentCoordinates();
+    const _getParentCoordinates = (): Point => {
+      const rectp = _getRectFromRef(parent.current);
 
-    return _getSourceToTargets().map(
-      ({ source, target, label, style = {} }: SourceToTargetType) => {
-        const newStartMarker = style.startMarker || startMarker;
-        const newEndMarker = style.endMarker ?? endMarker ?? true;
+      if (!rectp) {
+        return new Point(0, 0);
+      }
 
-        const endShape = _createShapeObj(style);
+      return rectToPoint(rectp);
+    };
 
-        const newStrokeColor = style.strokeColor || strokeColor;
-        const newStrokeWidth = style.strokeWidth || strokeWidth;
-        const newStrokeDasharray = style.strokeDasharray || strokeDasharray;
-        const newNoCurves = !!(style.noCurves || noCurves);
-        const newLineStyle = style.lineStyle || lineStyle || (newNoCurves ? 'angle' : 'curve');
-        const newOffset = offset || 0;
-        const startingAnchorOrientation = source.anchor;
+    const _getPointCoordinatesFromAnchorPosition = (
+      position: AnchorPositionType,
+      index: string,
+      parentCoordinates: Point,
+    ): Point => {
+      const rect = _getRectFromRef(refs[index]);
 
-        const startingPoint = _getPointCoordinatesFromAnchorPosition(
-          source.anchor,
-          source.id,
-          parentCoordinates,
+      if (!rect) {
+        return new Point(0, 0);
+      }
+
+      const absolutePosition = computeCoordinatesFromAnchorPosition(position, rect);
+      return absolutePosition.substract(parentCoordinates);
+    };
+
+    const _registerTransitions = useCallback(
+      (elementId: string, newSourceToTargets: SourceToTargetType[]): void => {
+        setSourceToTargetsMap((previousValue) => ({
+          ...previousValue,
+          [elementId]: newSourceToTargets,
+        }));
+      },
+      [],
+    );
+
+    const _unregisterTransitions = useCallback((elementId: string): void => {
+      setSourceToTargetsMap((previousValue) => {
+        const sourceToTargetsMapCopy = { ...previousValue };
+        delete sourceToTargetsMapCopy[elementId];
+        return sourceToTargetsMapCopy;
+      });
+    }, []);
+
+    const _registerChild = useCallback(
+      (id: string, ref: HTMLElement): void => {
+        if (!refs[id]) {
+          observer.observe(ref);
+          setRefs((currentRefs) => ({
+            ...currentRefs,
+            [id]: ref,
+          }));
+        }
+      },
+      [refs],
+    );
+
+    const _unregisterChild = useCallback((id: string): void => {
+      setRefs((currentRefs) => {
+        if (currentRefs[id]) {
+          observer.unobserve(currentRefs[id]);
+        }
+
+        const newRefs = { ...currentRefs };
+        delete newRefs[id];
+        return newRefs;
+      });
+    }, []);
+
+    const _getSourceToTargets = (): SourceToTargetType[] => {
+      // Object.values is unavailable in IE11
+      const jaggedSourceToTargets = Object.keys(sourceToTargetsMap).map(
+        (key: string) => sourceToTargetsMap[key],
+      );
+      // Flatten
+      return ([] as SourceToTargetType[]).concat
+        .apply([], jaggedSourceToTargets)
+        .sort((a, b) => a.order - b.order);
+    };
+
+    const _createShapeObj = (style: LineType) => {
+      const chosenEndShape = getEndShapeFromStyle(style);
+      const shapeObjMap = {
+        arrow: () => ({
+          arrow: {
+            ...endShape?.arrow,
+            ...style.endShape?.arrow,
+          },
+        }),
+        circle: () => ({
+          circle: {
+            ...endShape?.circle,
+            ...style.endShape?.circle,
+          },
+        }),
+      };
+      return shapeObjMap[chosenEndShape]();
+    };
+
+    const _computeArrows = (): React.ReactElement<
+      React.ComponentProps<typeof SvgArrow>,
+      typeof SvgArrow
+    >[] => {
+      const parentCoordinates = _getParentCoordinates();
+
+      return _getSourceToTargets().map(
+        ({ source, target, label, style = {} }: SourceToTargetType) => {
+          const newStartMarker = style.startMarker || startMarker;
+          const newEndMarker = style.endMarker ?? endMarker ?? true;
+
+          const endShape = _createShapeObj(style);
+
+          const newStrokeColor = style.strokeColor || strokeColor;
+          const newStrokeWidth = style.strokeWidth || strokeWidth;
+          const newStrokeDasharray = style.strokeDasharray || strokeDasharray;
+          const newNoCurves = !!(style.noCurves || noCurves);
+          const newLineStyle = style.lineStyle || lineStyle || (newNoCurves ? 'angle' : 'curve');
+          const newOffset = offset || 0;
+          const startingAnchorOrientation = source.anchor;
+
+          const startingPoint = _getPointCoordinatesFromAnchorPosition(
+            source.anchor,
+            source.id,
+            parentCoordinates,
+          );
+
+          const endingAnchorOrientation = target.anchor;
+
+          const endingPoint = _getPointCoordinatesFromAnchorPosition(
+            target.anchor,
+            target.id,
+            parentCoordinates,
+          );
+
+          return (
+            <SvgArrow
+              key={JSON.stringify({
+                source,
+                target,
+              })}
+              startingPoint={startingPoint}
+              startingAnchorOrientation={startingAnchorOrientation}
+              endingPoint={endingPoint}
+              endingAnchorOrientation={endingAnchorOrientation}
+              strokeColor={newStrokeColor}
+              strokeWidth={newStrokeWidth}
+              strokeDasharray={newStrokeDasharray}
+              arrowLabel={label}
+              arrowMarkerId={_getMarkerId(source, target)}
+              lineStyle={newLineStyle}
+              offset={newOffset}
+              enableStartMarker={!!newStartMarker}
+              disableEndMarker={!newEndMarker}
+              endShape={endShape}
+            />
+          );
+        },
+      );
+    };
+
+    const _buildShape = (
+      style: LineType,
+    ): {
+      markerHeight: number;
+      markerWidth: number;
+      path: React.ReactNode;
+      refX: number;
+      refY: number;
+    } => {
+      const chosenEndShape = getEndShapeFromStyle(style);
+
+      const getProp = (
+        shape: ValidShapeTypes,
+        prop: keyof ArrowShapeType | keyof CircleShapeType,
+      ) => {
+        return (
+          // @ts-expect-error needs changes at runtime to fix the TS error
+          style.endShape?.[shape]?.[prop] ||
+          // @ts-expect-error needs changes at runtime to fix the TS error
+          endShape?.[shape]?.[prop] ||
+          // @ts-expect-error needs changes at runtime to fix the TS error
+          ArcherContainer.defaultProps.endShape[shape][prop]
         );
+      };
 
-        const endingAnchorOrientation = target.anchor;
+      const shapeMap = {
+        circle: () => {
+          const radius = getProp('circle', 'radius');
+          const strokeWidth = getProp('circle', 'strokeWidth');
+          const strokeColor = getProp('circle', 'strokeColor');
+          const fillColor = getProp('circle', 'fillColor');
+          return {
+            markerWidth: radius * 4,
+            markerHeight: radius * 4,
+            refX: radius * 2 + strokeWidth,
+            refY: radius * 2,
+            path: (
+              <circle
+                cx={radius * 2}
+                cy={radius * 2}
+                r={radius}
+                fill={fillColor}
+                stroke={strokeColor}
+                strokeWidth={strokeWidth}
+              />
+            ),
+          };
+        },
+        arrow: () => {
+          const newStrokeColor = style.strokeColor || strokeColor;
+          const newArrowLength =
+            style.endShape?.arrow?.arrowLength ??
+            endShape?.arrow?.arrowLength ??
+            endShapeDefaultProp.arrow.arrowLength;
+          const newArrowThickness =
+            style.endShape?.arrow?.arrowThickness ||
+            endShape?.arrow?.arrowThickness ||
+            endShapeDefaultProp.arrow.arrowThickness;
+          const arrowPath = `M0,0 L0,${newArrowThickness} L${newArrowLength},${
+            newArrowThickness / 2
+          } z`;
+          return {
+            markerWidth: newArrowLength,
+            markerHeight: newArrowThickness,
+            refX: 0,
+            refY: newArrowThickness / 2,
+            path: <path d={arrowPath} fill={newStrokeColor} />,
+          };
+        },
+      };
+      return shapeMap[chosenEndShape]();
+    };
 
-        const endingPoint = _getPointCoordinatesFromAnchorPosition(
-          target.anchor,
-          target.id,
-          parentCoordinates,
-        );
+    /** Generates an id for an arrow marker
+     * Useful to have one marker per arrow so that each arrow
+     * can have a different color!
+     * */
+    const _getMarkerId = (source: EntityRelationType, target: EntityRelationType): string => {
+      return `${uniqueId}${source.id}${target.id}`;
+    };
+
+    /** Generates all the markers
+     * We want one marker per arrow so that each arrow can have
+     * a different color or size
+     * */
+    const _generateAllArrowMarkers = (): React.ReactElement<
+      React.ComponentProps<'marker'>,
+      'marker'
+    >[] => {
+      return _getSourceToTargets().map(({ source, target, style = {} }: SourceToTargetType) => {
+        const { markerHeight, markerWidth, path, refX, refY } = _buildShape(style);
 
         return (
-          <SvgArrow
-            key={JSON.stringify({
-              source,
-              target,
-            })}
-            startingPoint={startingPoint}
-            startingAnchorOrientation={startingAnchorOrientation}
-            endingPoint={endingPoint}
-            endingAnchorOrientation={endingAnchorOrientation}
-            strokeColor={newStrokeColor}
-            strokeWidth={newStrokeWidth}
-            strokeDasharray={newStrokeDasharray}
-            arrowLabel={label}
-            arrowMarkerId={_getMarkerId(source, target)}
-            lineStyle={newLineStyle}
-            offset={newOffset}
-            enableStartMarker={!!newStartMarker}
-            disableEndMarker={!newEndMarker}
-            endShape={endShape}
-          />
+          <marker
+            id={_getMarkerId(source, target)}
+            key={_getMarkerId(source, target)}
+            markerWidth={markerWidth}
+            markerHeight={markerHeight}
+            refX={refX}
+            refY={refY}
+            orient="auto-start-reverse"
+            markerUnits="strokeWidth"
+          >
+            {path}
+          </marker>
         );
-      },
-    );
-  };
-
-  const _buildShape = (
-    style: LineType,
-  ): {
-    markerHeight: number;
-    markerWidth: number;
-    path: React.ReactNode;
-    refX: number;
-    refY: number;
-  } => {
-    const chosenEndShape = getEndShapeFromStyle(style);
-
-    const getProp = (
-      shape: ValidShapeTypes,
-      prop: keyof ArrowShapeType | keyof CircleShapeType,
-    ) => {
-      return (
-        // @ts-expect-error needs changes at runtime to fix the TS error
-        style.endShape?.[shape]?.[prop] ||
-        // @ts-expect-error needs changes at runtime to fix the TS error
-        endShape?.[shape]?.[prop] ||
-        // @ts-expect-error needs changes at runtime to fix the TS error
-        ArcherContainer.defaultProps.endShape[shape][prop]
-      );
-    };
-
-    const shapeMap = {
-      circle: () => {
-        const radius = getProp('circle', 'radius');
-        const strokeWidth = getProp('circle', 'strokeWidth');
-        const strokeColor = getProp('circle', 'strokeColor');
-        const fillColor = getProp('circle', 'fillColor');
-        return {
-          markerWidth: radius * 4,
-          markerHeight: radius * 4,
-          refX: radius * 2 + strokeWidth,
-          refY: radius * 2,
-          path: (
-            <circle
-              cx={radius * 2}
-              cy={radius * 2}
-              r={radius}
-              fill={fillColor}
-              stroke={strokeColor}
-              strokeWidth={strokeWidth}
-            />
-          ),
-        };
-      },
-      arrow: () => {
-        const newStrokeColor = style.strokeColor || strokeColor;
-        const newArrowLength =
-          style.endShape?.arrow?.arrowLength ??
-          endShape?.arrow?.arrowLength ??
-          endShapeDefaultProp.arrow.arrowLength;
-        const newArrowThickness =
-          style.endShape?.arrow?.arrowThickness ||
-          endShape?.arrow?.arrowThickness ||
-          endShapeDefaultProp.arrow.arrowThickness;
-        const arrowPath = `M0,0 L0,${newArrowThickness} L${newArrowLength},${
-          newArrowThickness / 2
-        } z`;
-        return {
-          markerWidth: newArrowLength,
-          markerHeight: newArrowThickness,
-          refX: 0,
-          refY: newArrowThickness / 2,
-          path: <path d={arrowPath} fill={newStrokeColor} />,
-        };
-      },
-    };
-    return shapeMap[chosenEndShape]();
-  };
-
-  /** Generates an id for an arrow marker
-   * Useful to have one marker per arrow so that each arrow
-   * can have a different color!
-   * */
-  const _getMarkerId = (source: EntityRelationType, target: EntityRelationType): string => {
-    return `${uniqueId.current}${source.id}${target.id}`;
-  };
-
-  /** Generates all the markers
-   * We want one marker per arrow so that each arrow can have
-   * a different color or size
-   * */
-  const _generateAllArrowMarkers = (): React.ReactElement<
-    React.ComponentProps<'marker'>,
-    'marker'
-  >[] => {
-    return _getSourceToTargets().map(({ source, target, style = {} }: SourceToTargetType) => {
-      const { markerHeight, markerWidth, path, refX, refY } = _buildShape(style);
-
-      return (
-        <marker
-          id={_getMarkerId(source, target)}
-          key={_getMarkerId(source, target)}
-          markerWidth={markerWidth}
-          markerHeight={markerHeight}
-          refX={refX}
-          refY={refY}
-          orient="auto-start-reverse"
-          markerUnits="strokeWidth"
-        >
-          {path}
-        </marker>
-      );
-    });
-  };
-
-  const _svgContainerStyle = useMemo(
-    (): Record<string, any> => ({
-      ...defaultSvgContainerStyle,
-      ...svgContainerStyle,
-    }),
-    [defaultSvgContainerStyle, svgContainerStyle],
-  );
-
-  const SvgArrows = _computeArrows();
-
-  let newChildren: React.ReactNode | null | undefined;
-
-  if (typeof children === 'function') {
-    newChildren = children(ArcherContainerContext);
-  } else {
-    newChildren = children;
-  }
-
-  // Subscribe/unsubscribe to the resize window event
-  useEffect(() => {
-    if (window) window.addEventListener('resize', refreshScreen);
-
-    return () => {
-      if (window) window.removeEventListener('resize', refreshScreen);
-    };
-  }, [refreshScreen]);
-
-  // Subscribe/unsubscribe to the DOM observer
-  useEffect(() => {
-    Object.keys(refs).map((elementKey) => {
-      observer.observe(refs[elementKey]);
-    });
-
-    return () => {
-      Object.keys(refs).map((elementKey) => {
-        observer.unobserve(refs[elementKey]);
       });
     };
-  }, [refs]);
 
-  const contextValue = useMemo(
-    () => ({
-      registerTransitions: _registerTransitions,
-      unregisterTransitions: _unregisterTransitions,
-      registerChild: _registerChild,
-      unregisterChild: _unregisterChild,
-    }),
-    [_registerTransitions, _unregisterTransitions, _registerChild, _unregisterChild],
-  );
+    const _svgContainerStyle = useMemo(
+      (): Record<string, any> => ({
+        ...defaultSvgContainerStyle,
+        ...svgContainerStyle,
+      }),
+      [defaultSvgContainerStyle, svgContainerStyle],
+    );
 
-  return (
-    <ArcherContainerContextProvider value={contextValue}>
-      <div style={{ ...style, position: 'relative' }} className={className}>
-        <svg style={_svgContainerStyle}>
-          <defs>{_generateAllArrowMarkers()}</defs>
-          {SvgArrows}
-        </svg>
+    const SvgArrows = _computeArrows();
 
-        <div
-          style={{
-            height: '100%',
-          }}
-          ref={parent}
-        >
-          {newChildren}
+    let newChildren: React.ReactNode | null | undefined;
+
+    if (typeof children === 'function') {
+      newChildren = children(ArcherContainerContext);
+    } else {
+      newChildren = children;
+    }
+
+    // Subscribe/unsubscribe to the resize window event
+    useEffect(() => {
+      if (window) window.addEventListener('resize', refreshScreen);
+
+      return () => {
+        if (window) window.removeEventListener('resize', refreshScreen);
+      };
+    }, [refreshScreen]);
+
+    // Subscribe/unsubscribe to the DOM observer
+    useEffect(() => {
+      Object.keys(refs).map((elementKey) => {
+        observer.observe(refs[elementKey]);
+      });
+
+      return () => {
+        Object.keys(refs).map((elementKey) => {
+          observer.unobserve(refs[elementKey]);
+        });
+      };
+    }, [refs]);
+
+    const contextValue = useMemo(
+      () => ({
+        registerTransitions: _registerTransitions,
+        unregisterTransitions: _unregisterTransitions,
+        registerChild: _registerChild,
+        unregisterChild: _unregisterChild,
+      }),
+      [_registerTransitions, _unregisterTransitions, _registerChild, _unregisterChild],
+    );
+
+    return (
+      <ArcherContainerContextProvider value={contextValue}>
+        <div style={{ ...style, position: 'relative' }} className={className}>
+          <svg style={_svgContainerStyle}>
+            <defs>{_generateAllArrowMarkers()}</defs>
+            {SvgArrows}
+          </svg>
+
+          <div
+            style={{
+              height: '100%',
+            }}
+            ref={parent}
+          >
+            {newChildren}
+          </div>
         </div>
-      </div>
-    </ArcherContainerContextProvider>
-  );
-};
+      </ArcherContainerContextProvider>
+    );
+  },
+);
 
 export default ArcherContainer;
