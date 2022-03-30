@@ -1,3 +1,5 @@
+declare type ValidLineStyles = 'angle' | 'straight' | 'curve';
+
 declare type AnchorPositionType = 'top' | 'bottom' | 'left' | 'right' | 'middle';
 
 declare type RelationType = {

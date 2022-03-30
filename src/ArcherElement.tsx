@@ -3,6 +3,9 @@ import isEqual from 'react-fast-compare';
 import { ArcherContainerContextConsumer, ArcherContainerContextType } from './ArcherContainer';
 
 type OuterProps = {
+  /**
+   * The id that will identify the Archer Element. Should only contain alphanumeric characters and standard characters that you can find in HTML ids.
+   */
   id: string;
   relations?: Array<RelationType>;
   children: React.ReactElement<React.ComponentProps<any>, any>;

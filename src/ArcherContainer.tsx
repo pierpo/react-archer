@@ -13,19 +13,63 @@ export type ArcherContainerContextType = {
 type FunctionChild = (context: React.Context<ArcherContainerContextType>) => React.ReactNode;
 
 type Props = {
-  startMarker?: boolean;
-  endMarker?: boolean;
-  endShape?: ShapeType;
-  strokeColor: string;
-  strokeWidth: number;
+  /**
+   * A color string
+   *
+   * @example '#ff0000'
+   */
+  strokeColor?: string;
+
+  /**
+   * A size in px
+   */
+  strokeWidth?: number;
+
+  /**
+   * A string representing an array of sizes
+   * See https://www.w3schools.com/graphics/svg_stroking.asp
+   */
   strokeDasharray?: string;
-  noCurves?: boolean;
-  lineStyle?: string;
-  children: React.ReactNode | FunctionChild;
-  style?: Record<string, any>;
-  svgContainerStyle?: Record<string, any>;
+
+  style?: React.CSSProperties;
+
+  /**
+   * Style of the SVG container element. Useful if you want to add a z-index to your SVG container to draw the arrows under your elements, for example.
+   */
+  svgContainerStyle?: React.CSSProperties;
+
   className?: string;
+
+  /**
+   * Optional number for space between element and start/end of stroke
+   */
   offset?: number;
+
+  /**
+   * Customize the end shape of the line. Defaults to a traditional "arrow" (triangle) shape.
+   */
+  endShape?: ShapeType;
+
+  /**
+   * Set this to true of you want to render a marker at the start of the line
+   */
+  startMarker?: boolean;
+
+  /**
+   * Set this to false of you do not want to render a marker at the end of the line
+   */
+  endMarker?: boolean;
+
+  /**
+   * Define how the line is drawn, grid for angles, straight for direct line and curve for curves
+   */
+
+  lineStyle?: ValidLineStyles;
+
+  /**
+   * Set this to true if you want angles instead of curves
+   */
+  noCurves?: boolean;
 };
 
 type SourceToTargetsArrayType = SourceToTargetType[];
@@ -140,6 +184,10 @@ export class ArcherContainer extends React.Component<Props, State> {
     if (window) window.removeEventListener('resize', this.refreshScreen);
   }
 
+  /**
+   * Use this to recompute all the arrow positions. Useful if arrows do not properly rerender
+   * after the viewport or some elements moved.
+   */
   refreshScreen = (): void => {
     this.setState({ ...this.state });
   };
@@ -253,8 +301,9 @@ export class ArcherContainer extends React.Component<Props, State> {
 
         const endShape = this._createShapeObj(style);
 
-        const strokeColor = style.strokeColor || this.props.strokeColor;
-        const strokeWidth = style.strokeWidth || this.props.strokeWidth;
+        // TODO remove these casts once defaultProps types are properly handled with functional components
+        const strokeColor = style.strokeColor || (this.props.strokeColor as string);
+        const strokeWidth = style.strokeWidth || (this.props.strokeWidth as number);
         const strokeDasharray = style.strokeDasharray || this.props.strokeDasharray;
         const noCurves = !!(style.noCurves || this.props.noCurves);
         const lineStyle = style.lineStyle || this.props.lineStyle || (noCurves ? 'angle' : 'curve');
