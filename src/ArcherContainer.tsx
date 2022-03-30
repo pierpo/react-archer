@@ -146,7 +146,7 @@ const getEndShapeFromStyle = (shapeObj: LineType) => {
   );
 };
 
-const ArcherContainerContext = React.createContext<ArcherContainerContextType>(null);
+export const ArcherContainerContext = React.createContext<ArcherContainerContextType>(null);
 export const ArcherContainerContextProvider = ArcherContainerContext.Provider;
 export const ArcherContainerContextConsumer = ArcherContainerContext.Consumer;
 export class ArcherContainer extends React.Component<Props, State> {
