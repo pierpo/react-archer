@@ -51,7 +51,7 @@ const SecondExample = () => {
 
         <div style={rowStyle}>
           {Array(nbElements)
-            .fill()
+            .fill(0)
             .map((_, i) => (
               <ArcherElement
                 key={`element${i}`}

@@ -9,7 +9,7 @@ import SeventhExample from './SeventhExample';
 import EighthExample from './EighthExample';
 import NinthExample from './NinthExample';
 
-const getExample = (id) => {
+const getExample = (id: number) => {
   switch (id) {
     case 1:
       return FirstExample;
