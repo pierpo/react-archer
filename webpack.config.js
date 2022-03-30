@@ -5,7 +5,7 @@ const examplePath = path.resolve(__dirname, 'example');
 
 module.exports = {
   mode: 'development',
-  entry: path.resolve(examplePath, 'index.js'),
+  entry: path.resolve(examplePath, 'index.tsx'),
   devtool: 'cheap-module-eval-source-map',
   output: {
     path: examplePath,
@@ -16,7 +16,7 @@ module.exports = {
     rules: [
       {
         exclude: /node_modules/,
-        test: /\.(js|jsx)/,
+        test: /\.(js|jsx|ts|tsx)/,
         loader: 'babel-loader',
       },
       {
@@ -26,7 +26,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),

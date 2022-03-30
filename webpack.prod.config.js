@@ -4,7 +4,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 var config = {
   mode: 'production',
-  entry: './src/react-archer.js',
+  entry: './src/react-archer.ts',
   output: {
     path: path.join(__dirname, 'lib'),
     publicPath: 'lib/',
@@ -12,19 +12,33 @@ var config = {
     sourceMapFilename: 'react-archer.sourcemap.js',
     library: 'ReactArcher',
     libraryTarget: 'umd',
-    globalObject: 'typeof self !== \'undefined\' ? self : this',
+    globalObject: "typeof self !== 'undefined' ? self : this",
   },
   module: {
     rules: [
       {
+        test: /\.ts(x?)$/,
         exclude: /node_modules/,
-        test: /\.(js|jsx)/,
-        loader: 'babel-loader',
+        use: [
+          {
+            loader: 'babel-loader',
+          },
+          {
+            loader: 'ts-loader',
+            options: {
+              configFile: 'tsconfig.build.json',
+              compilerOptions: {
+                noEmit: false,
+                declarationDir: './lib',
+              },
+            },
+          },
+        ],
       },
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
   optimization: {
     minimizer: [
