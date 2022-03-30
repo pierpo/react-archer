@@ -386,7 +386,7 @@ export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherCon
           // @ts-expect-error needs changes at runtime to fix the TS error
           endShape?.[shape]?.[prop] ||
           // @ts-expect-error needs changes at runtime to fix the TS error
-          ArcherContainer.defaultProps.endShape[shape][prop]
+          endShapeDefaultProp[shape][prop]
         );
       };
 
