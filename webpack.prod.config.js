@@ -17,9 +17,23 @@ var config = {
   module: {
     rules: [
       {
+        test: /\.ts(x?)$/,
         exclude: /node_modules/,
-        test: /\.(js|jsx|ts|tsx)/,
-        loader: 'babel-loader',
+        use: [
+          {
+            loader: 'babel-loader',
+          },
+          {
+            loader: 'ts-loader',
+            options: {
+              configFile: 'tsconfig.build.json',
+              compilerOptions: {
+                noEmit: false,
+                declarationDir: './lib',
+              },
+            },
+          },
+        ],
       },
     ],
   },

@@ -1,9 +1,11 @@
 {
+  "include": ["src/", "example/"],
   "compilerOptions": {
     "target": "es2016",
     "jsx": "react",
     "module": "commonjs",
     "noEmit": true,
+    "declaration": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
