@@ -2,6 +2,7 @@ import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import ArcherElement from './ArcherElement';
 import { ArcherContainerContextProvider } from './ArcherContainer';
+import { RelationType } from './types';
 describe('ArcherElement', () => {
   let registerChildMock: jest.Mock<any, any>;
   let unregisterChildMock: jest.Mock<any, any>;

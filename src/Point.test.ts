@@ -1,7 +1,6 @@
 import Point from './Point';
 
 describe('Point', () => {
-
   it('should instanciate a Point', () => {
     const p = new Point(123, 456);
     expect(p.x).toEqual(123);

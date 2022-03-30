@@ -2,6 +2,17 @@ import React from 'react';
 import ResizeObserver from 'resize-observer-polyfill';
 import Point from './Point';
 import SvgArrow from './SvgArrow';
+import {
+  AnchorPositionType,
+  ArrowShapeType,
+  CircleShapeType,
+  EntityRelationType,
+  LineType,
+  ShapeType,
+  SourceToTargetType,
+  ValidLineStyles,
+  ValidShapeTypes,
+} from './types';
 
 export type ArcherContainerContextType = {
   registerChild: (arg0: string, arg1: HTMLElement) => void;
@@ -70,6 +81,8 @@ type Props = {
    * Set this to true if you want angles instead of curves
    */
   noCurves?: boolean;
+
+  children?: React.ReactNode | FunctionChild;
 };
 
 type SourceToTargetsArrayType = SourceToTargetType[];

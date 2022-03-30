@@ -1,8 +1,8 @@
-declare type ValidLineStyles = 'angle' | 'straight' | 'curve';
+export type ValidLineStyles = 'angle' | 'straight' | 'curve';
 
-declare type AnchorPositionType = 'top' | 'bottom' | 'left' | 'right' | 'middle';
+export type AnchorPositionType = 'top' | 'bottom' | 'left' | 'right' | 'middle';
 
-declare type RelationType = {
+export type RelationType = {
   targetId: string;
   targetAnchor: AnchorPositionType;
   sourceAnchor: AnchorPositionType;
@@ -11,12 +11,12 @@ declare type RelationType = {
   style?: LineType;
 };
 
-declare type EntityRelationType = {
+export type EntityRelationType = {
   id: string;
   anchor: AnchorPositionType;
 };
 
-declare type SourceToTargetType = {
+export type SourceToTargetType = {
   source: EntityRelationType;
   target: EntityRelationType;
   order: number;
@@ -24,24 +24,24 @@ declare type SourceToTargetType = {
   style?: LineType;
 };
 
-declare type ArrowShapeType = {
+export type ArrowShapeType = {
   arrowLength?: number;
   arrowThickness?: number;
 };
 
-declare type CircleShapeType = {
+export type CircleShapeType = {
   radius?: number;
   fillColor?: string;
   strokeColor?: string;
   strokeWidth?: number;
 };
 
-declare type ShapeType = {
+export type ShapeType = {
   arrow?: ArrowShapeType;
   circle?: CircleShapeType;
 };
 
-declare type LineType = {
+export type LineType = {
   endShape?: ShapeType;
   strokeColor?: string;
   strokeWidth?: number;
@@ -52,4 +52,4 @@ declare type LineType = {
   lineStyle?: string;
 };
 
-type ValidShapeTypes = 'arrow' | 'circle';
+export type ValidShapeTypes = 'arrow' | 'circle';

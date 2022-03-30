@@ -2,6 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { shallow, ShallowWrapper } from 'enzyme';
 import ArcherContainer from './ArcherContainer';
+import { SourceToTargetType } from './types';
 
 describe('ArcherContainer', () => {
   const defaultProps = {

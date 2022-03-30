@@ -1,5 +1,6 @@
 import React from 'react';
 import Point from './Point';
+import { AnchorPositionType } from './types';
 
 type Props = {
   startingPoint: Point;
