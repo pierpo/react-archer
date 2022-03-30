@@ -1,14 +1,17 @@
 import React from 'react';
 import isEqual from 'react-fast-compare';
 import { ArcherContainerContextConsumer, ArcherContainerContextType } from './ArcherContainer';
+
 type OuterProps = {
   id: string;
-  relations: Array<RelationType>;
+  relations?: Array<RelationType>;
   children: React.ReactElement<React.ComponentProps<any>, any>;
 };
+
 type InnerProps = OuterProps & {
   context: ArcherContainerContextType;
 };
+
 export class ArcherElementNoContext extends React.Component<InnerProps> {
   static defaultProps = {
     relations: [],
@@ -16,14 +19,17 @@ export class ArcherElementNoContext extends React.Component<InnerProps> {
 
   componentDidUpdate(prevProps: InnerProps) {
     if (isEqual(prevProps.relations, this.props.relations)) return;
+    // @ts-expect-error TODO this is actually always defined since it's a default props... waiting to migrate to React.FC to solve this
     this.registerTransitions(this.props.relations);
   }
 
   componentDidMount() {
+    // @ts-expect-error TODO this is actually always defined since it's a default props... waiting to migrate to React.FC to solve this
     if (this.props.relations.length === 0) {
       return;
     }
 
+    // @ts-expect-error TODO this is actually always defined since it's a default props... waiting to migrate to React.FC to solve this
     this.registerTransitions(this.props.relations);
   }
 
