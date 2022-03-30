@@ -6,7 +6,7 @@ import SvgArrow, {
   computeEndingAnchorPosition,
   computeLabelDimensions,
 } from './SvgArrow';
-import Point from './Point';
+import Point from './geometry/Point';
 
 describe('SvgArrow', () => {
   describe('computeEndingPointAccordingToArrow', () => {

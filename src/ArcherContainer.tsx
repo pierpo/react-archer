@@ -1,6 +1,6 @@
 import React from 'react';
 import ResizeObserver from 'resize-observer-polyfill';
-import Point from './Point';
+import Point from './geometry/Point';
 import SvgArrow from './SvgArrow';
 import {
   AnchorPositionType,
