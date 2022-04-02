@@ -8,19 +8,6 @@ import ArcherElement from './ArcherElement';
 import { act } from 'react-dom/test-utils';
 
 describe('ArcherContainer', () => {
-  let fakeRandom = 0;
-  beforeEach(() => {
-    jest.spyOn(global.Math, 'random').mockImplementation(() => {
-      fakeRandom += 0.00001;
-      return fakeRandom;
-    });
-  });
-
-  afterEach(() => {
-    fakeRandom = 0;
-    jest.spyOn(global.Math, 'random').mockRestore();
-  });
-
   it('should render given children', async () => {
     const screen = render(
       <ArcherContainer>
