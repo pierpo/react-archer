@@ -21,14 +21,15 @@
   "scripts": {
     "build": "webpack --config webpack.prod.config.js",
     "deploy:example": "webpack --config webpack.example-app.config.js && gh-pages -d example-dist",
-    "pretest": "yarn lint",
     "prepare": "npm run build",
-    "lint": "eslint --ext .ts,.tsx,.js,.tsx src/ example/",
     "start": "webpack-dev-server --hot --progress --colors --config ./webpack.config.js",
     "test:e2e": "cypress open",
     "test:e2e:update-snapshots": "rm -rf ./cypress/snapshots",
+    "test:jest": "jest ./src/",
+    "test:lint": "eslint --cache --ext .ts,.tsx,.js,.tsx src/ example/",
+    "test:types": "tsc",
     "test:watch": "jest ./src/ --watch",
-    "test": "jest --coverage ./src/"
+    "test": "yarn test:lint && yarn test:types && yarn test:jest"
   },
   "peerDependencies": {
     "@types/react": "^16.8.8 || ^17",
@@ -43,7 +44,7 @@
     "@babel/preset-env": "7.6.2",
     "@babel/preset-react": "7.0.0",
     "@babel/preset-typescript": "7.16.7",
-    "@types/enzyme": "3.10.11",
+    "@testing-library/react": "12.1.4",
     "@types/jest": "27.4.1",
     "@types/react": "17.0.43",
     "@types/react-dom": "17.0.14",
@@ -58,8 +59,6 @@
     "css-loader": "3.2.0",
     "cypress": "^9.1.1",
     "cypress-image-snapshot": "^4.0.1",
-    "enzyme": "3.10.0",
-    "enzyme-adapter-react-16": "1.14.0",
     "eslint": "8.12.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-config-standard": "14.1.0",
@@ -79,7 +78,6 @@
     "prettier": "2.6.1",
     "react": "16.9.0",
     "react-dom": "16.9.0",
-    "react-test-renderer": "16.9.0",
     "release-it": "12.4.3",
     "style-loader": "1.0.0",
     "terser-webpack-plugin": "^2.1.2",
@@ -87,19 +85,7 @@
     "typescript": "^4.6.3",
     "webpack": "4.41.0",
     "webpack-cli": "3.3.9",
-    "webpack-dev-server": "3.8.2"
-  },
-  "jest": {
-    "collectCoverage": false,
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx}"
-    ],
-    "roots": [
-      "src/"
-    ],
-    "setupFiles": [
-      "./shim.js",
-      "./setup-tests.js"
-    ]
+    "webpack-dev-server": "3.8.2",
+    "window-resizeto": "0.0.2"
   }
 }

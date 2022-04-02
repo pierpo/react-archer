@@ -1,5 +1,5 @@
 import React from 'react';
-import Point from './Point';
+import Point from './geometry/Point';
 import { AnchorPositionType } from './types';
 
 type Props = {

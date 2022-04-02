@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { mount, ReactWrapper } from 'enzyme';
 import ArcherElement from './ArcherElement';
 import { ArcherContainerContextProvider } from './ArcherContainer';
 import { RelationType } from './types';
+import { fireEvent, render } from '@testing-library/react';
 describe('ArcherElement', () => {
   let registerChildMock: jest.Mock<any, any>;
   let unregisterChildMock: jest.Mock<any, any>;
@@ -71,12 +71,9 @@ describe('ArcherElement', () => {
     }
   }
 
-  const mountContainer = (
-    relations: Array<RelationType>,
-    newRelations: Array<RelationType>,
-  ): ReactWrapper<typeof MockArcherContainer> => {
+  const mountContainer = (relations: Array<RelationType>, newRelations: Array<RelationType>) => {
     const props = { ...defaultProps, id: 'foo' };
-    return mount(
+    return render(
       <MockArcherContainer
         registerChild={registerChildMock}
         unregisterChild={unregisterChildMock}
@@ -97,7 +94,7 @@ describe('ArcherElement', () => {
 
   it('should register and unregister child on mounting ref callback', () => {
     const relations: RelationType[] = [];
-    const wrapper: ReactWrapper<typeof MockArcherContainer> = mountContainer(relations, []);
+    const wrapper = mountContainer(relations, []);
     // See we register the child
     expect(registerChildMock).toHaveBeenCalledWith('foo', expect.anything());
     wrapper.unmount();
@@ -134,13 +131,9 @@ describe('ArcherElement', () => {
           style: undefined,
         },
       ];
-      const wrapper: ReactWrapper<typeof MockArcherContainer> = mountContainer(
-        relations,
-        newRelations,
-      );
+      const wrapper = mountContainer(relations, newRelations);
       // Trigger update in ArcherElement
-      wrapper.find(PassThrough).find('div.foo').simulate('click');
-      wrapper.update();
+      fireEvent.click(wrapper.getByText('Foo'));
       expect(registerTransitionsMock).toHaveBeenCalledWith('foo', sourceToTargets);
     });
 
@@ -159,15 +152,11 @@ describe('ArcherElement', () => {
           sourceAnchor: 'left',
         },
       ];
-      const wrapper: ReactWrapper<typeof MockArcherContainer> = mountContainer(
-        relations,
-        newRelations,
-      );
+      const wrapper = mountContainer(relations, newRelations);
       // Will get called on mount regardless
       registerTransitionsMock.mockReset();
       // Trigger update in ArcherElement
-      wrapper.find(PassThrough).find('div.foo').simulate('click');
-      wrapper.update();
+      fireEvent.click(wrapper.getByText('Foo'));
       expect(registerTransitionsMock).not.toHaveBeenCalled();
     });
 
@@ -194,15 +183,13 @@ describe('ArcherElement', () => {
           style: undefined,
         },
       ];
-      const wrapper: ReactWrapper<typeof MockArcherContainer> = mountContainer(relations, []);
-      wrapper.update();
+      const wrapper = mountContainer(relations, []);
       expect(registerTransitionsMock).toHaveBeenCalledWith('foo', sourceToTargets);
     });
 
     it('should not call registerTransitions on mount if no relations', () => {
       const relations: RelationType[] = [];
-      const wrapper: ReactWrapper<typeof MockArcherContainer> = mountContainer(relations, []);
-      wrapper.update();
+      const wrapper = mountContainer(relations, []);
       expect(registerTransitionsMock).not.toHaveBeenCalled();
     });
   });
