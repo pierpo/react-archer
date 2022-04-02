@@ -132,6 +132,38 @@ const getEndShapeFromStyle = (shapeObj: LineType) => {
   );
 };
 
+const getSourceToTargets = (
+  sourceToTargetsMap: Record<string, SourceToTargetsArrayType>,
+): SourceToTargetType[] => {
+  // Object.values is unavailable in IE11
+  const jaggedSourceToTargets = Object.keys(sourceToTargetsMap).map(
+    (key: string) => sourceToTargetsMap[key],
+  );
+  // Flatten
+  return ([] as SourceToTargetType[]).concat
+    .apply([], jaggedSourceToTargets)
+    .sort((a, b) => a.order - b.order);
+};
+
+const createShapeObj = (style: LineType, endShape: ShapeType) => {
+  const chosenEndShape = getEndShapeFromStyle(style);
+  const shapeObjMap = {
+    arrow: () => ({
+      arrow: {
+        ...endShape?.arrow,
+        ...style.endShape?.arrow,
+      },
+    }),
+    circle: () => ({
+      circle: {
+        ...endShape?.circle,
+        ...style.endShape?.circle,
+      },
+    }),
+  };
+  return shapeObjMap[chosenEndShape]();
+};
+
 const endShapeDefaultProp = {
   arrow: {
     arrowLength: 10,
@@ -237,48 +269,18 @@ export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherCon
       });
     }, []);
 
-    const _getSourceToTargets = (): SourceToTargetType[] => {
-      // Object.values is unavailable in IE11
-      const jaggedSourceToTargets = Object.keys(sourceToTargetsMap).map(
-        (key: string) => sourceToTargetsMap[key],
-      );
-      // Flatten
-      return ([] as SourceToTargetType[]).concat
-        .apply([], jaggedSourceToTargets)
-        .sort((a, b) => a.order - b.order);
-    };
-
-    const _createShapeObj = (style: LineType) => {
-      const chosenEndShape = getEndShapeFromStyle(style);
-      const shapeObjMap = {
-        arrow: () => ({
-          arrow: {
-            ...endShape?.arrow,
-            ...style.endShape?.arrow,
-          },
-        }),
-        circle: () => ({
-          circle: {
-            ...endShape?.circle,
-            ...style.endShape?.circle,
-          },
-        }),
-      };
-      return shapeObjMap[chosenEndShape]();
-    };
-
     const _computeArrows = (): React.ReactElement<
       React.ComponentProps<typeof SvgArrow>,
       typeof SvgArrow
     >[] => {
       const parentCoordinates = getPointFromElement(parent.current);
 
-      return _getSourceToTargets().map(
+      return getSourceToTargets(sourceToTargetsMap).map(
         ({ source, target, label, style = {} }: SourceToTargetType) => {
           const newStartMarker = style.startMarker || startMarker;
           const newEndMarker = style.endMarker ?? endMarker ?? true;
 
-          const endShape = _createShapeObj(style);
+          const newEndShape = createShapeObj(style, endShape);
 
           const newStrokeColor = style.strokeColor || strokeColor;
           const newStrokeWidth = style.strokeWidth || strokeWidth;
@@ -323,7 +325,7 @@ export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherCon
               offset={newOffset}
               enableStartMarker={!!newStartMarker}
               disableEndMarker={!newEndMarker}
-              endShape={endShape}
+              endShape={newEndShape}
             />
           );
         },
@@ -419,24 +421,26 @@ export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherCon
       React.ComponentProps<'marker'>,
       'marker'
     >[] => {
-      return _getSourceToTargets().map(({ source, target, style = {} }: SourceToTargetType) => {
-        const { markerHeight, markerWidth, path, refX, refY } = _buildShape(style);
+      return getSourceToTargets(sourceToTargetsMap).map(
+        ({ source, target, style = {} }: SourceToTargetType) => {
+          const { markerHeight, markerWidth, path, refX, refY } = _buildShape(style);
 
-        return (
-          <marker
-            id={_getMarkerId(source, target)}
-            key={_getMarkerId(source, target)}
-            markerWidth={markerWidth}
-            markerHeight={markerHeight}
-            refX={refX}
-            refY={refY}
-            orient="auto-start-reverse"
-            markerUnits="strokeWidth"
-          >
-            {path}
-          </marker>
-        );
-      });
+          return (
+            <marker
+              id={_getMarkerId(source, target)}
+              key={_getMarkerId(source, target)}
+              markerWidth={markerWidth}
+              markerHeight={markerHeight}
+              refX={refX}
+              refY={refY}
+              orient="auto-start-reverse"
+              markerUnits="strokeWidth"
+            >
+              {path}
+            </marker>
+          );
+        },
+      );
     };
 
     const _svgContainerStyle = useMemo(
