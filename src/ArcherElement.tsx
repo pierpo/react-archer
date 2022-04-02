@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { ArcherContainerContext } from './ArcherContainer';
+import { ArcherContainerContext } from './ArcherContainer.context';
 import { RelationType, SourceToTargetType } from './types';
 import { useDeepCompareEffect } from './utils/useDeepCompareEffect';
 

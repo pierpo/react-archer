@@ -1,8 +1,8 @@
 import * as React from 'react';
 import ArcherElement from './ArcherElement';
-import { ArcherContainerContextProvider } from './ArcherContainer';
 import { RelationType } from './types';
 import { fireEvent, render } from '@testing-library/react';
+import { ArcherContainerContextProvider } from './ArcherContainer.context';
 describe('ArcherElement', () => {
   let registerChildMock: jest.Mock<any, any>;
   let unregisterChildMock: jest.Mock<any, any>;

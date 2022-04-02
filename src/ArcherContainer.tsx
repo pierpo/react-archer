@@ -26,13 +26,11 @@ import {
   getRectFromElement,
   rectToPoint,
 } from './geometry/rectHelper';
-
-export type ArcherContainerContextType = {
-  registerChild: (arg0: string, arg1: HTMLElement) => void;
-  registerTransitions: (arg0: string, arg1: SourceToTargetType[]) => void;
-  unregisterChild: (arg0: string) => void;
-  unregisterTransitions: (arg0: string) => void;
-} | null;
+import {
+  ArcherContainerContext,
+  ArcherContainerContextProvider,
+  ArcherContainerContextType,
+} from './ArcherContainer.context';
 
 type FunctionChild = (context: React.Context<ArcherContainerContextType>) => React.ReactNode;
 
@@ -110,13 +108,6 @@ type ArcherContainerHandle = {
 
 type SourceToTargetsArrayType = SourceToTargetType[];
 
-type State = {
-  refs: Record<string, HTMLElement>;
-  sourceToTargetsMap: Record<string, SourceToTargetsArrayType>;
-  observer: ResizeObserver;
-  parent: HTMLElement | null | undefined;
-};
-
 const defaultSvgContainerStyle = {
   position: 'absolute',
   width: '100%',
@@ -139,10 +130,6 @@ const getEndShapeFromStyle = (shapeObj: LineType) => {
     )[0] || possibleShapes[0]
   );
 };
-
-export const ArcherContainerContext = React.createContext<ArcherContainerContextType>(null);
-export const ArcherContainerContextProvider = ArcherContainerContext.Provider;
-export const ArcherContainerContextConsumer = ArcherContainerContext.Consumer;
 
 const endShapeDefaultProp = {
   arrow: {
