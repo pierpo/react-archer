@@ -1,367 +1,198 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { mount, shallow, ShallowWrapper } from 'enzyme';
+import { getByText, render, screen } from '@testing-library/react';
 import ArcherContainer from './ArcherContainer';
 import { SourceToTargetType } from './types';
+import ArcherElement from './ArcherElement';
+import { act } from 'react-dom/test-utils';
 
 describe('ArcherContainer', () => {
-  const defaultProps = {
-    endShape: {
-      arrow: {
-        arrowLength: 10,
-        arrowThickness: 30,
-      },
-    },
-    strokeColor: 'rgb(123, 234, 123)',
-    strokeDasharray: '5,5',
-  };
+  let fakeRandom = 0;
+  beforeEach(() => {
+    jest.spyOn(global.Math, 'random').mockImplementation(() => {
+      fakeRandom += 0.00001;
+      return fakeRandom;
+    });
+  });
 
-  type WrapperState = {
-    sourceToTargetsMap: Record<string, SourceToTargetType[]>;
-  };
+  afterEach(() => {
+    fakeRandom = 0;
+    jest.spyOn(global.Math, 'random').mockRestore();
+  });
 
-  const defaultState: WrapperState = {
-    sourceToTargetsMap: {
-      foo: [
-        {
-          source: {
-            anchor: 'top',
-            id: 'first-element',
-          },
-          target: {
-            anchor: 'bottom',
-            id: 'second-element',
-          },
-          order: 0,
-        },
-      ],
-    },
-  };
-
-  const circleEndShapeDefaultState: WrapperState = {
-    sourceToTargetsMap: {
-      bar: [
-        {
-          source: {
-            anchor: 'top',
-            id: 'first-element',
-          },
-          target: {
-            anchor: 'bottom',
-            id: 'second-element',
-          },
-          order: 0,
-          style: {
-            endShape: {
-              circle: {
-                radius: 11,
-                strokeWidth: 2,
-                strokeColor: 'tomato',
-                fillColor: '#c0ffee',
-              },
-            },
-          },
-        },
-      ],
-    },
-  };
-
-  const MarkerAtBothEndsState: WrapperState = {
-    sourceToTargetsMap: {
-      bar: [
-        {
-          source: {
-            anchor: 'top',
-            id: 'first-element',
-          },
-          target: {
-            anchor: 'bottom',
-            id: 'second-element',
-          },
-          order: 0,
-          style: {
-            startMarker: true,
-            endShape: {
-              circle: {
-                radius: 11,
-                strokeWidth: 2,
-                strokeColor: 'tomato',
-                fillColor: '#c0ffee',
-              },
-            },
-          },
-        },
-      ],
-    },
-  };
-
-  const MarkerOnlyAtStartState: WrapperState = {
-    sourceToTargetsMap: {
-      bar: [
-        {
-          source: {
-            anchor: 'top',
-            id: 'first-element',
-          },
-          target: {
-            anchor: 'bottom',
-            id: 'second-element',
-          },
-          order: 0,
-          style: {
-            startMarker: true,
-            endMarker: false,
-            endShape: {
-              circle: {
-                radius: 11,
-                strokeWidth: 2,
-                strokeColor: 'tomato',
-                fillColor: '#c0ffee',
-              },
-            },
-          },
-        },
-      ],
-    },
-  };
-
-  const shallowRenderAndSetState = (newState?: WrapperState) => {
-    const wrapper = shallow<ArcherContainer>(
-      <ArcherContainer {...defaultProps}>
+  it('should render given children', async () => {
+    const screen = render(
+      <ArcherContainer>
         <div>child</div>
       </ArcherContainer>,
     );
-    wrapper.setState(newState || defaultState);
-    return wrapper;
-  };
-
-  it('should render given children and a svg element', () => {
-    const wrapper = shallowRenderAndSetState();
-    expect(wrapper.childAt(0).childAt(1).text()).toEqual('child');
-    expect(wrapper.childAt(0).childAt(0).getElements()[0].type).toEqual('svg');
+    await screen.findByText('child');
   });
 
   describe('rendering an svg with the marker element used to draw an svg arrow', () => {
+    it('should render simple elements', async () => {
+      const screen = render(
+        <ArcherContainer>
+          <ArcherElement
+            id="elem-left"
+            relations={[{ sourceAnchor: 'left', targetAnchor: 'right', targetId: 'elem-right' }]}
+          >
+            <div>element 1</div>
+          </ArcherElement>
+          <ArcherElement id="elem-right">
+            <div>element 2</div>
+          </ArcherElement>
+        </ArcherContainer>,
+      );
+      expect(screen.baseElement).toMatchSnapshot();
+    });
+
     it('should render the arrow with an arrow end by default', () => {
-      const wrapper = shallowRenderAndSetState();
-      const marker = wrapper.find('marker');
-      const markerProps = marker.props();
-      const expectedProps = {
-        id: `${wrapper.instance().arrowMarkerUniquePrefix}first-elementsecond-element`,
-        markerWidth: 10,
-        markerHeight: 30,
-        refX: 0,
-        refY: 15,
-        orient: 'auto-start-reverse',
-        markerUnits: 'strokeWidth',
-        children: <path d="M0,0 L0,30 L10,15 z" fill="rgb(123, 234, 123)" />,
-      };
-      expect(markerProps).toMatchObject(expectedProps);
+      const screen = render(
+        <ArcherContainer>
+          <ArcherElement id="elem-left">
+            <div>element 1</div>
+          </ArcherElement>
+          <ArcherElement
+            id="elem-right"
+            relations={[{ sourceAnchor: 'right', targetAnchor: 'left', targetId: 'elem-left' }]}
+          >
+            <div>element 2</div>
+          </ArcherElement>
+        </ArcherContainer>,
+      );
+
+      expect(screen.baseElement).toMatchSnapshot();
     });
 
     it('should render the arrow with a circle end when provided', () => {
-      const wrapper = shallowRenderAndSetState(circleEndShapeDefaultState);
-      const marker = wrapper.find('marker');
-      const markerProps = marker.props();
-      const expectedProps = {
-        id: `${wrapper.instance().arrowMarkerUniquePrefix}first-elementsecond-element`,
-        markerWidth: 44,
-        markerHeight: 44,
-        refX: 24,
-        refY: 22,
-        orient: 'auto-start-reverse',
-        markerUnits: 'strokeWidth',
-        children: <circle cx={22} cy={22} r={11} fill="#c0ffee" stroke="tomato" strokeWidth={2} />,
-      };
-      expect(markerProps).toMatchObject(expectedProps);
+      const screen = render(
+        <ArcherContainer>
+          <ArcherElement
+            id="elem-left"
+            relations={[
+              {
+                sourceAnchor: 'left',
+                targetAnchor: 'right',
+                targetId: 'elem-right',
+                style: {
+                  endShape: {
+                    circle: {
+                      radius: 11,
+                      strokeWidth: 2,
+                      strokeColor: 'tomato',
+                      fillColor: '#c0ffee',
+                    },
+                  },
+                },
+              },
+            ]}
+          >
+            <div>element 1</div>
+          </ArcherElement>
+          <ArcherElement id="elem-right">
+            <div>element 2</div>
+          </ArcherElement>
+        </ArcherContainer>,
+      );
+      expect(screen.baseElement).toMatchSnapshot();
     });
-  });
-  describe('render', () => {
-    describe('computeArrows', () => {
-      describe('with default end shape', () => {
-        it('renders an SVG arrow', () => {
-          const wrapper = shallowRenderAndSetState();
-          const uniquePrefix: string = wrapper.instance().arrowMarkerUniquePrefix;
 
-          const arrow = wrapper.instance()._computeArrows();
-
-          // @ts-expect-error TODO we'll see about that later
-          const tree = renderer.create(arrow).toJSON();
-          expect(tree).toMatchInlineSnapshot(`
-            <g>
-              <path
-                d="M0,0 C0,10 0,10 0,20"
-                markerEnd="url(about:blank#${uniquePrefix}first-elementsecond-element)"
-                style={
-                  Object {
-                    "fill": "none",
-                    "stroke": "rgb(123, 234, 123)",
-                    "strokeDasharray": "5,5",
-                    "strokeWidth": 2,
-                  }
-                }
-              />
-            </g>
-          `);
-        });
-      });
-      describe('with a circle end shape', () => {
-        it('renders an SVG arrow', () => {
-          const wrapper = shallowRenderAndSetState(circleEndShapeDefaultState);
-          const uniquePrefix: string = wrapper.instance().arrowMarkerUniquePrefix;
-
-          const arrow = wrapper.instance()._computeArrows();
-
-          // @ts-expect-error TODO we'll see about that later
-          const tree = renderer.create(arrow).toJSON();
-          expect(tree).toMatchInlineSnapshot(`
-            <g>
-              <path
-                d="M0,0 C0,11 0,11 0,22"
-                markerEnd="url(about:blank#${uniquePrefix}first-elementsecond-element)"
-                style={
-                  Object {
-                    "fill": "none",
-                    "stroke": "rgb(123, 234, 123)",
-                    "strokeDasharray": "5,5",
-                    "strokeWidth": 2,
-                  }
-                }
-              />
-            </g>
-          `);
-        });
-      });
-      describe('with a marker at start', () => {
-        it('renders an SVG arrow on both ends', () => {
-          const wrapper = shallowRenderAndSetState(MarkerAtBothEndsState);
-          const uniquePrefix: string = wrapper.instance().arrowMarkerUniquePrefix;
-
-          const arrow = wrapper.instance()._computeArrows();
-
-          // @ts-expect-error TODO we'll see about that later
-          const tree = renderer.create(arrow).toJSON();
-          expect(tree).toMatchInlineSnapshot(`
-          <g>
-            <path
-              d="M0,-22 C0,0 0,0 0,22"
-              markerEnd="url(about:blank#${uniquePrefix}first-elementsecond-element)"
-              markerStart="url(about:blank#${uniquePrefix}first-elementsecond-element)"
-              style={
-                Object {
-                  "fill": "none",
-                  "stroke": "rgb(123, 234, 123)",
-                  "strokeDasharray": "5,5",
-                  "strokeWidth": 2,
-                }
-              }
-            />
-          </g>
-        `);
-        });
-      });
-      describe('with a marker only at start', () => {
-        it('renders an SVG arrow only on start', () => {
-          const wrapper = shallowRenderAndSetState(MarkerOnlyAtStartState);
-          const uniquePrefix: string = wrapper.instance().arrowMarkerUniquePrefix;
-
-          const arrow = wrapper.instance()._computeArrows();
-
-          // @ts-expect-error TODO we'll see about that later
-          const tree = renderer.create(arrow).toJSON();
-          expect(tree).toMatchInlineSnapshot(`
-          <g>
-            <path
-              d="M0,-22 C0,-11 0,-11 0,0"
-              markerStart="url(about:blank#${uniquePrefix}first-elementsecond-element)"
-              style={
-                Object {
-                  "fill": "none",
-                  "stroke": "rgb(123, 234, 123)",
-                  "strokeDasharray": "5,5",
-                  "strokeWidth": 2,
-                }
-              }
-            />
-          </g>
-        `);
-        });
-      });
+    it('should render the arrow on both ends', () => {
+      const screen = render(
+        <ArcherContainer startMarker>
+          <ArcherElement
+            id="elem-left"
+            relations={[
+              {
+                sourceAnchor: 'left',
+                targetAnchor: 'right',
+                targetId: 'elem-right',
+              },
+            ]}
+          >
+            <div>element 1</div>
+          </ArcherElement>
+          <ArcherElement id="elem-right">
+            <div>element 2</div>
+          </ArcherElement>
+        </ArcherContainer>,
+      );
+      expect(screen.baseElement).toMatchSnapshot();
     });
-    describe('generateAllArrowMarkers', () => {
-      describe('with default end shape', () => {
-        it('renders an SVG marker', () => {
-          const wrapper = shallowRenderAndSetState();
-          const uniquePrefix: string = wrapper.instance().arrowMarkerUniquePrefix;
 
-          const marker = wrapper.instance()._generateAllArrowMarkers();
-
-          // @ts-expect-error TODO we'll see about that later
-          const tree = renderer.create(marker).toJSON();
-          expect(tree).toMatchInlineSnapshot(`
-            <marker
-              id="${uniquePrefix}first-elementsecond-element"
-              markerHeight={30}
-              markerUnits="strokeWidth"
-              markerWidth={10}
-              orient="auto-start-reverse"
-              refX={0}
-              refY={15}
-            >
-              <path
-                d="M0,0 L0,30 L10,15 z"
-                fill="rgb(123, 234, 123)"
-              />
-            </marker>
-          `);
-        });
-      });
-      describe('with a circle end shape', () => {
-        it('renders an SVG marker', () => {
-          const wrapper = shallowRenderAndSetState(circleEndShapeDefaultState);
-          const uniquePrefix: string = wrapper.instance().arrowMarkerUniquePrefix;
-
-          const marker = wrapper.instance()._generateAllArrowMarkers();
-
-          // @ts-expect-error TODO we'll see about that later
-          const tree = renderer.create(marker).toJSON();
-          expect(tree).toMatchInlineSnapshot(`
-            <marker
-              id="${uniquePrefix}first-elementsecond-element"
-              markerHeight={44}
-              markerUnits="strokeWidth"
-              markerWidth={44}
-              orient="auto-start-reverse"
-              refX={24}
-              refY={22}
-            >
-              <circle
-                cx={22}
-                cy={22}
-                fill="#c0ffee"
-                r={11}
-                stroke="tomato"
-                strokeWidth={2}
-              />
-            </marker>
-          `);
-        });
-      });
+    it('should render the arrow only at start', () => {
+      const screen = render(
+        <ArcherContainer startMarker endMarker={false}>
+          <ArcherElement
+            id="elem-left"
+            relations={[
+              {
+                sourceAnchor: 'left',
+                targetAnchor: 'right',
+                targetId: 'elem-right',
+              },
+            ]}
+          >
+            <div>element 1</div>
+          </ArcherElement>
+          <ArcherElement id="elem-right">
+            <div>element 2</div>
+          </ArcherElement>
+        </ArcherContainer>,
+      );
+      expect(screen.baseElement).toMatchSnapshot();
     });
   });
 
   describe('Event Listeners', () => {
-    it('should add/remove resize listeners when mounting/unmounting', () => {
-      // @ts-expect-error TODO we'll see about that later
-      global.window.addEventListener = jest.fn();
-      // @ts-expect-error TODO we'll see about that later
-      global.window.removeEventListener = jest.fn();
-      const wrapper = shallowRenderAndSetState();
-      // @ts-expect-error TODO we'll see about that later
-      expect(global.window.addEventListener).toBeCalledWith('resize', expect.anything());
-      wrapper.unmount();
-      // @ts-expect-error TODO we'll see about that later
-      expect(global.window.removeEventListener).toBeCalledWith('resize', expect.anything());
+    it('should move elements on window resize', () => {
+      const screen = render(
+        <ArcherContainer startMarker endMarker={false}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-around',
+              alignItems: 'stretch',
+            }}
+          >
+            <ArcherElement
+              id="elem-left"
+              relations={[
+                {
+                  sourceAnchor: 'left',
+                  targetAnchor: 'right',
+                  targetId: 'elem-right',
+                },
+              ]}
+            >
+              <div>element 1</div>
+            </ArcherElement>
+            <ArcherElement id="elem-right">
+              <div>element 2</div>
+            </ArcherElement>
+          </div>
+        </ArcherContainer>,
+      );
+      const element2 = screen.getByText('element 2');
+
+      const pathBefore = document.querySelector('path');
+      expect(pathBefore?.attributes.getNamedItem('d')?.value).toEqual('M0,0 L0,6 L10,3 z');
+
+      // Sadly all arrows return the same value for getBoundingClientRect
+      // let's change the implementation, trigger a resize, then see that the values did change
+      element2.getBoundingClientRect = jest.fn().mockReturnValue({
+        width: 20,
+        height: 20,
+        top: 0,
+        left: 0,
+        right: 20,
+        bottom: 20,
+      });
+      act(() => window.resizeTo(500, 500));
+      const path = document.querySelector('path');
+      expect(path?.attributes.getNamedItem('d')?.value).toEqual('M0,0 L0,6 L10,3 z');
     });
   });
 });
