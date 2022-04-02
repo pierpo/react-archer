@@ -20,7 +20,12 @@ import {
   ValidLineStyles,
   ValidShapeTypes,
 } from './types';
-import { computeCoordinatesFromAnchorPosition, rectToPoint } from './geometry/rectHelper';
+import {
+  computeCoordinatesFromAnchorPosition,
+  getParentCoordinates,
+  getRectFromRef,
+  rectToPoint,
+} from './geometry/rectHelper';
 
 export type ArcherContainerContextType = {
   registerChild: (arg0: string, arg1: HTMLElement) => void;
@@ -201,27 +206,12 @@ export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherCon
      */
     const refreshScreen = React.useCallback(() => updateState({}), []);
 
-    const _getRectFromRef = (ref: HTMLElement | null | undefined): DOMRect | null | undefined => {
-      if (!ref) return null;
-      return ref.getBoundingClientRect();
-    };
-
-    const _getParentCoordinates = (): Point => {
-      const rectp = _getRectFromRef(parent.current);
-
-      if (!rectp) {
-        return new Point(0, 0);
-      }
-
-      return rectToPoint(rectp);
-    };
-
     const _getPointCoordinatesFromAnchorPosition = (
       position: AnchorPositionType,
       index: string,
       parentCoordinates: Point,
     ): Point => {
-      const rect = _getRectFromRef(refs[index]);
+      const rect = getRectFromRef(refs[index]);
 
       if (!rect) {
         return new Point(0, 0);
@@ -308,7 +298,7 @@ export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherCon
       React.ComponentProps<typeof SvgArrow>,
       typeof SvgArrow
     >[] => {
-      const parentCoordinates = _getParentCoordinates();
+      const parentCoordinates = getParentCoordinates(parent);
 
       return _getSourceToTargets().map(
         ({ source, target, label, style = {} }: SourceToTargetType) => {

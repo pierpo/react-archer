@@ -29,3 +29,18 @@ export function computeCoordinatesFromAnchorPosition(
       return new Point(0, 0);
   }
 }
+
+export const getRectFromRef = (ref: HTMLElement | null | undefined): DOMRect | null | undefined => {
+  if (!ref) return null;
+  return ref.getBoundingClientRect();
+};
+
+export const getParentCoordinates = (parent: React.RefObject<HTMLDivElement>) => {
+  const rectp = getRectFromRef(parent.current);
+
+  if (!rectp) {
+    return new Point(0, 0);
+  }
+
+  return rectToPoint(rectp);
+};
