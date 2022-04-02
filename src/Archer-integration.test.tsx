@@ -1,8 +1,21 @@
 import React from 'react';
 import ArcherElement from './ArcherElement';
 import ArcherContainer from './ArcherContainer';
-import { rootStyle, rowStyle, boxStyle } from './testHelper';
 import { render } from '@testing-library/react';
+
+export const rootStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+};
+export const rowStyle = {
+  margin: '200px 0',
+  display: 'flex',
+  justifyContent: 'space-between',
+};
+export const boxStyle = {
+  padding: '10px',
+  border: '1px solid black',
+};
 
 describe('Archer Integration', () => {
   type ThirdPartyComponentProps = {
