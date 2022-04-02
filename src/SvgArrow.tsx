@@ -59,6 +59,7 @@ export function computeArrowPointAccordingToArrowHead(
   arrowLength: number,
   strokeWidth: number,
   endingAnchorOrientation: AnchorPositionType,
+  // TODO oops, type me!
   lineStyle?: string,
   xArrowStart?: number,
   yArrowStart?: number,
