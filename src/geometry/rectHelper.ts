@@ -30,13 +30,15 @@ export function computeCoordinatesFromAnchorPosition(
   }
 }
 
-export const getRectFromRef = (ref: HTMLElement | null | undefined): DOMRect | null | undefined => {
-  if (!ref) return null;
-  return ref.getBoundingClientRect();
+export const getRectFromElement = (
+  element: HTMLElement | null | undefined,
+): DOMRect | null | undefined => {
+  if (!element) return null;
+  return element.getBoundingClientRect();
 };
 
-export const getParentCoordinates = (parent: React.RefObject<HTMLDivElement>) => {
-  const rectp = getRectFromRef(parent.current);
+export const getPointFromElement = (element: HTMLDivElement | null | undefined) => {
+  const rectp = getRectFromElement(element);
 
   if (!rectp) {
     return new Point(0, 0);

@@ -22,8 +22,8 @@ import {
 } from './types';
 import {
   computeCoordinatesFromAnchorPosition,
-  getParentCoordinates,
-  getRectFromRef,
+  getPointFromElement,
+  getRectFromElement,
   rectToPoint,
 } from './geometry/rectHelper';
 
@@ -211,7 +211,7 @@ export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherCon
       index: string,
       parentCoordinates: Point,
     ): Point => {
-      const rect = getRectFromRef(refs[index]);
+      const rect = getRectFromElement(refs[index]);
 
       if (!rect) {
         return new Point(0, 0);
@@ -298,7 +298,7 @@ export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherCon
       React.ComponentProps<typeof SvgArrow>,
       typeof SvgArrow
     >[] => {
-      const parentCoordinates = getParentCoordinates(parent);
+      const parentCoordinates = getPointFromElement(parent.current);
 
       return _getSourceToTargets().map(
         ({ source, target, label, style = {} }: SourceToTargetType) => {
