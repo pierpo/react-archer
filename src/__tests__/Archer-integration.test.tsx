@@ -1,6 +1,6 @@
 import React from 'react';
-import ArcherElement from './ArcherElement';
-import ArcherContainer from './ArcherContainer';
+import ArcherElement from '../ArcherElement';
+import ArcherContainer from '../ArcherContainer';
 import { render } from '@testing-library/react';
 
 export const rootStyle = {

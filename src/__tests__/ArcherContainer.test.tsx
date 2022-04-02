@@ -2,9 +2,9 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount, shallow, ShallowWrapper } from 'enzyme';
 import { getByText, render, screen } from '@testing-library/react';
-import ArcherContainer from './ArcherContainer';
-import { SourceToTargetType } from './types';
-import ArcherElement from './ArcherElement';
+import ArcherContainer from '../ArcherContainer';
+import { SourceToTargetType } from '../types';
+import ArcherElement from '../ArcherElement';
 import { act } from 'react-dom/test-utils';
 
 describe('ArcherContainer', () => {
