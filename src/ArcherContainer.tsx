@@ -22,6 +22,7 @@ import {
 } from './types';
 import {
   computeCoordinatesFromAnchorPosition,
+  getPointCoordinatesFromAnchorPosition,
   getPointFromElement,
   getRectFromElement,
   rectToPoint,
@@ -193,21 +194,6 @@ export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherCon
      */
     const refreshScreen = React.useCallback(() => updateState({}), []);
 
-    const _getPointCoordinatesFromAnchorPosition = (
-      position: AnchorPositionType,
-      index: string,
-      parentCoordinates: Point,
-    ): Point => {
-      const rect = getRectFromElement(refs[index]);
-
-      if (!rect) {
-        return new Point(0, 0);
-      }
-
-      const absolutePosition = computeCoordinatesFromAnchorPosition(position, rect);
-      return absolutePosition.substract(parentCoordinates);
-    };
-
     const _registerTransitions = useCallback(
       (elementId: string, newSourceToTargets: SourceToTargetType[]): void => {
         setSourceToTargetsMap((previousValue) => ({
@@ -302,18 +288,20 @@ export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherCon
           const newOffset = offset || 0;
           const startingAnchorOrientation = source.anchor;
 
-          const startingPoint = _getPointCoordinatesFromAnchorPosition(
+          const startingPoint = getPointCoordinatesFromAnchorPosition(
             source.anchor,
             source.id,
             parentCoordinates,
+            refs,
           );
 
           const endingAnchorOrientation = target.anchor;
 
-          const endingPoint = _getPointCoordinatesFromAnchorPosition(
+          const endingPoint = getPointCoordinatesFromAnchorPosition(
             target.anchor,
             target.id,
             parentCoordinates,
+            refs,
           );
 
           return (

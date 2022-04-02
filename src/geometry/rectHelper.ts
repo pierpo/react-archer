@@ -46,3 +46,19 @@ export const getPointFromElement = (element: HTMLDivElement | null | undefined) 
 
   return rectToPoint(rectp);
 };
+
+export const getPointCoordinatesFromAnchorPosition = (
+  position: AnchorPositionType,
+  index: string,
+  parentCoordinates: Point,
+  refs: Record<string, HTMLElement>,
+): Point => {
+  const rect = getRectFromElement(refs[index]);
+
+  if (!rect) {
+    return new Point(0, 0);
+  }
+
+  const absolutePosition = computeCoordinatesFromAnchorPosition(position, rect);
+  return absolutePosition.substract(parentCoordinates);
+};
