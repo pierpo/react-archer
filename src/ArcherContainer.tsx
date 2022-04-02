@@ -164,6 +164,18 @@ const createShapeObj = (style: LineType, endShape: ShapeType) => {
   return shapeObjMap[chosenEndShape]();
 };
 
+/** Generates an id for an arrow marker
+ * Useful to have one marker per arrow so that each arrow
+ * can have a different color!
+ * */
+const getMarkerId = (
+  uniqueId: string,
+  source: EntityRelationType,
+  target: EntityRelationType,
+): string => {
+  return `${uniqueId}${source.id}${target.id}`;
+};
+
 const endShapeDefaultProp = {
   arrow: {
     arrowLength: 10,
@@ -320,7 +332,7 @@ export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherCon
               strokeWidth={newStrokeWidth}
               strokeDasharray={newStrokeDasharray}
               arrowLabel={label}
-              arrowMarkerId={_getMarkerId(source, target)}
+              arrowMarkerId={getMarkerId(uniqueId, source, target)}
               lineStyle={newLineStyle}
               offset={newOffset}
               enableStartMarker={!!newStartMarker}
@@ -405,14 +417,6 @@ export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherCon
       return shapeMap[chosenEndShape]();
     };
 
-    /** Generates an id for an arrow marker
-     * Useful to have one marker per arrow so that each arrow
-     * can have a different color!
-     * */
-    const _getMarkerId = (source: EntityRelationType, target: EntityRelationType): string => {
-      return `${uniqueId}${source.id}${target.id}`;
-    };
-
     /** Generates all the markers
      * We want one marker per arrow so that each arrow can have
      * a different color or size
@@ -427,8 +431,8 @@ export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherCon
 
           return (
             <marker
-              id={_getMarkerId(source, target)}
-              key={_getMarkerId(source, target)}
+              id={getMarkerId(uniqueId, source, target)}
+              key={getMarkerId(uniqueId, source, target)}
               markerWidth={markerWidth}
               markerHeight={markerHeight}
               refX={refX}
