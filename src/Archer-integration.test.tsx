@@ -1,8 +1,8 @@
 import React from 'react';
-import { mount } from 'enzyme';
 import ArcherElement from './ArcherElement';
 import ArcherContainer from './ArcherContainer';
 import { rootStyle, rowStyle, boxStyle } from './testHelper';
+import { render } from '@testing-library/react';
 
 describe('Archer Integration', () => {
   type ThirdPartyComponentProps = {
@@ -146,8 +146,8 @@ describe('Archer Integration', () => {
     );
 
     it('renders elements', () => {
-      const component = mount(<ItemRendererComponent />);
-      expect(component.find(ArcherElement).length).toEqual(4);
+      const component = render(<ItemRendererComponent />);
+      expect(component.baseElement).toMatchSnapshot();
     });
   });
 });
