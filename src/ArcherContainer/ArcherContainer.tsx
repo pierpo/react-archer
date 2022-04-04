@@ -17,6 +17,7 @@ import {
 import { SvgArrows } from './components/SvgArrows';
 import { endShapeDefaultProp } from './ArcherContainer.constants';
 import { ArrowMarkers } from './components/Markers';
+import { useObserveElements, useResizeListener } from './ArcherContainer.hooks';
 
 const defaultSvgContainerStyle = {
   position: 'absolute',
@@ -135,27 +136,9 @@ export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherCon
       newChildren = children;
     }
 
-    // Subscribe/unsubscribe to the resize window event
-    useEffect(() => {
-      if (window) window.addEventListener('resize', refreshScreen);
+    useResizeListener(refreshScreen);
 
-      return () => {
-        if (window) window.removeEventListener('resize', refreshScreen);
-      };
-    }, [refreshScreen]);
-
-    // Subscribe/unsubscribe to the DOM observer
-    useEffect(() => {
-      Object.keys(refs).map((elementKey) => {
-        observer.observe(refs[elementKey]);
-      });
-
-      return () => {
-        Object.keys(refs).map((elementKey) => {
-          observer.unobserve(refs[elementKey]);
-        });
-      };
-    }, [refs]);
+    useObserveElements(refs, observer);
 
     const contextValue = useMemo(
       () => ({
