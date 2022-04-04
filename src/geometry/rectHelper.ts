@@ -1,11 +1,11 @@
 import Point from './Point';
 import { AnchorPositionType } from '../types';
 
-export function rectToPoint(rect: DOMRect): Point {
+function rectToPoint(rect: DOMRect): Point {
   return new Point(rect.left, rect.top);
 }
 
-export function computeCoordinatesFromAnchorPosition(
+function computeCoordinatesFromAnchorPosition(
   anchorPosition: AnchorPositionType,
   rect: DOMRect,
 ): Point {
@@ -30,7 +30,7 @@ export function computeCoordinatesFromAnchorPosition(
   }
 }
 
-export const getRectFromElement = (
+const getRectFromElement = (
   element: HTMLElement | null | undefined,
 ): DOMRect | null | undefined => {
   if (!element) return null;

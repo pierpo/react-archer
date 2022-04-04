@@ -21,7 +21,7 @@ const defaultSvgContainerStyle = {
   pointerEvents: 'none',
 };
 
-export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerProps>(
+const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerProps>(
   (
     {
       endShape = endShapeDefaultProp,

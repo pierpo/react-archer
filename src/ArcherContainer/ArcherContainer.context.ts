@@ -10,4 +10,3 @@ export type ArcherContainerContextType = {
 
 export const ArcherContainerContext = React.createContext<ArcherContainerContextType>(null);
 export const ArcherContainerContextProvider = ArcherContainerContext.Provider;
-export const ArcherContainerContextConsumer = ArcherContainerContext.Consumer;

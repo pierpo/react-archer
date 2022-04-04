@@ -11,7 +11,7 @@ import { endShapeDefaultProp } from '../ArcherContainer.constants';
 import { getEndShapeFromStyle, getSourceToTargets, getMarkerId } from '../ArcherContainer.helpers';
 import { SourceToTargetsArrayType } from '../ArcherContainer.types';
 
-export const buildShape = ({
+const buildShape = ({
   style,
   strokeColor,
   endShape,

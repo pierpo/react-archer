@@ -12,7 +12,7 @@ type ArcherElementProps = {
   children: React.ReactElement<React.ComponentProps<any>, any>;
 };
 
-export const ArcherElement = ({ id, relations = [], children }: ArcherElementProps) => {
+const ArcherElement = ({ id, relations = [], children }: ArcherElementProps) => {
   const context = useContext(ArcherContainerContext);
 
   const registerTransitions = (newRelations: Array<RelationType>) => {
