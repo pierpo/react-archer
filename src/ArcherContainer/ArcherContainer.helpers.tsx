@@ -1,11 +1,15 @@
+import React from 'react';
 import {
   ValidShapeTypes,
   LineType,
   SourceToTargetType,
   ShapeType,
   EntityRelationType,
+  ArrowShapeType,
+  CircleShapeType,
 } from '../types';
 import { SourceToTargetsArrayType } from './ArcherContainer.types';
+import { endShapeDefaultProp } from './ArcherContainer.constants';
 
 const possibleShapes: Array<ValidShapeTypes> = ['arrow', 'circle'];
 

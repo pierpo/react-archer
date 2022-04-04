@@ -7,13 +7,7 @@ import React, {
   useState,
 } from 'react';
 import ResizeObserver from 'resize-observer-polyfill';
-import {
-  ArrowShapeType,
-  CircleShapeType,
-  LineType,
-  SourceToTargetType,
-  ValidShapeTypes,
-} from '../types';
+import { SourceToTargetType } from '../types';
 import { ArcherContainerContext, ArcherContainerContextProvider } from './ArcherContainer.context';
 import {
   SourceToTargetsArrayType,
@@ -21,7 +15,8 @@ import {
   ArcherContainerHandle,
 } from './ArcherContainer.types';
 import { SvgArrows } from './components/SvgArrows';
-import { getSourceToTargets, getMarkerId, getEndShapeFromStyle } from './ArcherContainer.helpers';
+import { endShapeDefaultProp } from './ArcherContainer.constants';
+import { ArrowMarkers } from './components/Markers';
 
 const defaultSvgContainerStyle = {
   position: 'absolute',
@@ -30,19 +25,6 @@ const defaultSvgContainerStyle = {
   top: 0,
   left: 0,
   pointerEvents: 'none',
-};
-
-const endShapeDefaultProp = {
-  arrow: {
-    arrowLength: 10,
-    arrowThickness: 6,
-  },
-  circle: {
-    radius: 2,
-    fillColor: '#f00',
-    strokeColor: '#0ff',
-    strokeWidth: 1,
-  },
 };
 
 export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerProps>(
@@ -137,109 +119,6 @@ export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherCon
       });
     }, []);
 
-    const _buildShape = (
-      style: LineType,
-    ): {
-      markerHeight: number;
-      markerWidth: number;
-      path: React.ReactNode;
-      refX: number;
-      refY: number;
-    } => {
-      const chosenEndShape = getEndShapeFromStyle(style);
-
-      const getProp = (
-        shape: ValidShapeTypes,
-        prop: keyof ArrowShapeType | keyof CircleShapeType,
-      ) => {
-        return (
-          // @ts-expect-error needs changes at runtime to fix the TS error
-          style.endShape?.[shape]?.[prop] ||
-          // @ts-expect-error needs changes at runtime to fix the TS error
-          endShape?.[shape]?.[prop] ||
-          // @ts-expect-error needs changes at runtime to fix the TS error
-          endShapeDefaultProp[shape][prop]
-        );
-      };
-
-      const shapeMap = {
-        circle: () => {
-          const radius = getProp('circle', 'radius');
-          const strokeWidth = getProp('circle', 'strokeWidth');
-          const strokeColor = getProp('circle', 'strokeColor');
-          const fillColor = getProp('circle', 'fillColor');
-          return {
-            markerWidth: radius * 4,
-            markerHeight: radius * 4,
-            refX: radius * 2 + strokeWidth,
-            refY: radius * 2,
-            path: (
-              <circle
-                cx={radius * 2}
-                cy={radius * 2}
-                r={radius}
-                fill={fillColor}
-                stroke={strokeColor}
-                strokeWidth={strokeWidth}
-              />
-            ),
-          };
-        },
-        arrow: () => {
-          const newStrokeColor = style.strokeColor || strokeColor;
-          const newArrowLength =
-            style.endShape?.arrow?.arrowLength ??
-            endShape?.arrow?.arrowLength ??
-            endShapeDefaultProp.arrow.arrowLength;
-          const newArrowThickness =
-            style.endShape?.arrow?.arrowThickness ||
-            endShape?.arrow?.arrowThickness ||
-            endShapeDefaultProp.arrow.arrowThickness;
-          const arrowPath = `M0,0 L0,${newArrowThickness} L${newArrowLength},${
-            newArrowThickness / 2
-          } z`;
-          return {
-            markerWidth: newArrowLength,
-            markerHeight: newArrowThickness,
-            refX: 0,
-            refY: newArrowThickness / 2,
-            path: <path d={arrowPath} fill={newStrokeColor} />,
-          };
-        },
-      };
-      return shapeMap[chosenEndShape]();
-    };
-
-    /** Generates all the markers
-     * We want one marker per arrow so that each arrow can have
-     * a different color or size
-     * */
-    const _generateAllArrowMarkers = (): React.ReactElement<
-      React.ComponentProps<'marker'>,
-      'marker'
-    >[] => {
-      return getSourceToTargets(sourceToTargetsMap).map(
-        ({ source, target, style = {} }: SourceToTargetType) => {
-          const { markerHeight, markerWidth, path, refX, refY } = _buildShape(style);
-
-          return (
-            <marker
-              id={getMarkerId(uniqueId, source, target)}
-              key={getMarkerId(uniqueId, source, target)}
-              markerWidth={markerWidth}
-              markerHeight={markerHeight}
-              refX={refX}
-              refY={refY}
-              orient="auto-start-reverse"
-              markerUnits="strokeWidth"
-            >
-              {path}
-            </marker>
-          );
-        },
-      );
-    };
-
     const _svgContainerStyle = useMemo(
       (): Record<string, any> => ({
         ...defaultSvgContainerStyle,
@@ -292,7 +171,14 @@ export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherCon
       <ArcherContainerContextProvider value={contextValue}>
         <div style={{ ...style, position: 'relative' }} className={className}>
           <svg style={_svgContainerStyle}>
-            <defs>{_generateAllArrowMarkers()}</defs>
+            <defs>
+              <ArrowMarkers
+                endShape={endShape}
+                sourceToTargetsMap={sourceToTargetsMap}
+                strokeColor={strokeColor}
+                uniqueId={uniqueId}
+              />
+            </defs>
             <SvgArrows
               startMarker={startMarker}
               endMarker={endMarker}
