@@ -183,13 +183,13 @@ describe('ArcherElement', () => {
           style: undefined,
         },
       ];
-      const wrapper = mountContainer(relations, []);
+      mountContainer(relations, []);
       expect(registerTransitionsMock).toHaveBeenCalledWith('foo', sourceToTargets);
     });
 
     it('should not call registerTransitions on mount if no relations', () => {
       const relations: RelationType[] = [];
-      const wrapper = mountContainer(relations, []);
+      mountContainer(relations, []);
       expect(registerTransitionsMock).not.toHaveBeenCalled();
     });
   });

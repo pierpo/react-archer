@@ -1,11 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import ResizeObserver from 'resize-observer-polyfill';
 import { SourceToTargetType } from '../types';
 import { ArcherContainerContext, ArcherContainerContextProvider } from './ArcherContainer.context';
