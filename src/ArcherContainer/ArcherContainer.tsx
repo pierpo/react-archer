@@ -7,24 +7,21 @@ import React, {
   useState,
 } from 'react';
 import ResizeObserver from 'resize-observer-polyfill';
-import Point from '../geometry/Point';
-import SvgArrow from '../SvgArrow';
 import {
   ArrowShapeType,
   CircleShapeType,
-  EntityRelationType,
   LineType,
-  ShapeType,
   SourceToTargetType,
   ValidShapeTypes,
 } from '../types';
-import { getPointCoordinatesFromAnchorPosition, getPointFromElement } from '../geometry/rectHelper';
 import { ArcherContainerContext, ArcherContainerContextProvider } from './ArcherContainer.context';
 import {
   SourceToTargetsArrayType,
   ArcherContainerProps,
   ArcherContainerHandle,
 } from './ArcherContainer.types';
+import { SvgArrows } from './components/SvgArrows';
+import { getSourceToTargets, getMarkerId, getEndShapeFromStyle } from './ArcherContainer.helpers';
 
 const defaultSvgContainerStyle = {
   position: 'absolute',
@@ -33,64 +30,6 @@ const defaultSvgContainerStyle = {
   top: 0,
   left: 0,
   pointerEvents: 'none',
-};
-
-const possibleShapes: Array<ValidShapeTypes> = ['arrow', 'circle'];
-
-const getEndShapeFromStyle = (shapeObj: LineType) => {
-  if (!shapeObj.endShape) {
-    return possibleShapes[0];
-  }
-
-  return (
-    (Object.keys(shapeObj.endShape) as ValidShapeTypes[]).filter((key) =>
-      possibleShapes.includes(key),
-    )[0] || possibleShapes[0]
-  );
-};
-
-const getSourceToTargets = (
-  sourceToTargetsMap: Record<string, SourceToTargetsArrayType>,
-): SourceToTargetType[] => {
-  // Object.values is unavailable in IE11
-  const jaggedSourceToTargets = Object.keys(sourceToTargetsMap).map(
-    (key: string) => sourceToTargetsMap[key],
-  );
-  // Flatten
-  return ([] as SourceToTargetType[]).concat
-    .apply([], jaggedSourceToTargets)
-    .sort((a, b) => a.order - b.order);
-};
-
-const createShapeObj = (style: LineType, endShape: ShapeType) => {
-  const chosenEndShape = getEndShapeFromStyle(style);
-  const shapeObjMap = {
-    arrow: () => ({
-      arrow: {
-        ...endShape?.arrow,
-        ...style.endShape?.arrow,
-      },
-    }),
-    circle: () => ({
-      circle: {
-        ...endShape?.circle,
-        ...style.endShape?.circle,
-      },
-    }),
-  };
-  return shapeObjMap[chosenEndShape]();
-};
-
-/** Generates an id for an arrow marker
- * Useful to have one marker per arrow so that each arrow
- * can have a different color!
- * */
-const getMarkerId = (
-  uniqueId: string,
-  source: EntityRelationType,
-  target: EntityRelationType,
-): string => {
-  return `${uniqueId}${source.id}${target.id}`;
 };
 
 const endShapeDefaultProp = {
@@ -104,151 +43,6 @@ const endShapeDefaultProp = {
     strokeColor: '#0ff',
     strokeWidth: 1,
   },
-};
-
-const AdaptedArrow = ({
-  source,
-  target,
-  label,
-  style = {},
-  uniqueId,
-  startMarker,
-  endMarker,
-  endShape,
-  strokeColor,
-  strokeWidth,
-  strokeDasharray,
-  noCurves,
-  lineStyle,
-  offset,
-  parentCoordinates,
-  refs,
-}: // TODO quite a tedious type, should be simplified
-Omit<SourceToTargetType, 'order'> & {
-  startMarker: ArcherContainerProps['startMarker'];
-  endMarker: ArcherContainerProps['endMarker'];
-  endShape: NonNullable<ArcherContainerProps['endShape']>;
-  strokeColor: NonNullable<ArcherContainerProps['strokeColor']>;
-  strokeWidth: NonNullable<ArcherContainerProps['strokeWidth']>;
-  strokeDasharray: ArcherContainerProps['strokeDasharray'];
-  noCurves: ArcherContainerProps['noCurves'];
-  lineStyle: ArcherContainerProps['lineStyle'];
-  offset: ArcherContainerProps['offset'];
-} & {
-  uniqueId: string;
-  parentCoordinates: Point;
-  refs: Record<string, HTMLElement>;
-}) => {
-  const newStartMarker = style.startMarker || startMarker;
-  const newEndMarker = style.endMarker ?? endMarker ?? true;
-
-  const newEndShape = createShapeObj(style, endShape);
-
-  const newStrokeColor = style.strokeColor || strokeColor;
-  const newStrokeWidth = style.strokeWidth || strokeWidth;
-  const newStrokeDasharray = style.strokeDasharray || strokeDasharray;
-  const newNoCurves = !!(style.noCurves || noCurves);
-  const newLineStyle = style.lineStyle || lineStyle || (newNoCurves ? 'angle' : 'curve');
-  const newOffset = offset || 0;
-  const startingAnchorOrientation = source.anchor;
-
-  const startingPoint = getPointCoordinatesFromAnchorPosition(
-    source.anchor,
-    source.id,
-    parentCoordinates,
-    refs,
-  );
-
-  const endingAnchorOrientation = target.anchor;
-
-  const endingPoint = getPointCoordinatesFromAnchorPosition(
-    target.anchor,
-    target.id,
-    parentCoordinates,
-    refs,
-  );
-
-  return (
-    <SvgArrow
-      startingPoint={startingPoint}
-      startingAnchorOrientation={startingAnchorOrientation}
-      endingPoint={endingPoint}
-      endingAnchorOrientation={endingAnchorOrientation}
-      strokeColor={newStrokeColor}
-      strokeWidth={newStrokeWidth}
-      strokeDasharray={newStrokeDasharray}
-      arrowLabel={label}
-      arrowMarkerId={getMarkerId(uniqueId, source, target)}
-      lineStyle={newLineStyle}
-      offset={newOffset}
-      enableStartMarker={!!newStartMarker}
-      disableEndMarker={!newEndMarker}
-      endShape={newEndShape}
-    />
-  );
-};
-
-const SvgArrows = ({
-  parentCurrent,
-  sourceToTargetsMap,
-  startMarker,
-  endMarker,
-  endShape,
-  strokeColor,
-  strokeWidth,
-  strokeDasharray,
-  noCurves,
-  lineStyle,
-  offset,
-  refs,
-  uniqueId,
-}: // TODO simplify the type
-{
-  parentCurrent: HTMLDivElement | null | undefined;
-  sourceToTargetsMap: Record<string, SourceToTargetsArrayType>;
-  startMarker: ArcherContainerProps['startMarker'];
-  endMarker: ArcherContainerProps['endMarker'];
-  endShape: NonNullable<ArcherContainerProps['endShape']>;
-  strokeColor: NonNullable<ArcherContainerProps['strokeColor']>;
-  strokeWidth: NonNullable<ArcherContainerProps['strokeWidth']>;
-  strokeDasharray: ArcherContainerProps['strokeDasharray'];
-  noCurves: ArcherContainerProps['noCurves'];
-  lineStyle: ArcherContainerProps['lineStyle'];
-  offset: ArcherContainerProps['offset'];
-} & {
-  uniqueId: string;
-  refs: Record<string, HTMLElement>;
-}) => {
-  const parentCoordinates = getPointFromElement(parentCurrent);
-
-  return (
-    <>
-      {getSourceToTargets(sourceToTargetsMap).map((currentRelation) => (
-        <AdaptedArrow
-          key={JSON.stringify({
-            source: currentRelation.source,
-            target: currentRelation.target,
-          })}
-          source={currentRelation.source}
-          target={currentRelation.target}
-          label={currentRelation.label}
-          style={currentRelation.style}
-          startMarker={startMarker}
-          endMarker={endMarker}
-          endShape={endShape}
-          strokeColor={strokeColor}
-          strokeWidth={strokeWidth}
-          strokeDasharray={strokeDasharray}
-          noCurves={noCurves}
-          lineStyle={lineStyle}
-          offset={offset}
-          parentCoordinates={parentCoordinates}
-          refs={refs}
-          uniqueId={uniqueId}
-        />
-      ))}
-    </>
-  );
 };
 
 export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerProps>(
