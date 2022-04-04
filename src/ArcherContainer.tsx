@@ -271,6 +271,69 @@ Omit<SourceToTargetType, 'order'> & {
   );
 };
 
+const SvgArrows = ({
+  parentCurrent,
+  sourceToTargetsMap,
+  startMarker,
+  endMarker,
+  endShape,
+  strokeColor,
+  strokeWidth,
+  strokeDasharray,
+  noCurves,
+  lineStyle,
+  offset,
+  refs,
+  uniqueId,
+}: // TODO simplify the type
+{
+  parentCurrent: HTMLDivElement | null | undefined;
+  sourceToTargetsMap: Record<string, SourceToTargetsArrayType>;
+  startMarker: ArcherContainerProps['startMarker'];
+  endMarker: ArcherContainerProps['endMarker'];
+  endShape: NonNullable<ArcherContainerProps['endShape']>;
+  strokeColor: NonNullable<ArcherContainerProps['strokeColor']>;
+  strokeWidth: NonNullable<ArcherContainerProps['strokeWidth']>;
+  strokeDasharray: ArcherContainerProps['strokeDasharray'];
+  noCurves: ArcherContainerProps['noCurves'];
+  lineStyle: ArcherContainerProps['lineStyle'];
+  offset: ArcherContainerProps['offset'];
+} & {
+  uniqueId: string;
+  refs: Record<string, HTMLElement>;
+}) => {
+  const parentCoordinates = getPointFromElement(parentCurrent);
+
+  return (
+    <>
+      {getSourceToTargets(sourceToTargetsMap).map((currentRelation) => (
+        <AdaptedArrow
+          key={JSON.stringify({
+            source: currentRelation.source,
+            target: currentRelation.target,
+          })}
+          source={currentRelation.source}
+          target={currentRelation.target}
+          label={currentRelation.label}
+          style={currentRelation.style}
+          startMarker={startMarker}
+          endMarker={endMarker}
+          endShape={endShape}
+          strokeColor={strokeColor}
+          strokeWidth={strokeWidth}
+          strokeDasharray={strokeDasharray}
+          noCurves={noCurves}
+          lineStyle={lineStyle}
+          offset={offset}
+          parentCoordinates={parentCoordinates}
+          refs={refs}
+          uniqueId={uniqueId}
+        />
+      ))}
+    </>
+  );
+};
+
 export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerProps>(
   (
     {
@@ -362,38 +425,6 @@ export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherCon
         return newRefs;
       });
     }, []);
-
-    const _computeArrows = (): React.ReactElement<
-      React.ComponentProps<typeof SvgArrow>,
-      typeof SvgArrow
-    >[] => {
-      const parentCoordinates = getPointFromElement(parent.current);
-
-      return getSourceToTargets(sourceToTargetsMap).map((currentRelation) => (
-        <AdaptedArrow
-          key={JSON.stringify({
-            source: currentRelation.source,
-            target: currentRelation.target,
-          })}
-          source={currentRelation.source}
-          target={currentRelation.target}
-          label={currentRelation.label}
-          style={currentRelation.style}
-          startMarker={startMarker}
-          endMarker={endMarker}
-          endShape={endShape}
-          strokeColor={strokeColor}
-          strokeWidth={strokeWidth}
-          strokeDasharray={strokeDasharray}
-          noCurves={noCurves}
-          lineStyle={lineStyle}
-          offset={offset}
-          parentCoordinates={parentCoordinates}
-          refs={refs}
-          uniqueId={uniqueId}
-        />
-      ));
-    };
 
     const _buildShape = (
       style: LineType,
@@ -506,8 +537,6 @@ export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherCon
       [defaultSvgContainerStyle, svgContainerStyle],
     );
 
-    const SvgArrows = _computeArrows();
-
     let newChildren: React.ReactNode | null | undefined;
 
     if (typeof children === 'function') {
@@ -553,7 +582,21 @@ export const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherCon
         <div style={{ ...style, position: 'relative' }} className={className}>
           <svg style={_svgContainerStyle}>
             <defs>{_generateAllArrowMarkers()}</defs>
-            {SvgArrows}
+            <SvgArrows
+              startMarker={startMarker}
+              endMarker={endMarker}
+              endShape={endShape}
+              strokeColor={strokeColor}
+              strokeWidth={strokeWidth}
+              strokeDasharray={strokeDasharray}
+              noCurves={noCurves}
+              lineStyle={lineStyle}
+              offset={offset}
+              parentCurrent={parent.current}
+              refs={refs}
+              uniqueId={uniqueId}
+              sourceToTargetsMap={sourceToTargetsMap}
+            />
           </svg>
 
           <div
