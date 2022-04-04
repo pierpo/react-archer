@@ -7,8 +7,8 @@ import React, {
   useState,
 } from 'react';
 import ResizeObserver from 'resize-observer-polyfill';
-import Point from './geometry/Point';
-import SvgArrow from './SvgArrow';
+import Point from '../geometry/Point';
+import SvgArrow from '../SvgArrow';
 import {
   AnchorPositionType,
   ArrowShapeType,
@@ -19,14 +19,14 @@ import {
   SourceToTargetType,
   ValidLineStyles,
   ValidShapeTypes,
-} from './types';
+} from '../types';
 import {
   computeCoordinatesFromAnchorPosition,
   getPointCoordinatesFromAnchorPosition,
   getPointFromElement,
   getRectFromElement,
   rectToPoint,
-} from './geometry/rectHelper';
+} from '../geometry/rectHelper';
 import {
   ArcherContainerContext,
   ArcherContainerContextProvider,

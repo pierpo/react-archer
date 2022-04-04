@@ -1,5 +1,5 @@
 import React from 'react';
-import ArcherContainer from '../src/ArcherContainer';
+import ArcherContainer from '../src/ArcherContainer/ArcherContainer';
 import ArcherElement from '../src/ArcherElement';
 const rootStyle = {
   display: 'flex',

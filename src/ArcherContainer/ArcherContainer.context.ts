@@ -1,5 +1,5 @@
 import React from 'react';
-import { SourceToTargetType } from './types';
+import { SourceToTargetType } from '../types';
 
 export type ArcherContainerContextType = {
   registerChild: (arg0: string, arg1: HTMLElement) => void;
