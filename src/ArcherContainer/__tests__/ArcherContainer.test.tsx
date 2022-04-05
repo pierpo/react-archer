@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import ArcherContainer from '../ArcherContainer';
-import ArcherElement from '../ArcherElement';
+import ArcherElement from '../../ArcherElement';
 import { act } from 'react-dom/test-utils';
 
 describe('ArcherContainer', () => {

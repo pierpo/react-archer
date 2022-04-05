@@ -1,11 +1,11 @@
 import Point from './Point';
 import { AnchorPositionType } from '../types';
 
-export function rectToPoint(rect: DOMRect): Point {
+function rectToPoint(rect: DOMRect): Point {
   return new Point(rect.left, rect.top);
 }
 
-export function computeCoordinatesFromAnchorPosition(
+function computeCoordinatesFromAnchorPosition(
   anchorPosition: AnchorPositionType,
   rect: DOMRect,
 ): Point {
@@ -29,3 +29,36 @@ export function computeCoordinatesFromAnchorPosition(
       return new Point(0, 0);
   }
 }
+
+const getRectFromElement = (
+  element: HTMLElement | null | undefined,
+): DOMRect | null | undefined => {
+  if (!element) return null;
+  return element.getBoundingClientRect();
+};
+
+export const getPointFromElement = (element: HTMLDivElement | null | undefined) => {
+  const rectp = getRectFromElement(element);
+
+  if (!rectp) {
+    return new Point(0, 0);
+  }
+
+  return rectToPoint(rectp);
+};
+
+export const getPointCoordinatesFromAnchorPosition = (
+  position: AnchorPositionType,
+  index: string,
+  parentCoordinates: Point,
+  refs: Record<string, HTMLElement>,
+): Point => {
+  const rect = getRectFromElement(refs[index]);
+
+  if (!rect) {
+    return new Point(0, 0);
+  }
+
+  const absolutePosition = computeCoordinatesFromAnchorPosition(position, rect);
+  return absolutePosition.substract(parentCoordinates);
+};

@@ -6,7 +6,7 @@ import SvgArrow, {
   computeLabelDimensions,
 } from './SvgArrow';
 import Point from './geometry/Point';
-import { render, RenderResult } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 const expectAttribute = (attributes: NamedNodeMap, key: string, expectedValue: string) => {
   expect(attributes?.getNamedItem(key)?.value).toEqual(expectedValue);
@@ -241,7 +241,7 @@ describe('SvgArrow', () => {
     } as const;
 
     it('should render path with proper coordinates', () => {
-      const wrapper = render(<SvgArrow {...props} />);
+      render(<SvgArrow {...props} />);
       const path = getBySelector('path');
       const attributes = path?.attributes;
       expectAttribute(attributes, 'd', 'M10,10 C10,10 30,10 30,10');
@@ -251,7 +251,7 @@ describe('SvgArrow', () => {
 
     // This test is not relevant, "angle" has no effect... probably because of some jsdom mocks
     xit('should render path with no curves coordinates', () => {
-      const wrapper = render(<SvgArrow {...props} lineStyle="angle" />);
+      render(<SvgArrow {...props} lineStyle="angle" />);
       const path = getBySelector('path');
       const attributes = path?.attributes;
       expectAttribute(attributes, 'd', 'M10,10 C10,10 30,10 30,10');
@@ -260,7 +260,7 @@ describe('SvgArrow', () => {
     });
 
     it('should render path with straight line coordinates', () => {
-      const wrapper = render(<SvgArrow {...props} lineStyle="straight" />);
+      render(<SvgArrow {...props} lineStyle="straight" />);
       const path = getBySelector('path');
       const attributes = path?.attributes;
       expectAttribute(attributes, 'd', 'M10,10 15.85786437626905,15.857864376269049');

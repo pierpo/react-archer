@@ -1,8 +1,8 @@
 import * as React from 'react';
 import ArcherElement from './ArcherElement';
-import { ArcherContainerContextProvider } from './ArcherContainer';
 import { RelationType } from './types';
 import { fireEvent, render } from '@testing-library/react';
+import { ArcherContainerContextProvider } from './ArcherContainer/ArcherContainer.context';
 describe('ArcherElement', () => {
   let registerChildMock: jest.Mock<any, any>;
   let unregisterChildMock: jest.Mock<any, any>;
@@ -183,13 +183,13 @@ describe('ArcherElement', () => {
           style: undefined,
         },
       ];
-      const wrapper = mountContainer(relations, []);
+      mountContainer(relations, []);
       expect(registerTransitionsMock).toHaveBeenCalledWith('foo', sourceToTargets);
     });
 
     it('should not call registerTransitions on mount if no relations', () => {
       const relations: RelationType[] = [];
-      const wrapper = mountContainer(relations, []);
+      mountContainer(relations, []);
       expect(registerTransitionsMock).not.toHaveBeenCalled();
     });
   });

@@ -1,18 +1,20 @@
 import React from 'react';
 import ArcherElement from '../ArcherElement';
-import ArcherContainer from '../ArcherContainer';
+import ArcherContainer from '../ArcherContainer/ArcherContainer';
 import { render } from '@testing-library/react';
 
-export const rootStyle = {
+const rootStyle = {
   display: 'flex',
   justifyContent: 'center',
 };
-export const rowStyle = {
+
+const rowStyle = {
   margin: '200px 0',
   display: 'flex',
   justifyContent: 'space-between',
 };
-export const boxStyle = {
+
+const boxStyle = {
   padding: '10px',
   border: '1px solid black',
 };

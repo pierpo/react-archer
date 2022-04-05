@@ -1,5 +1,5 @@
 import React from 'react';
-import ArcherContainer from '../src/ArcherContainer';
+import ArcherContainer from '../src/ArcherContainer/ArcherContainer';
 import ArcherElement from '../src/ArcherElement';
 const rootStyle = {
   display: 'flex',
@@ -23,6 +23,7 @@ const SixthExample = () => (
     }}
   >
     <ArcherContainer strokeColor="red">
+      {/* eslint-disable-next-line unused-imports/no-unused-vars -- this is for the example */}
       {(ArcherContext) => (
         <>
           <div style={rootStyle}>

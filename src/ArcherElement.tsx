@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { ArcherContainerContext } from './ArcherContainer';
+import { ArcherContainerContext } from './ArcherContainer/ArcherContainer.context';
 import { RelationType, SourceToTargetType } from './types';
 import { useDeepCompareEffect } from './utils/useDeepCompareEffect';
 
@@ -12,7 +12,7 @@ type ArcherElementProps = {
   children: React.ReactElement<React.ComponentProps<any>, any>;
 };
 
-export const ArcherElement = ({ id, relations = [], children }: ArcherElementProps) => {
+const ArcherElement = ({ id, relations = [], children }: ArcherElementProps) => {
   const context = useContext(ArcherContainerContext);
 
   const registerTransitions = (newRelations: Array<RelationType>) => {
