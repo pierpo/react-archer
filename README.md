@@ -156,7 +156,3 @@ The `ArcherStyle` type has the following shape:
 Try using the `refreshScreen` instance method on your `ArcherContainer` element. You can access it through the [ref of the component](https://reactjs.org/docs/refs-and-the-dom.html).
 
 Call `refreshScreen` when the event that you need is triggered (`onScroll` etc.).
-
-## TODO
-
-- Rewrite the core to use hooks. It would probably make contributing easier, and allow more decoupling in the code.
