@@ -1,15 +1,68 @@
 import React from 'react';
-import {
-  LineType,
-  ShapeType,
-  ValidShapeTypes,
-  ArrowShapeType,
-  CircleShapeType,
-  SourceToTargetType,
-} from '../../types';
+import { LineType, ShapeType, SourceToTargetType } from '../../types';
 import { endShapeDefaultProp } from '../ArcherContainer.constants';
 import { getEndShapeFromStyle, getSourceToTargets, getMarkerId } from '../ArcherContainer.helpers';
 import { SourceToTargetsArrayType } from '../ArcherContainer.types';
+
+const circleMarker = (style: LineType, endShape: ShapeType) => () => {
+  // TODO idea to merge params: we could use a deep merge function that keeps the first non-undefined values obtained
+
+  const radius =
+    style.endShape?.circle?.radius || endShape.circle?.radius || endShapeDefaultProp.circle.radius;
+
+  const strokeWidth =
+    style.endShape?.circle?.strokeWidth ||
+    endShape.circle?.strokeWidth ||
+    endShapeDefaultProp.circle.strokeWidth;
+
+  const strokeColor =
+    style.endShape?.circle?.strokeColor ||
+    endShape.circle?.strokeColor ||
+    endShapeDefaultProp.circle.strokeColor;
+
+  const fillColor =
+    style.endShape?.circle?.fillColor ||
+    endShape.circle?.fillColor ||
+    endShapeDefaultProp.circle.fillColor;
+
+  return {
+    markerWidth: radius * 4,
+    markerHeight: radius * 4,
+    refX: radius * 2 + strokeWidth,
+    refY: radius * 2,
+    path: (
+      <circle
+        cx={radius * 2}
+        cy={radius * 2}
+        r={radius}
+        fill={fillColor}
+        stroke={strokeColor}
+        strokeWidth={strokeWidth}
+      />
+    ),
+  };
+};
+
+const arrowMarker = (style: LineType, endShape: ShapeType, strokeColor: string) => () => {
+  const newStrokeColor = style.strokeColor || strokeColor;
+  const newArrowLength =
+    style.endShape?.arrow?.arrowLength ??
+    endShape?.arrow?.arrowLength ??
+    endShapeDefaultProp.arrow.arrowLength;
+  const newArrowThickness =
+    style.endShape?.arrow?.arrowThickness ||
+    endShape?.arrow?.arrowThickness ||
+    endShapeDefaultProp.arrow.arrowThickness;
+  const arrowPath = `M0,0 L0,${newArrowThickness} L${newArrowLength},${newArrowThickness / 2} z`;
+
+  return {
+    markerWidth: newArrowLength,
+    markerHeight: newArrowThickness,
+    refX: 0,
+    refY: newArrowThickness / 2,
+    path: <path d={arrowPath} fill={newStrokeColor} />,
+  };
+};
 
 const buildShape = ({
   style,
@@ -28,61 +81,9 @@ const buildShape = ({
 } => {
   const chosenEndShape = getEndShapeFromStyle(style);
 
-  const getProp = (shape: ValidShapeTypes, prop: keyof ArrowShapeType | keyof CircleShapeType) => {
-    return (
-      // @ts-expect-error needs changes at runtime to fix the TS error
-      style.endShape?.[shape]?.[prop] ||
-      // @ts-expect-error needs changes at runtime to fix the TS error
-      endShape?.[shape]?.[prop] ||
-      // @ts-expect-error needs changes at runtime to fix the TS error
-      endShapeDefaultProp[shape][prop]
-    );
-  };
-
   const shapeMap = {
-    circle: () => {
-      const radius = getProp('circle', 'radius');
-      const strokeWidth = getProp('circle', 'strokeWidth');
-      const strokeColor = getProp('circle', 'strokeColor');
-      const fillColor = getProp('circle', 'fillColor');
-      return {
-        markerWidth: radius * 4,
-        markerHeight: radius * 4,
-        refX: radius * 2 + strokeWidth,
-        refY: radius * 2,
-        path: (
-          <circle
-            cx={radius * 2}
-            cy={radius * 2}
-            r={radius}
-            fill={fillColor}
-            stroke={strokeColor}
-            strokeWidth={strokeWidth}
-          />
-        ),
-      };
-    },
-    arrow: () => {
-      const newStrokeColor = style.strokeColor || strokeColor;
-      const newArrowLength =
-        style.endShape?.arrow?.arrowLength ??
-        endShape?.arrow?.arrowLength ??
-        endShapeDefaultProp.arrow.arrowLength;
-      const newArrowThickness =
-        style.endShape?.arrow?.arrowThickness ||
-        endShape?.arrow?.arrowThickness ||
-        endShapeDefaultProp.arrow.arrowThickness;
-      const arrowPath = `M0,0 L0,${newArrowThickness} L${newArrowLength},${
-        newArrowThickness / 2
-      } z`;
-      return {
-        markerWidth: newArrowLength,
-        markerHeight: newArrowThickness,
-        refX: 0,
-        refY: newArrowThickness / 2,
-        path: <path d={arrowPath} fill={newStrokeColor} />,
-      };
-    },
+    circle: circleMarker(style, endShape),
+    arrow: arrowMarker(style, endShape, strokeColor),
   };
   return shapeMap[chosenEndShape]();
 };
