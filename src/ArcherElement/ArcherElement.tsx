@@ -1,10 +1,8 @@
 import React, { useContext, useEffect } from 'react';
-import {
-  ArcherContainerContext,
-  ArcherContainerContextType,
-} from '../ArcherContainer/ArcherContainer.context';
-import { RelationType, SourceToTargetType } from '../types';
+import { ArcherContainerContext } from '../ArcherContainer/ArcherContainer.context';
+import { RelationType } from '../types';
 import { useDeepCompareEffect } from '../utils/useDeepCompareEffect';
+import { generateSourceToTarget, assertContextExists } from './ArcherElement.helpers';
 
 type ArcherElementProps = {
   /**
@@ -13,37 +11,6 @@ type ArcherElementProps = {
   id: string;
   relations?: Array<RelationType>;
   children: React.ReactElement<React.ComponentProps<any>, any>;
-};
-
-function assertContextExists(
-  context: ArcherContainerContextType | null,
-): asserts context is ArcherContainerContextType {
-  if (!context) {
-    throw new Error(
-      `Could not find ArcherContainerContext in <ArcherElement>. Please wrap the component in a <ArcherContainer>.`,
-    );
-  }
-}
-
-const generateSourceToTarget = (
-  id: string,
-  relations: Array<RelationType>,
-): Array<SourceToTargetType> => {
-  return relations.map(
-    ({ targetId, sourceAnchor, targetAnchor, label, style, order = 0 }: RelationType) => ({
-      source: {
-        id,
-        anchor: sourceAnchor,
-      },
-      target: {
-        id: targetId,
-        anchor: targetAnchor,
-      },
-      label,
-      style,
-      order,
-    }),
-  );
 };
 
 const ArcherElement = ({ id, relations = [], children }: ArcherElementProps) => {
