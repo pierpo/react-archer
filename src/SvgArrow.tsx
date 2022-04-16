@@ -1,6 +1,6 @@
 import React from 'react';
 import Point from './geometry/Point';
-import { AnchorPositionType } from './types';
+import { AnchorPositionType, ValidLineStyles } from './types';
 
 type Props = {
   startingPoint: Point;
@@ -12,7 +12,7 @@ type Props = {
   strokeDasharray?: string;
   arrowLabel?: React.ReactNode | null | undefined;
   arrowMarkerId: string;
-  lineStyle: string;
+  lineStyle: ValidLineStyles;
   offset?: number;
   enableStartMarker?: boolean;
   disableEndMarker?: boolean;
@@ -59,8 +59,7 @@ export function computeArrowPointAccordingToArrowHead(
   arrowLength: number,
   strokeWidth: number,
   endingAnchorOrientation: AnchorPositionType,
-  // TODO oops, type me!
-  lineStyle?: string,
+  lineStyle?: ValidLineStyles,
   xArrowStart?: number,
   yArrowStart?: number,
 ) {

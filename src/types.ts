@@ -49,7 +49,7 @@ export type LineType = {
   noCurves?: boolean;
   startMarker?: boolean;
   endMarker?: boolean;
-  lineStyle?: string;
+  lineStyle?: ValidLineStyles;
 };
 
 export type ValidShapeTypes = 'arrow' | 'circle';
