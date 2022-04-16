@@ -25,33 +25,36 @@ function assertContextExists(
   }
 }
 
+const generateSourceToTarget = (
+  id: string,
+  relations: Array<RelationType>,
+): Array<SourceToTargetType> => {
+  return relations.map(
+    ({ targetId, sourceAnchor, targetAnchor, label, style, order = 0 }: RelationType) => ({
+      source: {
+        id,
+        anchor: sourceAnchor,
+      },
+      target: {
+        id: targetId,
+        anchor: targetAnchor,
+      },
+      label,
+      style,
+      order,
+    }),
+  );
+};
+
 const ArcherElement = ({ id, relations = [], children }: ArcherElementProps) => {
   const context = useContext(ArcherContainerContext);
 
   const registerTransitions = (newRelations: Array<RelationType>) => {
-    const newSourceToTarget = generateSourceToTarget(newRelations);
+    const newSourceToTarget = generateSourceToTarget(id, newRelations);
 
     assertContextExists(context);
 
     context.registerTransitions(id, newSourceToTarget);
-  };
-
-  const generateSourceToTarget = (relations: Array<RelationType>): Array<SourceToTargetType> => {
-    return relations.map(
-      ({ targetId, sourceAnchor, targetAnchor, label, style, order = 0 }: RelationType) => ({
-        source: {
-          id,
-          anchor: sourceAnchor,
-        },
-        target: {
-          id: targetId,
-          anchor: targetAnchor,
-        },
-        label,
-        style,
-        order,
-      }),
-    );
   };
 
   const unregisterTransitions = () => {
