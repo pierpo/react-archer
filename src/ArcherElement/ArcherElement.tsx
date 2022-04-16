@@ -2,9 +2,9 @@ import React, { useContext, useEffect } from 'react';
 import {
   ArcherContainerContext,
   ArcherContainerContextType,
-} from './ArcherContainer/ArcherContainer.context';
-import { RelationType, SourceToTargetType } from './types';
-import { useDeepCompareEffect } from './utils/useDeepCompareEffect';
+} from '../ArcherContainer/ArcherContainer.context';
+import { RelationType, SourceToTargetType } from '../types';
+import { useDeepCompareEffect } from '../utils/useDeepCompareEffect';
 
 type ArcherElementProps = {
   /**
