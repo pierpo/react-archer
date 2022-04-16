@@ -1,5 +1,8 @@
 import React, { useContext, useEffect } from 'react';
-import { ArcherContainerContext } from './ArcherContainer/ArcherContainer.context';
+import {
+  ArcherContainerContext,
+  ArcherContainerContextType,
+} from './ArcherContainer/ArcherContainer.context';
 import { RelationType, SourceToTargetType } from './types';
 import { useDeepCompareEffect } from './utils/useDeepCompareEffect';
 
@@ -12,18 +15,23 @@ type ArcherElementProps = {
   children: React.ReactElement<React.ComponentProps<any>, any>;
 };
 
+function assertContextExists(
+  context: ArcherContainerContextType | null,
+): asserts context is ArcherContainerContextType {
+  if (!context) {
+    throw new Error(
+      `Could not find ArcherContainerContext in <ArcherElement>. Please wrap the component in a <ArcherContainer>.`,
+    );
+  }
+}
+
 const ArcherElement = ({ id, relations = [], children }: ArcherElementProps) => {
   const context = useContext(ArcherContainerContext);
 
   const registerTransitions = (newRelations: Array<RelationType>) => {
     const newSourceToTarget = generateSourceToTarget(newRelations);
 
-    if (!context || (context && !context.registerTransitions)) {
-      throw new Error(
-        `Could not find "registerTransition" in the context of ` +
-          `<ArcherElement>. Wrap the component in a <ArcherContainer>.`,
-      );
-    }
+    assertContextExists(context);
 
     context.registerTransitions(id, newSourceToTarget);
   };
@@ -47,12 +55,7 @@ const ArcherElement = ({ id, relations = [], children }: ArcherElementProps) => 
   };
 
   const unregisterTransitions = () => {
-    if (!context || (context && !context.unregisterTransitions)) {
-      throw new Error(
-        `Could not find "unregisterTransitions" in the context of ` +
-          `<ArcherElement>. Wrap the component in a <ArcherContainer>.`,
-      );
-    }
+    assertContextExists(context);
 
     context.unregisterTransitions(id);
   };
@@ -60,23 +63,13 @@ const ArcherElement = ({ id, relations = [], children }: ArcherElementProps) => 
   const onRefUpdate = (ref: HTMLElement | null | undefined) => {
     if (!ref) return;
 
-    if (!context || (context && !context.registerChild)) {
-      throw new Error(
-        `Could not find "registerChild" in the context of ` +
-          `<ArcherElement>. Wrap the component in a <ArcherContainer>.`,
-      );
-    }
+    assertContextExists(context);
 
     context.registerChild(id, ref);
   };
 
   const unregisterChild = () => {
-    if (!context || (context && !context.unregisterChild)) {
-      throw new Error(
-        `Could not find "unregisterChild" in the context of ` +
-          `<ArcherElement>. Wrap the component in a <ArcherContainer>.`,
-      );
-    }
+    assertContextExists(context);
 
     context.unregisterChild(id);
   };

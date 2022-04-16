@@ -6,7 +6,7 @@ export type ArcherContainerContextType = {
   registerTransitions: (id: string, sourceToTarget: SourceToTargetType[]) => void;
   unregisterChild: (id: string) => void;
   unregisterTransitions: (id: string) => void;
-} | null;
+};
 
-export const ArcherContainerContext = React.createContext<ArcherContainerContextType>(null);
+export const ArcherContainerContext = React.createContext<ArcherContainerContextType | null>(null);
 export const ArcherContainerContextProvider = ArcherContainerContext.Provider;
