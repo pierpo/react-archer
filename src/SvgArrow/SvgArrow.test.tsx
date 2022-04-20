@@ -5,7 +5,7 @@ import SvgArrow, {
   computeEndingAnchorPosition,
   computeLabelDimensions,
 } from './SvgArrow';
-import Point from './geometry/Point';
+import Point from '../geometry/Point';
 import { render } from '@testing-library/react';
 
 const expectAttribute = (attributes: NamedNodeMap, key: string, expectedValue: string) => {

@@ -1,6 +1,6 @@
 import React from 'react';
-import Point from './geometry/Point';
-import { AnchorPositionType, ValidLineStyles } from './types';
+import Point from '../geometry/Point';
+import { AnchorPositionType, ValidLineStyles } from '../types';
 
 type Props = {
   startingPoint: Point;

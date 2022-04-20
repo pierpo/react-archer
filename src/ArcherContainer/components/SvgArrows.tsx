@@ -4,7 +4,7 @@ import {
   getPointCoordinatesFromAnchorPosition,
   getPointFromElement,
 } from '../../geometry/rectHelper';
-import SvgArrow from '../../SvgArrow';
+import SvgArrow from '../../SvgArrow/SvgArrow';
 import { SourceToTargetType } from '../../types';
 import { createShapeObj, getMarkerId, getSourceToTargets } from '../ArcherContainer.helpers';
 import { ArcherContainerProps, SourceToTargetsArrayType } from '../ArcherContainer.types';
