@@ -5,7 +5,7 @@ import SvgArrow, {
   computeEndingAnchorPosition,
   computeLabelDimensions,
 } from './SvgArrow';
-import Point from '../geometry/Point';
+import Vector2 from '../geometry/Vector2';
 import { render } from '@testing-library/react';
 
 const expectAttribute = (attributes: NamedNodeMap, key: string, expectedValue: string) => {
@@ -225,9 +225,9 @@ describe('SvgArrow', () => {
 
   describe('component', () => {
     const props = {
-      startingPoint: new Point(10, 10),
+      startingPoint: new Vector2(10, 10),
       startingAnchorOrientation: 'bottom',
-      endingPoint: new Point(30, 30),
+      endingPoint: new Vector2(30, 30),
       endingAnchorOrientation: 'top',
       strokeColor: 'blue',
       strokeWidth: 2,

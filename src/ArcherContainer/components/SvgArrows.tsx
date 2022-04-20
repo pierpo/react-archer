@@ -1,5 +1,5 @@
 import React from 'react';
-import Point from '../../geometry/Point';
+import Vector2 from '../../geometry/Vector2';
 import {
   getPointCoordinatesFromAnchorPosition,
   getPointFromElement,
@@ -26,7 +26,7 @@ interface CommonProps {
 const AdaptedArrow = (
   props: Omit<SourceToTargetType, 'order'> &
     CommonProps & {
-      parentCoordinates: Point;
+      parentCoordinates: Vector2;
     },
 ) => {
   const style = props.style || {};

@@ -1,12 +1,12 @@
 import React from 'react';
-import Point from '../geometry/Point';
+import Vector2 from '../geometry/Vector2';
 import { AnchorPositionType, ValidLineStyles } from '../types';
 import { computeArrowDirectionVector } from './SvgArrow.helper';
 
 type Props = {
-  startingPoint: Point;
+  startingPoint: Vector2;
   startingAnchorOrientation: AnchorPositionType;
-  endingPoint: Point;
+  endingPoint: Vector2;
   endingAnchorOrientation: AnchorPositionType;
   strokeColor: string;
   strokeWidth: number;
