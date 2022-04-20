@@ -106,6 +106,30 @@ describe('ArcherContainer', () => {
       expect(screen.baseElement).toMatchSnapshot();
     });
 
+    it('should render the arrows with labels', () => {
+      const screen = render(
+        <ArcherContainer startMarker endMarker={false}>
+          <ArcherElement
+            id="elem-left"
+            relations={[
+              {
+                sourceAnchor: 'left',
+                targetAnchor: 'right',
+                targetId: 'elem-right',
+                label: <div>this is a fine label</div>,
+              },
+            ]}
+          >
+            <div>element 1</div>
+          </ArcherElement>
+          <ArcherElement id="elem-right">
+            <div>element 2</div>
+          </ArcherElement>
+        </ArcherContainer>,
+      );
+      expect(screen.baseElement).toMatchSnapshot();
+    });
+
     it('should render the arrow only at start', () => {
       const screen = render(
         <ArcherContainer startMarker endMarker={false}>

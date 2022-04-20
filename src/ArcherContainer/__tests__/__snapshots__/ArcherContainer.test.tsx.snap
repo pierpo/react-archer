@@ -244,3 +244,68 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
   </div>
 </body>
 `;
+
+exports[`ArcherContainer rendering an svg with the marker element used to draw an svg arrow should render the arrows with labels 1`] = `
+<body>
+  <div>
+    <div
+      style="position: relative;"
+    >
+      <svg
+        style="position: absolute; width: 100%; height: 100%; top: 0px; left: 0px; pointer-events: none;"
+      >
+        <defs>
+          <marker
+            id="arrow00001elem-leftelem-right"
+            markerHeight="6"
+            markerUnits="strokeWidth"
+            markerWidth="10"
+            orient="auto-start-reverse"
+            refX="0"
+            refY="3"
+          >
+            <path
+              d="M0,0 L0,6 L10,3 z"
+              fill="#f00"
+            />
+          </marker>
+        </defs>
+        <g>
+          <path
+            d="M-20,0 C-10,0 -10,0 0,0"
+            marker-start="url(about:blank#arrow00001elem-leftelem-right)"
+            style="fill: none; stroke: #f00; stroke-width: 2;"
+          />
+          <foreignobject
+            height="1"
+            style="overflow: visible; pointer-events: none;"
+            width="20"
+            x="-20"
+            y="0"
+          >
+            <div
+              style="position: absolute; left: 50%; top: 50%; transform: translateX(-50%) translateY(-50%); pointer-events: all;"
+            >
+              <div>
+                <div>
+                  this is a fine label
+                </div>
+              </div>
+            </div>
+          </foreignobject>
+        </g>
+      </svg>
+      <div
+        style="height: 100%;"
+      >
+        <div>
+          element 1
+        </div>
+        <div>
+          element 2
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
