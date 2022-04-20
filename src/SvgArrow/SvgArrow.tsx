@@ -1,6 +1,7 @@
 import React from 'react';
 import Point from '../geometry/Point';
 import { AnchorPositionType, ValidLineStyles } from '../types';
+import { computeArrowDirectionVector } from './SvgArrow.helper';
 
 type Props = {
   startingPoint: Point;
@@ -18,40 +19,6 @@ type Props = {
   disableEndMarker?: boolean;
   endShape: Record<string, any>;
 };
-
-function computeArrowDirectionVector(anchorOrientation: AnchorPositionType) {
-  switch (anchorOrientation) {
-    case 'left':
-      return {
-        arrowX: -1,
-        arrowY: 0,
-      };
-
-    case 'right':
-      return {
-        arrowX: 1,
-        arrowY: 0,
-      };
-
-    case 'top':
-      return {
-        arrowX: 0,
-        arrowY: -1,
-      };
-
-    case 'bottom':
-      return {
-        arrowX: 0,
-        arrowY: 1,
-      };
-
-    default:
-      return {
-        arrowX: 0,
-        arrowY: 0,
-      };
-  }
-}
 
 export function computeArrowPointAccordingToArrowHead(
   xArrowHeadPoint: number,
