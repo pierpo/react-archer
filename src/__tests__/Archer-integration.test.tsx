@@ -1,5 +1,5 @@
 import React from 'react';
-import ArcherElement from '../ArcherElement';
+import ArcherElement from '../ArcherElement/ArcherElement';
 import ArcherContainer from '../ArcherContainer/ArcherContainer';
 import { render } from '@testing-library/react';
 

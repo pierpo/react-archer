@@ -1,57 +1,24 @@
 import React from 'react';
-import Point from './geometry/Point';
-import { AnchorPositionType } from './types';
+import Vector2 from '../geometry/Vector2';
+import { AnchorPositionType, ValidLineStyles } from '../types';
+import { computeArrowDirectionVector } from './SvgArrow.helper';
 
 type Props = {
-  startingPoint: Point;
+  startingPoint: Vector2;
   startingAnchorOrientation: AnchorPositionType;
-  endingPoint: Point;
+  endingPoint: Vector2;
   endingAnchorOrientation: AnchorPositionType;
   strokeColor: string;
   strokeWidth: number;
   strokeDasharray?: string;
   arrowLabel?: React.ReactNode | null | undefined;
   arrowMarkerId: string;
-  lineStyle: string;
+  lineStyle: ValidLineStyles;
   offset?: number;
   enableStartMarker?: boolean;
   disableEndMarker?: boolean;
   endShape: Record<string, any>;
 };
-
-function computeArrowDirectionVector(anchorOrientation: AnchorPositionType) {
-  switch (anchorOrientation) {
-    case 'left':
-      return {
-        arrowX: -1,
-        arrowY: 0,
-      };
-
-    case 'right':
-      return {
-        arrowX: 1,
-        arrowY: 0,
-      };
-
-    case 'top':
-      return {
-        arrowX: 0,
-        arrowY: -1,
-      };
-
-    case 'bottom':
-      return {
-        arrowX: 0,
-        arrowY: 1,
-      };
-
-    default:
-      return {
-        arrowX: 0,
-        arrowY: 0,
-      };
-  }
-}
 
 export function computeArrowPointAccordingToArrowHead(
   xArrowHeadPoint: number,
@@ -59,8 +26,7 @@ export function computeArrowPointAccordingToArrowHead(
   arrowLength: number,
   strokeWidth: number,
   endingAnchorOrientation: AnchorPositionType,
-  // TODO oops, type me!
-  lineStyle?: string,
+  lineStyle?: ValidLineStyles,
   xArrowStart?: number,
   yArrowStart?: number,
 ) {

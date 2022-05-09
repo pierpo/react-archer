@@ -1,10 +1,10 @@
 import React from 'react';
-import Point from '../../geometry/Point';
+import Vector2 from '../../geometry/Vector2';
 import {
   getPointCoordinatesFromAnchorPosition,
   getPointFromElement,
 } from '../../geometry/rectHelper';
-import SvgArrow from '../../SvgArrow';
+import SvgArrow from '../../SvgArrow/SvgArrow';
 import { SourceToTargetType } from '../../types';
 import { createShapeObj, getMarkerId, getSourceToTargets } from '../ArcherContainer.helpers';
 import { ArcherContainerProps, SourceToTargetsArrayType } from '../ArcherContainer.types';
@@ -26,7 +26,7 @@ interface CommonProps {
 const AdaptedArrow = (
   props: Omit<SourceToTargetType, 'order'> &
     CommonProps & {
-      parentCoordinates: Point;
+      parentCoordinates: Vector2;
     },
 ) => {
   const style = props.style || {};

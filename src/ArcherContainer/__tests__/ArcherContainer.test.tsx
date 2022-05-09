@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import ArcherContainer from '../ArcherContainer';
-import ArcherElement from '../../ArcherElement';
+import ArcherElement from '../../ArcherElement/ArcherElement';
 import { act } from 'react-dom/test-utils';
 
 describe('ArcherContainer', () => {
@@ -93,6 +93,30 @@ describe('ArcherContainer', () => {
                 sourceAnchor: 'left',
                 targetAnchor: 'right',
                 targetId: 'elem-right',
+              },
+            ]}
+          >
+            <div>element 1</div>
+          </ArcherElement>
+          <ArcherElement id="elem-right">
+            <div>element 2</div>
+          </ArcherElement>
+        </ArcherContainer>,
+      );
+      expect(screen.baseElement).toMatchSnapshot();
+    });
+
+    it('should render the arrows with labels', () => {
+      const screen = render(
+        <ArcherContainer startMarker endMarker={false}>
+          <ArcherElement
+            id="elem-left"
+            relations={[
+              {
+                sourceAnchor: 'left',
+                targetAnchor: 'right',
+                targetId: 'elem-right',
+                label: <div>this is a fine label</div>,
               },
             ]}
           >

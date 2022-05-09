@@ -1,6 +1,6 @@
 import React from 'react';
 import ArcherContainer from '../src/ArcherContainer/ArcherContainer';
-import ArcherElement from '../src/ArcherElement';
+import ArcherElement from '../src/ArcherElement/ArcherElement';
 const rootStyle = {
   display: 'flex',
   justifyContent: 'center',

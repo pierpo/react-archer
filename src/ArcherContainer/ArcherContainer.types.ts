@@ -1,7 +1,7 @@
 import { ShapeType, ValidLineStyles, SourceToTargetType } from '../types';
 import { ArcherContainerContextType } from './ArcherContainer.context';
 
-type FunctionChild = (context: React.Context<ArcherContainerContextType>) => React.ReactNode;
+type FunctionChild = (context: React.Context<ArcherContainerContextType | null>) => React.ReactNode;
 
 export type ArcherContainerProps = {
   /**
