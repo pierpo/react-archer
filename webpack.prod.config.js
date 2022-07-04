@@ -40,6 +40,10 @@ var config = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
+  externals: {
+    react: 'react',
+    reactDOM: 'react-dom',
+  },
   optimization: {
     minimizer: [
       new TerserPlugin({
