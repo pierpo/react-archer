@@ -7,6 +7,8 @@
     "unused-imports"
   ],
   "extends": [
+    "plugin:react-hooks/recommended",
+    "plugin:react/recommended",
     "plugin:cypress/recommended",
     "plugin:prettier/recommended"
   ],
