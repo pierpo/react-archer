@@ -59,6 +59,14 @@ const AdaptedArrow = (
     props.refs,
   );
 
+  if (!startingPoint) {
+    return null;
+  }
+
+  if (!endingPoint) {
+    return null;
+  }
+
   return (
     <SvgArrow
       startingPoint={startingPoint}

@@ -52,11 +52,11 @@ export const getPointCoordinatesFromAnchorPosition = (
   index: string,
   parentCoordinates: Vector2,
   refs: Record<string, HTMLElement>,
-): Vector2 => {
+): Vector2 | null => {
   const rect = getRectFromElement(refs[index]);
 
   if (!rect) {
-    return new Vector2(0, 0);
+    return null;
   }
 
   const absolutePosition = computeCoordinatesFromAnchorPosition(position, rect);
