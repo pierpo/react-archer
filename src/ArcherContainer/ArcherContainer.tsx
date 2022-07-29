@@ -98,20 +98,23 @@ const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerP
           }));
         }
       },
-      [refs],
+      [refs, observer],
     );
 
-    const _unregisterChild = useCallback((id: string): void => {
-      setRefs((currentRefs) => {
-        if (currentRefs[id]) {
-          observer.unobserve(currentRefs[id]);
-        }
+    const _unregisterChild = useCallback(
+      (id: string): void => {
+        setRefs((currentRefs) => {
+          if (currentRefs[id]) {
+            observer.unobserve(currentRefs[id]);
+          }
 
-        const newRefs = { ...currentRefs };
-        delete newRefs[id];
-        return newRefs;
-      });
-    }, []);
+          const newRefs = { ...currentRefs };
+          delete newRefs[id];
+          return newRefs;
+        });
+      },
+      [observer],
+    );
 
     const _svgContainerStyle = useMemo(
       (): Record<string, any> => ({
