@@ -138,7 +138,7 @@ describe('ArcherElement', () => {
       expect(registerTransitionsMock).toHaveBeenCalledWith('foo', sourceToTargets);
     });
 
-    it('should not call registerTransitions on update if relation exists', () => {
+    it('should call unregisterTransitions then registerTransitions even if relation exists', () => {
       const relations: RelationType[] = [
         {
           targetId: 'toto',
@@ -158,7 +158,9 @@ describe('ArcherElement', () => {
       registerTransitionsMock.mockReset();
       // Trigger update in ArcherElement
       fireEvent.click(wrapper.getByText('Foo'));
-      expect(registerTransitionsMock).not.toHaveBeenCalled();
+      expect(unregisterTransitionsMock).toHaveBeenCalledWith('foo');
+      expect(unregisterTransitionsMock).toHaveBeenCalledBefore(registerTransitionsMock);
+      expect(registerTransitionsMock).toHaveBeenCalledWith('foo', expect.any(Object));
     });
 
     it('should call registerTransitions with sourceToTargets on mount if relations', () => {
@@ -188,10 +190,10 @@ describe('ArcherElement', () => {
       expect(registerTransitionsMock).toHaveBeenCalledWith('foo', sourceToTargets);
     });
 
-    it('should not call registerTransitions on mount if no relations', () => {
+    it('should still call registerTransitions on mount even if no relations', () => {
       const relations: RelationType[] = [];
       mountContainer(relations, []);
-      expect(registerTransitionsMock).not.toHaveBeenCalled();
+      expect(registerTransitionsMock).toHaveBeenCalled();
     });
   });
 });
