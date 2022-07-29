@@ -241,7 +241,11 @@ describe('SvgArrow', () => {
     } as const;
 
     it('should render path with proper coordinates', () => {
-      render(<SvgArrow {...props} />);
+      render(
+        <svg>
+          <SvgArrow {...props} />
+        </svg>,
+      );
       const path = getBySelector('path');
       const attributes = path?.attributes;
       expectAttribute(attributes, 'd', 'M10,10 C10,10 30,10 30,10');
@@ -251,7 +255,11 @@ describe('SvgArrow', () => {
 
     // This test is not relevant, "angle" has no effect... probably because of some jsdom mocks
     xit('should render path with no curves coordinates', () => {
-      render(<SvgArrow {...props} lineStyle="angle" />);
+      render(
+        <svg>
+          <SvgArrow {...props} lineStyle="angle" />
+        </svg>,
+      );
       const path = getBySelector('path');
       const attributes = path?.attributes;
       expectAttribute(attributes, 'd', 'M10,10 C10,10 30,10 30,10');
@@ -260,7 +268,11 @@ describe('SvgArrow', () => {
     });
 
     it('should render path with straight line coordinates', () => {
-      render(<SvgArrow {...props} lineStyle="straight" />);
+      render(
+        <svg>
+          <SvgArrow {...props} lineStyle="straight" />
+        </svg>,
+      );
       const path = getBySelector('path');
       const attributes = path?.attributes;
       expectAttribute(attributes, 'd', 'M10,10 15.85786437626905,15.857864376269049');
