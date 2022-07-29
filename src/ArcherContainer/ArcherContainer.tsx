@@ -121,7 +121,7 @@ const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerP
         ...defaultSvgContainerStyle,
         ...svgContainerStyle,
       }),
-      [defaultSvgContainerStyle, svgContainerStyle],
+      [svgContainerStyle],
     );
 
     let newChildren: React.ReactNode | null | undefined;
