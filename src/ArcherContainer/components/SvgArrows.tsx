@@ -95,6 +95,11 @@ export const SvgArrows = (
 ) => {
   const parentCoordinates = getPointFromElement(props.parentCurrent);
 
+  if (!parentCoordinates) {
+    // This happens when parent ref is not ready yet
+    return null;
+  }
+
   return (
     <>
       {getSourceToTargets(props.sourceToTargetsMap).map((currentRelation) => (

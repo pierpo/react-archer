@@ -8,7 +8,7 @@ function rectToPoint(rect: DOMRect): Vector2 {
 function computeCoordinatesFromAnchorPosition(
   anchorPosition: AnchorPositionType,
   rect: DOMRect,
-): Vector2 {
+): Vector2 | null {
   switch (anchorPosition) {
     case 'top':
       return rectToPoint(rect).add(new Vector2(rect.width / 2, 0));
@@ -26,7 +26,8 @@ function computeCoordinatesFromAnchorPosition(
       return rectToPoint(rect).add(new Vector2(rect.width / 2, rect.height / 2));
 
     default:
-      return new Vector2(0, 0);
+      console.error('[React Archer] Invalid anchor position was provided. Not drawing the arrow.');
+      return null;
   }
 }
 
@@ -37,11 +38,11 @@ const getRectFromElement = (
   return element.getBoundingClientRect();
 };
 
-export const getPointFromElement = (element: HTMLDivElement | null | undefined) => {
+export const getPointFromElement = (element: HTMLDivElement | null | undefined): Vector2 | null => {
   const rectp = getRectFromElement(element);
 
   if (!rectp) {
-    return new Vector2(0, 0);
+    return null;
   }
 
   return rectToPoint(rectp);
@@ -60,5 +61,10 @@ export const getPointCoordinatesFromAnchorPosition = (
   }
 
   const absolutePosition = computeCoordinatesFromAnchorPosition(position, rect);
+
+  if (!absolutePosition) {
+    return null;
+  }
+
   return absolutePosition.substract(parentCoordinates);
 };
