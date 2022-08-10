@@ -263,7 +263,7 @@ const SvgArrow = ({
     yEnd,
   );
 
-  const markerUrl = `url(${location.href.split('#')[0]}#${arrowMarkerId})`;
+  const markerUrl = `url(#${arrowMarkerId})`;
 
   return (
     <g>

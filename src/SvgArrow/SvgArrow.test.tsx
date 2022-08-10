@@ -245,7 +245,7 @@ describe('SvgArrow', () => {
       const path = getBySelector('path');
       const attributes = path?.attributes;
       expectAttribute(attributes, 'd', 'M10,10 C10,10 30,10 30,10');
-      expectAttribute(attributes, 'marker-end', 'url(about:blank#arrow123123)');
+      expectAttribute(attributes, 'marker-end', 'url(#arrow123123)');
       expectAttribute(attributes, 'style', 'fill: none; stroke: blue; stroke-width: 2;');
     });
 
@@ -255,7 +255,7 @@ describe('SvgArrow', () => {
       const path = getBySelector('path');
       const attributes = path?.attributes;
       expectAttribute(attributes, 'd', 'M10,10 C10,10 30,10 30,10');
-      expectAttribute(attributes, 'marker-end', 'url(about:blank#arrow123123)');
+      expectAttribute(attributes, 'marker-end', 'url(#arrow123123)');
       expectAttribute(attributes, 'style', 'fill: none; stroke: blue; stroke-width: 2;');
     });
 
@@ -264,7 +264,7 @@ describe('SvgArrow', () => {
       const path = getBySelector('path');
       const attributes = path?.attributes;
       expectAttribute(attributes, 'd', 'M10,10 15.85786437626905,15.857864376269049');
-      expectAttribute(attributes, 'marker-end', 'url(about:blank#arrow123123)');
+      expectAttribute(attributes, 'marker-end', 'url(#arrow123123)');
       expectAttribute(attributes, 'style', 'fill: none; stroke: blue; stroke-width: 2;');
     });
   });
