@@ -152,6 +152,29 @@ describe('ArcherContainer', () => {
       );
       expect(screen.baseElement).toMatchSnapshot();
     });
+
+    it('should render no arrow if id is not found', () => {
+      const screen = render(
+        <ArcherContainer startMarker endMarker={false}>
+          <ArcherElement
+            id="elem-left"
+            relations={[
+              {
+                sourceAnchor: 'left',
+                targetAnchor: 'right',
+                targetId: 'oh no',
+              },
+            ]}
+          >
+            <div>element 1</div>
+          </ArcherElement>
+          <ArcherElement id="oops">
+            <div>element 2</div>
+          </ArcherElement>
+        </ArcherContainer>,
+      );
+      expect(screen.baseElement).toMatchSnapshot();
+    });
   });
 
   describe('Event Listeners', () => {

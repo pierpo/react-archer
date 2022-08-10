@@ -59,6 +59,14 @@ const AdaptedArrow = (
     props.refs,
   );
 
+  if (!startingPoint) {
+    return null;
+  }
+
+  if (!endingPoint) {
+    return null;
+  }
+
   return (
     <SvgArrow
       startingPoint={startingPoint}
@@ -86,6 +94,11 @@ export const SvgArrows = (
   } & CommonProps,
 ) => {
   const parentCoordinates = getPointFromElement(props.parentCurrent);
+
+  if (!parentCoordinates) {
+    // This happens when parent ref is not ready yet
+    return null;
+  }
 
   return (
     <>
