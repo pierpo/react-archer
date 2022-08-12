@@ -1,5 +1,6 @@
 import { ArcherContainerContextType } from '../ArcherContainer/ArcherContainer.context';
 import { RelationType, SourceToTargetType } from '../types';
+import { encodeId } from '../utils/encodeId';
 
 export function assertContextExists(
   context: ArcherContainerContextType | null,
@@ -18,11 +19,11 @@ export const generateSourceToTarget = (
   return relations.map(
     ({ targetId, sourceAnchor, targetAnchor, label, style, order = 0 }: RelationType) => ({
       source: {
-        id,
+        id: encodeId(id),
         anchor: sourceAnchor,
       },
       target: {
-        id: targetId,
+        id: encodeId(targetId),
         anchor: targetAnchor,
       },
       label,

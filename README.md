@@ -114,7 +114,7 @@ This will allow you to have more control on when you want to re-draw the arrows.
 <!-- prettier-ignore -->
 | Name | Type | Description |
 | - | - | - |
-| `id` | `string` | The id that will identify the Archer Element. Should only contain alphanumeric characters and standard characters that you can find in HTML ids.
+| `id` | `string` | The id that will identify the Archer Element.
 | `children` | `React.Node \| (ArcherContext) => React.Node` | :warning: Must be a **single** element or a function of the internal context. If you are passing a custom component, it should be wrapped in a div or you should forward the reference (see [this](https://github.com/pierpo/react-archer/releases/tag/v2.0.0))
 | `relations` | `Relation[]` |
 
