@@ -69,7 +69,7 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
         <g>
           <path
             d="M0,0 C10,0 10,0 20,0"
-            marker-end="url(about:blank#arrow00001elem-leftelem-right)"
+            marker-end="url(#arrow00001elem-leftelem-right)"
             style="fill: none; stroke: #f00; stroke-width: 2;"
           />
         </g>
@@ -117,8 +117,8 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
         <g>
           <path
             d="M-20,0 C0,0 0,0 20,0"
-            marker-end="url(about:blank#arrow00001elem-leftelem-right)"
-            marker-start="url(about:blank#arrow00001elem-leftelem-right)"
+            marker-end="url(#arrow00001elem-leftelem-right)"
+            marker-start="url(#arrow00001elem-leftelem-right)"
             style="fill: none; stroke: #f00; stroke-width: 2;"
           />
         </g>
@@ -166,7 +166,7 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
         <g>
           <path
             d="M-20,0 C-10,0 -10,0 0,0"
-            marker-start="url(about:blank#arrow00001elem-leftelem-right)"
+            marker-start="url(#arrow00001elem-leftelem-right)"
             style="fill: none; stroke: #f00; stroke-width: 2;"
           />
         </g>
@@ -218,7 +218,7 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
         <g>
           <path
             d="M0,0 C11,0 11,0 22,0"
-            marker-end="url(about:blank#arrow00001elem-leftelem-right)"
+            marker-end="url(#arrow00001elem-leftelem-right)"
             style="fill: none; stroke: #f00; stroke-width: 2;"
           />
         </g>
@@ -266,7 +266,7 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
         <g>
           <path
             d="M0,0 C-10,0 -10,0 -20,0"
-            marker-end="url(about:blank#arrow00001elem-rightelem-left)"
+            marker-end="url(#arrow00001elem-rightelem-left)"
             style="fill: none; stroke: #f00; stroke-width: 2;"
           />
         </g>
@@ -314,7 +314,7 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
         <g>
           <path
             d="M-20,0 C-10,0 -10,0 0,0"
-            marker-start="url(about:blank#arrow00001elem-leftelem-right)"
+            marker-start="url(#arrow00001elem-leftelem-right)"
             style="fill: none; stroke: #f00; stroke-width: 2;"
           />
           <foreignobject

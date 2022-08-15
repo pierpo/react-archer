@@ -1,12 +1,13 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import { ArcherContainerContext } from '../ArcherContainer/ArcherContainer.context';
 import { RelationType } from '../types';
+import { encodeId } from '../utils/encodeId';
 import { useDeepCompareEffect } from '../utils/useDeepCompareEffect';
 import { generateSourceToTarget, assertContextExists } from './ArcherElement.helpers';
 
 type ArcherElementProps = {
   /**
-   * The id that will identify the Archer Element. Should only contain alphanumeric characters and standard characters that you can find in HTML ids.
+   * The id that will identify the Archer Element.
    */
   id: string;
   relations?: Array<RelationType>;
@@ -14,20 +15,21 @@ type ArcherElementProps = {
 };
 
 const ArcherElement = ({ id, relations = [], children }: ArcherElementProps) => {
+  const encodedId = useMemo(() => encodeId(id), [id]);
   const context = useContext(ArcherContainerContext);
 
   const registerTransitions = (newRelations: Array<RelationType>) => {
-    const newSourceToTarget = generateSourceToTarget(id, newRelations);
+    const newSourceToTarget = generateSourceToTarget(encodedId, newRelations);
 
     assertContextExists(context);
 
-    context.registerTransitions(id, newSourceToTarget);
+    context.registerTransitions(encodedId, newSourceToTarget);
   };
 
   const unregisterTransitions = () => {
     assertContextExists(context);
 
-    context.unregisterTransitions(id);
+    context.unregisterTransitions(encodedId);
   };
 
   const onRefUpdate = (ref: HTMLElement | null | undefined) => {
@@ -35,13 +37,13 @@ const ArcherElement = ({ id, relations = [], children }: ArcherElementProps) => 
 
     assertContextExists(context);
 
-    context.registerChild(id, ref);
+    context.registerChild(encodedId, ref);
   };
 
   const unregisterChild = () => {
     assertContextExists(context);
 
-    context.unregisterChild(id);
+    context.unregisterChild(encodedId);
   };
 
   useEffect(() => {

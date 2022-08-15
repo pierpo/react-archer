@@ -44,7 +44,7 @@ const SecondExample = () => {
       </div>
       <ArcherContainer strokeColor="red">
         <div style={rootStyle}>
-          <ArcherElement id="root">
+          <ArcherElement id="root with spaces et accents héhéhéhé">
             <div style={boxStyle}>Root</div>
           </ArcherElement>
         </div>
@@ -58,7 +58,7 @@ const SecondExample = () => {
                 id={`element${i}`}
                 relations={[
                   {
-                    targetId: 'root',
+                    targetId: 'root with spaces et accents héhéhéhé',
                     targetAnchor: 'bottom',
                     sourceAnchor: 'top',
                     label: (
