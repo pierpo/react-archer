@@ -11,7 +11,7 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
       >
         <defs>
           <marker
-            id="arrow00001elem-leftoh no"
+            id="arrow00001elem-leftoh_20no"
             markerHeight="6"
             markerUnits="strokeWidth"
             markerWidth="10"
