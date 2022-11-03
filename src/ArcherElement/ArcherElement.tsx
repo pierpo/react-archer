@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo, useRef } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import { ArcherContainerContext } from '../ArcherContainer/ArcherContainer.context';
 import { RelationType } from '../types';
 import { encodeId } from '../utils/encodeId';
@@ -61,22 +61,17 @@ const ArcherElement = ({ id, relations = [], children }: ArcherElementProps) => 
     context.unregisterChild(encodedId);
   }, [context, encodedId]);
 
-  useDeepCompareEffect(() => {
+  useEffect(() => {
     registerChild(ref.current);
+
+    return () => unregisterChild();
+  }, [registerChild, unregisterChild]);
+
+  useDeepCompareEffect(() => {
     registerTransitions(relations);
 
-    return () => {
-      unregisterChild();
-      unregisterTransitions();
-    };
-  }, [
-    registerChild,
-    registerTransitions,
-    relations,
-    unregisterChild,
-    unregisterTransitions,
-    ref.current,
-  ]);
+    return () => unregisterTransitions();
+  }, [registerTransitions, relations, unregisterTransitions]);
 
   // Check that we only have one child to ArcherElement
   React.Children.only(children);
