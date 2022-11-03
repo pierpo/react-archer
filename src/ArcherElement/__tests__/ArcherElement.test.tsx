@@ -108,8 +108,14 @@ describe('ArcherElement', () => {
   });
 
   describe('lifecycle', () => {
-    it('should call registerTransitions with sourceToTargets on update', () => {
-      const relations: RelationType[] = [];
+    it('should call registerTransitions with proper sourceToTargets when relations change', () => {
+      const relations: RelationType[] = [
+        {
+          targetId: 'toto',
+          targetAnchor: 'top',
+          sourceAnchor: 'right',
+        },
+      ];
       const newRelations: RelationType[] = [
         {
           targetId: 'toto',
