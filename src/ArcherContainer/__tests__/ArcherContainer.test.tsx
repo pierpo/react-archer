@@ -4,7 +4,13 @@ import ArcherContainer from '../ArcherContainer';
 import ArcherElement from '../../ArcherElement/ArcherElement';
 import { act } from 'react-dom/test-utils';
 
+const originalConsoleWarn = console.warn;
+
 describe('ArcherContainer', () => {
+  beforeEach(() => {
+    console.warn = originalConsoleWarn;
+  });
+
   it('should render given children', async () => {
     const screen = render(
       <ArcherContainer>
@@ -154,6 +160,8 @@ describe('ArcherContainer', () => {
     });
 
     it('should render no arrow if id is not found', () => {
+      console.warn = jest.fn();
+
       const screen = render(
         <ArcherContainer startMarker endMarker={false}>
           <ArcherElement
@@ -173,7 +181,11 @@ describe('ArcherContainer', () => {
           </ArcherElement>
         </ArcherContainer>,
       );
+
       expect(screen.baseElement).toMatchSnapshot();
+      expect(console.warn).toHaveBeenCalledWith(
+        expect.stringMatching('Could not find target element'),
+      );
     });
   });
 

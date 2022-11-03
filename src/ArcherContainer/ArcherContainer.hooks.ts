@@ -12,7 +12,7 @@ export const useObserveElements = (refs: Record<string, HTMLElement>, observer: 
         observer.unobserve(refs[elementKey]);
       });
     };
-  }, [refs]);
+  }, [refs, observer]);
 };
 
 /** Subscribe/unsubscribe to the resize window event */

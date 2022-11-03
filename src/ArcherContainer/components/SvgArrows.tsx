@@ -60,10 +60,12 @@ const AdaptedArrow = (
   );
 
   if (!startingPoint) {
+    console.warn('[React Archer] Could not find starting point of element! Not drawing the arrow.');
     return null;
   }
 
   if (!endingPoint) {
+    console.warn('[React Archer] Could not find target element! Not drawing the arrow.');
     return null;
   }
 

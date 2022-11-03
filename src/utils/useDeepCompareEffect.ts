@@ -18,5 +18,7 @@ export function useDeepCompareEffect<T extends React.EffectCallback, U extends a
   callback: T,
   dependencies: U,
 ) {
+  // it should not be needed to put the function of the useEffect as a dependency of the useEffect itself
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(callback, dependencies.map(useDeepCompareMemoize));
 }

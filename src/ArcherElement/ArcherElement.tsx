@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import { ArcherContainerContext } from '../ArcherContainer/ArcherContainer.context';
 import { RelationType } from '../types';
 import { encodeId } from '../utils/encodeId';
@@ -17,20 +17,35 @@ type ArcherElementProps = {
 const ArcherElement = ({ id, relations = [], children }: ArcherElementProps) => {
   const encodedId = useMemo(() => encodeId(id), [id]);
   const context = useContext(ArcherContainerContext);
+  const ref = useRef<HTMLElement>();
 
-  const registerTransitions = (newRelations: Array<RelationType>) => {
-    const newSourceToTarget = generateSourceToTarget(encodedId, newRelations);
+  const registerTransitions = useCallback(
+    (newRelations: Array<RelationType>) => {
+      const newSourceToTarget = generateSourceToTarget(encodedId, newRelations);
 
-    assertContextExists(context);
+      assertContextExists(context);
 
-    context.registerTransitions(encodedId, newSourceToTarget);
-  };
+      context.registerTransitions(encodedId, newSourceToTarget);
+    },
+    [context, encodedId],
+  );
 
-  const unregisterTransitions = () => {
+  const unregisterTransitions = useCallback(() => {
     assertContextExists(context);
 
     context.unregisterTransitions(encodedId);
-  };
+  }, [context, encodedId]);
+
+  const registerChild = useCallback(
+    (newRef: HTMLElement | undefined) => {
+      if (!newRef) return;
+
+      assertContextExists(context);
+
+      context.registerChild(encodedId, newRef);
+    },
+    [encodedId, context],
+  );
 
   const onRefUpdate = (ref: HTMLElement | null | undefined) => {
     if (!ref) return;
@@ -40,35 +55,23 @@ const ArcherElement = ({ id, relations = [], children }: ArcherElementProps) => 
     context.registerChild(encodedId, ref);
   };
 
-  const unregisterChild = () => {
+  const unregisterChild = useCallback(() => {
     assertContextExists(context);
 
     context.unregisterChild(encodedId);
-  };
+  }, [context, encodedId]);
 
   useEffect(() => {
-    const unsubscribe = () => {
-      unregisterChild();
-      unregisterTransitions();
-    };
+    registerChild(ref.current);
 
-    if (relations.length === 0) {
-      return unsubscribe;
-    }
-
-    registerTransitions(relations);
-
-    return unsubscribe;
-  }, []);
+    return () => unregisterChild();
+  }, [registerChild, unregisterChild]);
 
   useDeepCompareEffect(() => {
-    if (relations.length === 0) {
-      // TODO is that correct? It feels like the useEffect should unsubscribe the changes... Might still work though
-      return;
-    }
-
     registerTransitions(relations);
-  }, [relations]);
+
+    return () => unregisterTransitions();
+  }, [registerTransitions, relations, unregisterTransitions]);
 
   // Check that we only have one child to ArcherElement
   React.Children.only(children);

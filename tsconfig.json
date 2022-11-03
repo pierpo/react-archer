@@ -1,4 +1,5 @@
 {
+  "files": ["jest.d.ts"],
   "include": ["src/", "example/"],
   "compilerOptions": {
     "target": "es2016",

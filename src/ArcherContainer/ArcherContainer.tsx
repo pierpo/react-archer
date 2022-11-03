@@ -88,25 +88,21 @@ const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerP
       });
     }, []);
 
-    const _registerChild = useCallback(
-      (id: string, ref: HTMLElement): void => {
-        if (!refs[id]) {
-          observer.observe(ref);
-          setRefs((currentRefs) => ({
-            ...currentRefs,
-            [id]: ref,
-          }));
+    const _registerChild = useCallback((id: string, ref: HTMLElement): void => {
+      setRefs((currentRefs) => {
+        if (currentRefs[id] === ref) {
+          return currentRefs;
         }
-      },
-      [refs],
-    );
+
+        return {
+          ...currentRefs,
+          [id]: ref,
+        };
+      });
+    }, []);
 
     const _unregisterChild = useCallback((id: string): void => {
       setRefs((currentRefs) => {
-        if (currentRefs[id]) {
-          observer.unobserve(currentRefs[id]);
-        }
-
         const newRefs = { ...currentRefs };
         delete newRefs[id];
         return newRefs;
@@ -118,7 +114,7 @@ const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerP
         ...defaultSvgContainerStyle,
         ...svgContainerStyle,
       }),
-      [defaultSvgContainerStyle, svgContainerStyle],
+      [svgContainerStyle],
     );
 
     let newChildren: React.ReactNode | null | undefined;
