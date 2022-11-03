@@ -89,10 +89,16 @@ const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerP
     }, []);
 
     const _registerChild = useCallback((id: string, ref: HTMLElement): void => {
-      setRefs((currentRefs) => ({
-        ...currentRefs,
-        [id]: ref,
-      }));
+      setRefs((currentRefs) => {
+        if (currentRefs[id] === ref) {
+          return currentRefs;
+        }
+
+        return {
+          ...currentRefs,
+          [id]: ref,
+        };
+      });
     }, []);
 
     const _unregisterChild = useCallback((id: string): void => {

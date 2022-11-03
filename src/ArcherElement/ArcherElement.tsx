@@ -47,6 +47,14 @@ const ArcherElement = ({ id, relations = [], children }: ArcherElementProps) => 
     [encodedId, context],
   );
 
+  const onRefUpdate = (ref: HTMLElement | null | undefined) => {
+    if (!ref) return;
+
+    assertContextExists(context);
+
+    context.registerChild(encodedId, ref);
+  };
+
   const unregisterChild = useCallback(() => {
     assertContextExists(context);
 
@@ -75,7 +83,7 @@ const ArcherElement = ({ id, relations = [], children }: ArcherElementProps) => 
   // Now, we'll render this child by getting its ref. The ref will be used to compute the element's position.
   // I'm pretty sure there's a cleaner way to get the ref of the child... feel free to suggest it!
   const child = children;
-  return React.cloneElement(child, { ...child.props, ref });
+  return React.cloneElement(child, { ...child.props, ref: onRefUpdate });
 };
 
 export default ArcherElement;
