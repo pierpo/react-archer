@@ -108,6 +108,33 @@ describe('ArcherElement', () => {
   });
 
   describe('lifecycle', () => {
+    it('should call registerTransitions with sourceToTargets on mount if relations', () => {
+      const relations: RelationType[] = [
+        {
+          targetId: 'toto',
+          targetAnchor: 'top',
+          sourceAnchor: 'left',
+        },
+      ];
+      const sourceToTargets = [
+        {
+          source: {
+            id: 'dumb-id',
+            anchor: 'left',
+          },
+          target: {
+            id: 'toto',
+            anchor: 'top',
+          },
+          order: 0,
+          label: undefined,
+          style: undefined,
+        },
+      ];
+      mountContainer(relations, []);
+      expect(registerTransitionsMock).toHaveBeenCalledWith('dumb-id', sourceToTargets);
+    });
+
     it('should call registerTransitions with proper sourceToTargets when relations change', () => {
       const relations: RelationType[] = [
         {
@@ -166,33 +193,6 @@ describe('ArcherElement', () => {
       fireEvent.click(wrapper.getByText('Update relations'));
       expect(unregisterTransitionsMock).not.toHaveBeenCalled();
       expect(registerTransitionsMock).not.toHaveBeenCalled();
-    });
-
-    it('should call registerTransitions with sourceToTargets on mount if relations', () => {
-      const relations: RelationType[] = [
-        {
-          targetId: 'toto',
-          targetAnchor: 'top',
-          sourceAnchor: 'left',
-        },
-      ];
-      const sourceToTargets = [
-        {
-          source: {
-            id: 'dumb-id',
-            anchor: 'left',
-          },
-          target: {
-            id: 'toto',
-            anchor: 'top',
-          },
-          order: 0,
-          label: undefined,
-          style: undefined,
-        },
-      ];
-      mountContainer(relations, []);
-      expect(registerTransitionsMock).toHaveBeenCalledWith('dumb-id', sourceToTargets);
     });
 
     it('should still call registerTransitions on mount even if no relations', () => {
