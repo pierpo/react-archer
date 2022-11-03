@@ -65,7 +65,7 @@ describe('ArcherElement', () => {
               })
             }
           >
-            Foo
+            Update relations
           </div>
         </ArcherElement>
       );
@@ -73,7 +73,7 @@ describe('ArcherElement', () => {
   }
 
   const mountContainer = (relations: Array<RelationType>, newRelations: Array<RelationType>) => {
-    const props = { ...defaultProps, id: 'foo' };
+    const props = { ...defaultProps, id: 'dumb-id' };
     return render(
       <MockArcherContainer
         registerChild={registerChildMock}
@@ -97,11 +97,11 @@ describe('ArcherElement', () => {
     const relations: RelationType[] = [];
     const wrapper = mountContainer(relations, []);
     // See we register the child
-    expect(registerChildMock).toHaveBeenCalledWith('foo', expect.anything());
+    expect(registerChildMock).toHaveBeenCalledWith('dumb-id', expect.anything());
     wrapper.unmount();
     // See we unregister the child and all transitions
-    expect(unregisterChildMock).toHaveBeenCalledWith('foo');
-    expect(unregisterTransitionsMock).toHaveBeenCalledWith('foo');
+    expect(unregisterChildMock).toHaveBeenCalledWith('dumb-id');
+    expect(unregisterTransitionsMock).toHaveBeenCalledWith('dumb-id');
     expect(registerChildMock).toHaveBeenCalledTimes(1);
     expect(unregisterChildMock).toHaveBeenCalledTimes(1);
     expect(unregisterTransitionsMock).toHaveBeenCalledTimes(1);
@@ -120,7 +120,7 @@ describe('ArcherElement', () => {
       const sourceToTargets = [
         {
           source: {
-            id: 'foo',
+            id: 'dumb-id',
             anchor: 'left',
           },
           target: {
@@ -134,8 +134,8 @@ describe('ArcherElement', () => {
       ];
       const wrapper = mountContainer(relations, newRelations);
       // Trigger update in ArcherElement
-      fireEvent.click(wrapper.getByText('Foo'));
-      expect(registerTransitionsMock).toHaveBeenCalledWith('foo', sourceToTargets);
+      fireEvent.click(wrapper.getByText('Update relations'));
+      expect(registerTransitionsMock).toHaveBeenCalledWith('dumb-id', sourceToTargets);
     });
 
     it('should not call unregisterTransitions and registerTransitions when relation is the same', () => {
@@ -157,7 +157,7 @@ describe('ArcherElement', () => {
       // Will get called on mount regardless
       registerTransitionsMock.mockReset();
       // Trigger update in ArcherElement
-      fireEvent.click(wrapper.getByText('Foo'));
+      fireEvent.click(wrapper.getByText('Update relations'));
       expect(unregisterTransitionsMock).not.toHaveBeenCalled();
       expect(registerTransitionsMock).not.toHaveBeenCalled();
     });
@@ -173,7 +173,7 @@ describe('ArcherElement', () => {
       const sourceToTargets = [
         {
           source: {
-            id: 'foo',
+            id: 'dumb-id',
             anchor: 'left',
           },
           target: {
@@ -186,7 +186,7 @@ describe('ArcherElement', () => {
         },
       ];
       mountContainer(relations, []);
-      expect(registerTransitionsMock).toHaveBeenCalledWith('foo', sourceToTargets);
+      expect(registerTransitionsMock).toHaveBeenCalledWith('dumb-id', sourceToTargets);
     });
 
     it('should still call registerTransitions on mount even if no relations', () => {
