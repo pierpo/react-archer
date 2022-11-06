@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { DOMAttributes } from 'react';
+import { Property } from 'csstype';
 import Vector2 from '../geometry/Vector2';
 import { AnchorPositionType, ValidLineStyles } from '../types';
 import { computeArrowDirectionVector } from './SvgArrow.helper';
@@ -19,6 +20,9 @@ type Props = {
   enableStartMarker?: boolean;
   disableEndMarker?: boolean;
   endShape: Record<string, any>;
+  domAttributes?: DOMAttributes<SVGElement>;
+  hitSlop?: number;
+  cursor?: Property.Cursor;
 };
 
 export function computeArrowPointAccordingToArrowHead(
@@ -198,6 +202,9 @@ const SvgArrow = ({
   enableStartMarker,
   disableEndMarker,
   endShape,
+  domAttributes,
+  hitSlop = 10,
+  cursor = 'pointer',
 }: Props) => {
   const actualArrowLength = endShape.circle
     ? endShape.circle.radius * 2
@@ -280,6 +287,22 @@ const SvgArrow = ({
         markerStart={enableStartMarker ? markerUrl : undefined}
         markerEnd={disableEndMarker ? undefined : markerUrl}
       />
+
+      {/* This a thicker fake path to grab DOM events - makes clicking on the arrow more usable */}
+      {domAttributes && (
+        <path
+          d={pathString}
+          style={{
+            fill: 'none',
+            stroke: 'rgba(0, 0, 0, 0)',
+            strokeWidth: hitSlop,
+            cursor: domAttributes ? cursor : 'initial',
+            pointerEvents: 'all',
+          }}
+          {...domAttributes}
+        />
+      )}
+
       {arrowLabel && (
         <foreignObject
           x={xLabel}

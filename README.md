@@ -129,6 +129,9 @@ The `Relation` type has the following shape:
   order?: number, // higher order means arrow will be drawn on top of the others
   className?: string, // CSS class selectors on the SVG arrow
   style: ArcherStyle,
+  domAttributes?: DOMAttributes<SVGElement>, // Allows to make selectable arrows by passing dom attributes like onMouseHover
+  cursor?: Property.Cursor, // Allows to customize the hovering cursor of the arrow. Will only work if domAttributes is present
+  hitSlop?: number, // Allows to make the selectable arrow thicker. Will only work if domAttributes is present
 }
 ```
 

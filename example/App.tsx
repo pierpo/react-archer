@@ -8,6 +8,7 @@ import SixthExample from './SixthExample';
 import SeventhExample from './SeventhExample';
 import EighthExample from './EighthExample';
 import NinthExample from './NinthExample';
+import TenthExample from './TenthExample';
 
 const getExample = (id: number) => {
   switch (id) {
@@ -38,6 +39,9 @@ const getExample = (id: number) => {
     case 9:
       return NinthExample;
 
+    case 10:
+      return TenthExample;
+
     default:
       return SecondExample;
   }
@@ -54,7 +58,7 @@ const App = () => {
         <div>
           <h2>Example {exampleId}</h2>
           <p>Choose an example:</p>
-          {[...Array(9).keys()].map((value) => (
+          {[...Array(10).keys()].map((value) => (
             <button
               key={value}
               onClick={() => setExampleId(value + 1)}
