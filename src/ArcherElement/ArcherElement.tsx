@@ -11,13 +11,13 @@ type ArcherElementProps = {
    */
   id: string;
   relations?: Array<RelationType>;
-  children: React.ReactElement<React.ComponentProps<any>, any>;
+  children: React.ReactElement;
 };
 
 const ArcherElement = ({ id, relations = [], children }: ArcherElementProps) => {
   const encodedId = useMemo(() => encodeId(id), [id]);
   const context = useContext(ArcherContainerContext);
-  const ref = useRef<HTMLElement>();
+  const archerRef = useRef<HTMLElement>();
 
   const registerTransitions = useCallback(
     (newRelations: Array<RelationType>) => {
@@ -54,7 +54,7 @@ const ArcherElement = ({ id, relations = [], children }: ArcherElementProps) => 
   }, [context, encodedId]);
 
   useLayoutEffect(() => {
-    registerChild(ref.current);
+    registerChild(archerRef.current);
 
     return () => unregisterChild();
   }, [registerChild, unregisterChild]);
@@ -70,7 +70,34 @@ const ArcherElement = ({ id, relations = [], children }: ArcherElementProps) => 
   // Now, we'll render this child by getting its ref. The ref will be used to compute the element's position.
   // I'm pretty sure there's a cleaner way to get the ref of the child... feel free to suggest it!
   const child = children;
-  return React.cloneElement(child, { ...child.props, ref });
+  return React.cloneElement(child, {
+    ...child.props,
+    ref: (node: HTMLElement) => {
+      archerRef.current = node;
+
+      // @ts-expect-error could not find a proper type for Children
+      const ref = child.ref as React.MutableRefObject<any> | React.LegacyRef<any>;
+
+      if (!ref) {
+        return;
+      }
+
+      if (typeof ref === 'string') {
+        console.error('[React Archer] Legacy string refs are not supported');
+        return;
+      }
+
+      if (typeof ref === 'function') {
+        ref(node);
+        return;
+      }
+
+      if (ref && ref.current !== undefined) {
+        // @ts-expect-error LegacyRef cast above is annoying - it marks the ref as non mutable
+        ref.current = node;
+      }
+    },
+  });
 };
 
 export default ArcherElement;
