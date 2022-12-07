@@ -1,4 +1,5 @@
-import React, { useCallback, useContext, useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useContext, useMemo, useRef } from 'react';
+import { useIsomorphicLayoutEffect } from '../utils/useIsomorphicLayoutEffect';
 import { ArcherContainerContext } from '../ArcherContainer/ArcherContainer.context';
 import { RelationType } from '../types';
 import { encodeId } from '../utils/encodeId';
@@ -53,7 +54,7 @@ const ArcherElement = ({ id, relations = [], children }: ArcherElementProps) => 
     context.unregisterChild(encodedId);
   }, [context, encodedId]);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     registerChild(ref.current);
 
     return () => unregisterChild();
