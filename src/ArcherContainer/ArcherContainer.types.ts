@@ -65,7 +65,7 @@ export type ArcherContainerProps = {
   children?: React.ReactNode | FunctionChild;
 };
 
-export type ArcherContainerHandle = {
+export type ArcherContainerRef = {
   /**
    * Use this to recompute all the arrow positions. Useful if arrows do not properly rerender
    * after the viewport or some elements moved.
@@ -74,5 +74,9 @@ export type ArcherContainerHandle = {
   /** Only for internal testing purposes */
   arrowMarkerUniquePrefix: string;
 };
+
+// Keep this name for retrocompatibility
+// should be a breaking change of 4.0.0
+export type ArcherContainerHandle = ArcherContainerRef;
 
 export type SourceToTargetsArrayType = SourceToTargetType[];
