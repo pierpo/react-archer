@@ -112,6 +112,30 @@ describe('ArcherContainer', () => {
       expect(screen.baseElement).toMatchSnapshot();
     });
 
+    it('should render an arrow with className', () => {
+      const screen = render(
+        <ArcherContainer startMarker>
+          <ArcherElement
+            id="elem-left"
+            relations={[
+              {
+                className: 'blink',
+                sourceAnchor: 'left',
+                targetAnchor: 'right',
+                targetId: 'elem-right',
+              },
+            ]}
+          >
+            <div>element 1</div>
+          </ArcherElement>
+          <ArcherElement id="elem-right">
+            <div>element 2</div>
+          </ArcherElement>
+        </ArcherContainer>,
+      );
+      expect(screen.baseElement).toMatchSnapshot();
+    });
+
     it('should render the arrows with labels', () => {
       const screen = render(
         <ArcherContainer startMarker endMarker={false}>

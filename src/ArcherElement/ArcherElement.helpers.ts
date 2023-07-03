@@ -17,7 +17,15 @@ export const generateSourceToTarget = (
   relations: Array<RelationType>,
 ): Array<SourceToTargetType> => {
   return relations.map(
-    ({ targetId, sourceAnchor, targetAnchor, label, style, order = 0 }: RelationType) => ({
+    ({
+      targetId,
+      sourceAnchor,
+      targetAnchor,
+      label,
+      className,
+      style,
+      order = 0,
+    }: RelationType) => ({
       source: {
         id: encodeId(id),
         anchor: sourceAnchor,
@@ -26,6 +34,7 @@ export const generateSourceToTarget = (
         id: encodeId(targetId),
         anchor: targetAnchor,
       },
+      className,
       label,
       style,
       order,
