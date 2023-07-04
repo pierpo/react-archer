@@ -127,6 +127,7 @@ The `Relation` type has the following shape:
   sourceAnchor: 'top' | 'bottom' | 'left' | 'right' | 'middle',
   label: React.Node,
   order?: number, // higher order means arrow will be drawn on top of the others
+  className?: string, // CSS class selectors on the SVG arrow
   style: ArcherStyle,
 }
 ```

@@ -8,6 +8,7 @@ export type RelationType = {
   sourceAnchor: AnchorPositionType;
   order?: number;
   label?: React.ReactNode | null | undefined;
+  className?: string;
   style?: LineType;
 };
 
@@ -17,6 +18,7 @@ export type EntityRelationType = {
 };
 
 export type SourceToTargetType = {
+  className?: string;
   source: EntityRelationType;
   target: EntityRelationType;
   order: number;

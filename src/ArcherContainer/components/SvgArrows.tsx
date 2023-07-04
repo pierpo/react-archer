@@ -71,6 +71,7 @@ const AdaptedArrow = (
 
   return (
     <SvgArrow
+      className={props.className}
       startingPoint={startingPoint}
       startingAnchorOrientation={startingAnchorOrientation}
       endingPoint={endingPoint}
@@ -112,6 +113,7 @@ export const SvgArrows = (
           })}
           source={currentRelation.source}
           target={currentRelation.target}
+          className={currentRelation.className}
           label={currentRelation.label}
           style={currentRelation.style || {}}
           startMarker={props.startMarker}

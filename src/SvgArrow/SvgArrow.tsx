@@ -4,6 +4,7 @@ import { AnchorPositionType, ValidLineStyles } from '../types';
 import { computeArrowDirectionVector } from './SvgArrow.helper';
 
 type Props = {
+  className?: string;
   startingPoint: Vector2;
   startingAnchorOrientation: AnchorPositionType;
   endingPoint: Vector2;
@@ -182,6 +183,7 @@ function computePathString({
 }
 
 const SvgArrow = ({
+  className,
   startingPoint,
   startingAnchorOrientation,
   endingPoint,
@@ -266,7 +268,7 @@ const SvgArrow = ({
   const markerUrl = `url(#${arrowMarkerId})`;
 
   return (
-    <g>
+    <g className={className}>
       <path
         d={pathString}
         style={{
