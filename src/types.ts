@@ -1,3 +1,5 @@
+import { DOMAttributes } from 'react';
+
 export type ValidLineStyles = 'angle' | 'straight' | 'curve';
 
 export type AnchorPositionType = 'top' | 'bottom' | 'left' | 'right' | 'middle';
@@ -10,6 +12,7 @@ export type RelationType = {
   label?: React.ReactNode | null | undefined;
   className?: string;
   style?: LineType;
+  domAttributes?: DOMAttributes<SVGElement>;
 };
 
 export type EntityRelationType = {
@@ -24,6 +27,7 @@ export type SourceToTargetType = {
   order: number;
   label?: React.ReactNode | null | undefined;
   style?: LineType;
+  domAttributes?: DOMAttributes<SVGElement>;
 };
 
 export type ArrowShapeType = {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { DOMAttributes } from 'react';
 import Vector2 from '../geometry/Vector2';
 import { AnchorPositionType, ValidLineStyles } from '../types';
 import { computeArrowDirectionVector } from './SvgArrow.helper';
@@ -19,6 +19,7 @@ type Props = {
   enableStartMarker?: boolean;
   disableEndMarker?: boolean;
   endShape: Record<string, any>;
+  domAttributes?: DOMAttributes<SVGElement>;
 };
 
 export function computeArrowPointAccordingToArrowHead(
@@ -198,6 +199,7 @@ const SvgArrow = ({
   enableStartMarker,
   disableEndMarker,
   endShape,
+  domAttributes,
 }: Props) => {
   const actualArrowLength = endShape.circle
     ? endShape.circle.radius * 2
@@ -268,7 +270,7 @@ const SvgArrow = ({
   const markerUrl = `url(#${arrowMarkerId})`;
 
   return (
-    <g className={className}>
+    <g className={className} style={{ pointerEvents: 'all' }}>
       <path
         d={pathString}
         style={{
@@ -280,6 +282,22 @@ const SvgArrow = ({
         markerStart={enableStartMarker ? markerUrl : undefined}
         markerEnd={disableEndMarker ? undefined : markerUrl}
       />
+
+      {/* This a thicker fake path to grab DOM events - makes clicking on the arrow more usable */}
+      <path
+        d={pathString}
+        style={{
+          fill: 'none',
+          stroke: 'rgba(0, 0, 0, 0)',
+          // TODO make this customizable
+          strokeWidth: strokeWidth * 10,
+
+          // TODO should probably be customizable as well
+          cursor: domAttributes ? 'pointer' : 'initial',
+        }}
+        {...domAttributes}
+      />
+
       {arrowLabel && (
         <foreignObject
           x={xLabel}

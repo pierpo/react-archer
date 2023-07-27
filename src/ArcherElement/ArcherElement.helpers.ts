@@ -25,6 +25,7 @@ export const generateSourceToTarget = (
       className,
       style,
       order = 0,
+      domAttributes,
     }: RelationType) => ({
       source: {
         id: encodeId(id),
@@ -38,6 +39,7 @@ export const generateSourceToTarget = (
       label,
       style,
       order,
+      domAttributes,
     }),
   );
 };

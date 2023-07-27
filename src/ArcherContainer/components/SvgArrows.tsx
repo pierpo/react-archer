@@ -35,6 +35,7 @@ const AdaptedArrow = (
 
   const newEndShape = createShapeObj(style, props.endShape);
 
+  const domAttributes = props.domAttributes;
   const newStrokeColor = style.strokeColor || props.strokeColor;
   const newStrokeWidth = style.strokeWidth || props.strokeWidth;
   const newStrokeDasharray = style.strokeDasharray || props.strokeDasharray;
@@ -86,6 +87,7 @@ const AdaptedArrow = (
       enableStartMarker={!!newStartMarker}
       disableEndMarker={!newEndMarker}
       endShape={newEndShape}
+      domAttributes={domAttributes}
     />
   );
 };
@@ -116,6 +118,7 @@ export const SvgArrows = (
           className={currentRelation.className}
           label={currentRelation.label}
           style={currentRelation.style || {}}
+          domAttributes={currentRelation.domAttributes}
           startMarker={props.startMarker}
           endMarker={props.endMarker}
           endShape={props.endShape}

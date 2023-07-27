@@ -64,18 +64,30 @@ exports[`Archer Integration Uses a functional child API to work with third party
               />
             </marker>
           </defs>
-          <g>
+          <g
+            style="pointer-events: all;"
+          >
             <path
               d="M0,0 C0,-10 0,-10 0,-20"
               marker-end="url(#arrow00001rootelement2)"
               style="fill: none; stroke: red; stroke-width: 2; stroke-dasharray: 5,5;"
             />
+            <path
+              d="M0,0 C0,-10 0,-10 0,-20"
+              style="fill: none; stroke: rgba(0, 0, 0, 0); stroke-width: 20; cursor: initial;"
+            />
           </g>
-          <g>
+          <g
+            style="pointer-events: all;"
+          >
             <path
               d="M0,0 C-1.5,0 -1.5,0 -3,0"
               marker-end="url(#arrow00001element2element3)"
               style="fill: none; stroke: blue; stroke-width: 1;"
+            />
+            <path
+              d="M0,0 C-1.5,0 -1.5,0 -3,0"
+              style="fill: none; stroke: rgba(0, 0, 0, 0); stroke-width: 10; cursor: initial;"
             />
             <foreignobject
               height="1"
@@ -97,11 +109,17 @@ exports[`Archer Integration Uses a functional child API to work with third party
               </div>
             </foreignobject>
           </g>
-          <g>
+          <g
+            style="pointer-events: all;"
+          >
             <path
               d="M0,0 C2,0 2,0 4,0"
               marker-end="url(#arrow00001element4root)"
               style="fill: none; stroke: red; stroke-width: 2;"
+            />
+            <path
+              d="M0,0 C2,0 2,0 4,0"
+              style="fill: none; stroke: rgba(0, 0, 0, 0); stroke-width: 20; cursor: initial;"
             />
             <foreignobject
               height="1"
