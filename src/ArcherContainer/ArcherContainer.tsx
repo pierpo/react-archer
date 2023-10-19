@@ -36,6 +36,7 @@ const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerP
       offset,
       startMarker,
       strokeDasharray,
+      ignoreNotFoundWarnings,
       style,
     }: ArcherContainerProps,
     archerContainerRef,
@@ -161,6 +162,7 @@ const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerP
               noCurves={noCurves}
               lineStyle={lineStyle}
               offset={offset}
+              ignoreNotFoundWarnings={ignoreNotFoundWarnings}
               parentCurrent={parent.current}
               refs={refs}
               uniqueId={uniqueId}
