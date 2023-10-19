@@ -211,6 +211,35 @@ describe('ArcherContainer', () => {
         expect.stringMatching('Could not find target element'),
       );
     });
+
+    it('should render no arrow if id is not found and not raise a console.warn', () => {
+      console.warn = jest.fn();
+
+      const screen = render(
+        <ArcherContainer startMarker endMarker={false} ignoreNotFoundWarnings>
+          <ArcherElement
+            id="elem-left"
+            relations={[
+              {
+                sourceAnchor: 'left',
+                targetAnchor: 'right',
+                targetId: 'oh no',
+              },
+            ]}
+          >
+            <div>element 1</div>
+          </ArcherElement>
+          <ArcherElement id="oops">
+            <div>element 2</div>
+          </ArcherElement>
+        </ArcherContainer>,
+      );
+
+      expect(screen.baseElement).toMatchSnapshot();
+      expect(console.warn).not.toHaveBeenCalledWith(
+        expect.stringMatching('Could not find target element'),
+      );
+    });
   });
 
   describe('Event Listeners', () => {

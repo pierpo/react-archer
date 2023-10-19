@@ -62,6 +62,11 @@ export type ArcherContainerProps = {
    */
   noCurves?: boolean;
 
+  /**
+   * Set this to true if you want to ignore warnings when a target or source is not found
+   */
+  ignoreNotFoundWarnings?: boolean;
+
   children?: React.ReactNode | FunctionChild;
 };
 
