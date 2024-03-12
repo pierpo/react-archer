@@ -14,7 +14,7 @@ exports[`Archer Integration Uses a functional child API to work with third party
         >
           <defs>
             <marker
-              id="arrow00001rootelement2"
+              id="arrow00001rootelement2-end"
               markerHeight="6"
               markerUnits="strokeWidth"
               markerWidth="10"
@@ -28,7 +28,7 @@ exports[`Archer Integration Uses a functional child API to work with third party
               />
             </marker>
             <marker
-              id="arrow00001element2element3"
+              id="arrow00001element2element3-end"
               markerHeight="12"
               markerUnits="strokeWidth"
               markerWidth="12"
@@ -46,7 +46,7 @@ exports[`Archer Integration Uses a functional child API to work with third party
               />
             </marker>
             <marker
-              id="arrow00001element4root"
+              id="arrow00001element4root-end"
               markerHeight="8"
               markerUnits="strokeWidth"
               markerWidth="8"
@@ -67,14 +67,14 @@ exports[`Archer Integration Uses a functional child API to work with third party
           <g>
             <path
               d="M0,0 C0,-10 0,-10 0,-20"
-              marker-end="url(#arrow00001rootelement2)"
+              marker-end="url(#arrow00001rootelement2-end)"
               style="fill: none; stroke: red; stroke-width: 2; stroke-dasharray: 5,5;"
             />
           </g>
           <g>
             <path
               d="M0,0 C-1.5,0 -1.5,0 -3,0"
-              marker-end="url(#arrow00001element2element3)"
+              marker-end="url(#arrow00001element2element3-end)"
               style="fill: none; stroke: blue; stroke-width: 1;"
             />
             <foreignobject
@@ -100,7 +100,7 @@ exports[`Archer Integration Uses a functional child API to work with third party
           <g>
             <path
               d="M0,0 C2,0 2,0 4,0"
-              marker-end="url(#arrow00001element4root)"
+              marker-end="url(#arrow00001element4root-end)"
               style="fill: none; stroke: red; stroke-width: 2;"
             />
             <foreignobject

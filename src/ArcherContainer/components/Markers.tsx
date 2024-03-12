@@ -1,29 +1,34 @@
 import React from 'react';
-import { LineType, ShapeType, SourceToTargetType } from '../../types';
-import { endShapeDefaultProp } from '../ArcherContainer.constants';
-import { getEndShapeFromStyle, getSourceToTargets, getMarkerId } from '../ArcherContainer.helpers';
+import { EntityRelationType, LineType, ShapeType, SourceToTargetType } from '../../types';
+import { shapeDefaultProp } from '../ArcherContainer.constants';
+import {
+  getMarkerId,
+  getShapeFromStyle,
+  getShapeStyleFromShape,
+  getSourceToTargets,
+} from '../ArcherContainer.helpers';
 import { SourceToTargetsArrayType } from '../ArcherContainer.types';
 
-const circleMarker = (style: LineType, endShape: ShapeType) => () => {
+const circleMarker = (style: LineType, isStartShape: boolean, shape: ShapeType) => () => {
   // TODO idea to merge params: we could use a deep merge function that keeps the first non-undefined values obtained
 
+  const shapeStyle = getShapeStyleFromShape(style, isStartShape);
+
   const radius =
-    style.endShape?.circle?.radius || endShape.circle?.radius || endShapeDefaultProp.circle.radius;
+    shapeStyle?.circle?.radius || shape.circle?.radius || shapeDefaultProp.circle.radius;
 
   const strokeWidth =
-    style.endShape?.circle?.strokeWidth ||
-    endShape.circle?.strokeWidth ||
-    endShapeDefaultProp.circle.strokeWidth;
+    shapeStyle?.circle?.strokeWidth ||
+    shape.circle?.strokeWidth ||
+    shapeDefaultProp.circle.strokeWidth;
 
   const strokeColor =
-    style.endShape?.circle?.strokeColor ||
-    endShape.circle?.strokeColor ||
-    endShapeDefaultProp.circle.strokeColor;
+    shapeStyle?.circle?.strokeColor ||
+    shape.circle?.strokeColor ||
+    shapeDefaultProp.circle.strokeColor;
 
   const fillColor =
-    style.endShape?.circle?.fillColor ||
-    endShape.circle?.fillColor ||
-    endShapeDefaultProp.circle.fillColor;
+    shapeStyle?.circle?.fillColor || shape.circle?.fillColor || shapeDefaultProp.circle.fillColor;
 
   return {
     markerWidth: radius * 4,
@@ -43,35 +48,39 @@ const circleMarker = (style: LineType, endShape: ShapeType) => () => {
   };
 };
 
-const arrowMarker = (style: LineType, endShape: ShapeType, strokeColor: string) => () => {
-  const newStrokeColor = style.strokeColor || strokeColor;
-  const newArrowLength =
-    style.endShape?.arrow?.arrowLength ??
-    endShape?.arrow?.arrowLength ??
-    endShapeDefaultProp.arrow.arrowLength;
-  const newArrowThickness =
-    style.endShape?.arrow?.arrowThickness ||
-    endShape?.arrow?.arrowThickness ||
-    endShapeDefaultProp.arrow.arrowThickness;
-  const arrowPath = `M0,0 L0,${newArrowThickness} L${newArrowLength},${newArrowThickness / 2} z`;
+const arrowMarker =
+  (style: LineType, isStartShape: boolean, shape: ShapeType, strokeColor: string) => () => {
+    const shapeStyle = getShapeStyleFromShape(style, isStartShape);
+    const newStrokeColor = style.strokeColor || strokeColor;
+    const newArrowLength =
+      shapeStyle?.arrow?.arrowLength ??
+      shape?.arrow?.arrowLength ??
+      shapeDefaultProp.arrow.arrowLength;
+    const newArrowThickness =
+      shapeStyle?.arrow?.arrowThickness ||
+      shape?.arrow?.arrowThickness ||
+      shapeDefaultProp.arrow.arrowThickness;
+    const arrowPath = `M0,0 L0,${newArrowThickness} L${newArrowLength},${newArrowThickness / 2} z`;
 
-  return {
-    markerWidth: newArrowLength,
-    markerHeight: newArrowThickness,
-    refX: 0,
-    refY: newArrowThickness / 2,
-    path: <path d={arrowPath} fill={newStrokeColor} />,
+    return {
+      markerWidth: newArrowLength,
+      markerHeight: newArrowThickness,
+      refX: 0,
+      refY: newArrowThickness / 2,
+      path: <path d={arrowPath} fill={newStrokeColor} />,
+    };
   };
-};
 
 const buildShape = ({
   style,
+  isStartShape,
   strokeColor,
-  endShape,
+  shape,
 }: {
   style: LineType;
+  isStartShape: boolean;
   strokeColor: string;
-  endShape: ShapeType;
+  shape: ShapeType;
 }): {
   markerHeight: number;
   markerWidth: number;
@@ -79,13 +88,53 @@ const buildShape = ({
   refX: number;
   refY: number;
 } => {
-  const chosenEndShape = getEndShapeFromStyle(style);
+  const chosenShape = getShapeFromStyle(style, isStartShape);
 
   const shapeMap = {
-    circle: circleMarker(style, endShape),
-    arrow: arrowMarker(style, endShape, strokeColor),
+    circle: circleMarker(style, isStartShape, shape),
+    arrow: arrowMarker(style, isStartShape, shape, strokeColor),
   };
-  return shapeMap[chosenEndShape]();
+  return shapeMap[chosenShape]();
+};
+
+const buildMarker = ({
+  style,
+  isStartShape,
+  strokeColor,
+  shape,
+  uniqueId,
+  source,
+  target,
+}: {
+  style: LineType;
+  isStartShape: boolean;
+  strokeColor: string;
+  shape: ShapeType;
+  uniqueId: string;
+  source: EntityRelationType;
+  target: EntityRelationType;
+}) => {
+  const { markerWidth, markerHeight, path, refX, refY } = buildShape({
+    style,
+    isStartShape,
+    strokeColor,
+    shape,
+  });
+
+  return (
+    <marker
+      id={getMarkerId(uniqueId, source, target, isStartShape)}
+      key={getMarkerId(uniqueId, source, target, isStartShape)}
+      markerWidth={markerWidth}
+      markerHeight={markerHeight}
+      refX={refX}
+      refY={refY}
+      orient="auto-start-reverse"
+      markerUnits="strokeWidth"
+    >
+      {path}
+    </marker>
+  );
 };
 
 /** Generates all the markers
@@ -93,12 +142,18 @@ const buildShape = ({
  * a different color or size
  * */
 export const ArrowMarkers = ({
+  enableStartMarker,
+  enableEndMarker,
   sourceToTargetsMap,
+  startShape,
   endShape,
   strokeColor,
   uniqueId,
 }: {
+  enableStartMarker: boolean;
+  enableEndMarker: boolean;
   sourceToTargetsMap: Record<string, SourceToTargetsArrayType>;
+  startShape: ShapeType;
   endShape: ShapeType;
   strokeColor: string;
   uniqueId: string;
@@ -106,28 +161,30 @@ export const ArrowMarkers = ({
   return (
     <>
       {getSourceToTargets(sourceToTargetsMap).map(
-        ({ source, target, style = {} }: SourceToTargetType) => {
-          const { markerHeight, markerWidth, path, refX, refY } = buildShape({
-            style,
-            endShape,
-            strokeColor,
-          });
-
-          return (
-            <marker
-              id={getMarkerId(uniqueId, source, target)}
-              key={getMarkerId(uniqueId, source, target)}
-              markerWidth={markerWidth}
-              markerHeight={markerHeight}
-              refX={refX}
-              refY={refY}
-              orient="auto-start-reverse"
-              markerUnits="strokeWidth"
-            >
-              {path}
-            </marker>
-          );
-        },
+        ({ source, target, style = {} }: SourceToTargetType, index: number) => (
+          <React.Fragment key={`${uniqueId}-${index}`}>
+            {enableStartMarker &&
+              buildMarker({
+                shape: startShape,
+                isStartShape: true,
+                style,
+                strokeColor,
+                uniqueId,
+                source,
+                target,
+              })}
+            {enableEndMarker &&
+              buildMarker({
+                shape: endShape,
+                isStartShape: false,
+                style,
+                strokeColor,
+                uniqueId,
+                source,
+                target,
+              })}
+          </React.Fragment>
+        ),
       )}
     </>
   );

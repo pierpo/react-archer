@@ -13,11 +13,13 @@ type Props = {
   strokeWidth: number;
   strokeDasharray?: string;
   arrowLabel?: React.ReactNode | null | undefined;
-  arrowMarkerId: string;
+  startArrowMarkerId: string;
+  endArrowMarkerId: string;
   lineStyle: ValidLineStyles;
   offset?: number;
   enableStartMarker?: boolean;
-  disableEndMarker?: boolean;
+  enableEndMarker?: boolean;
+  startShape: Record<string, any>;
   endShape: Record<string, any>;
 };
 
@@ -192,14 +194,20 @@ const SvgArrow = ({
   strokeWidth,
   strokeDasharray,
   arrowLabel,
-  arrowMarkerId,
+  startArrowMarkerId,
+  endArrowMarkerId,
   lineStyle,
   offset,
   enableStartMarker,
-  disableEndMarker,
+  enableEndMarker,
+  startShape,
   endShape,
 }: Props) => {
-  const actualArrowLength = endShape.circle
+  const actualStartArrowLength = startShape.circle
+    ? startShape.circle.radius * 2
+    : startShape.arrow.arrowLength * 2;
+
+  const actualEndArrowLength = endShape.circle
     ? endShape.circle.radius * 2
     : endShape.arrow.arrowLength * 2;
 
@@ -207,7 +215,7 @@ const SvgArrow = ({
   const { xPoint: xStart, yPoint: yStart } = computeArrowPointAccordingToArrowHead(
     startingPoint.x,
     startingPoint.y,
-    enableStartMarker ? actualArrowLength : 0,
+    enableStartMarker ? actualStartArrowLength : 0,
     strokeWidth,
     startingAnchorOrientation,
     lineStyle,
@@ -219,7 +227,7 @@ const SvgArrow = ({
   const { xPoint: xEnd, yPoint: yEnd } = computeArrowPointAccordingToArrowHead(
     endingPoint.x,
     endingPoint.y,
-    disableEndMarker ? 0 : actualArrowLength,
+    enableEndMarker ? actualEndArrowLength : 0,
     strokeWidth,
     endingAnchorOrientation,
     lineStyle,
@@ -265,7 +273,8 @@ const SvgArrow = ({
     yEnd,
   );
 
-  const markerUrl = `url(#${arrowMarkerId})`;
+  const startMarkerUrl = `url(#${startArrowMarkerId})`;
+  const endMarkerUrl = `url(#${endArrowMarkerId})`;
 
   return (
     <g className={className}>
@@ -277,8 +286,8 @@ const SvgArrow = ({
           strokeWidth,
           strokeDasharray,
         }}
-        markerStart={enableStartMarker ? markerUrl : undefined}
-        markerEnd={disableEndMarker ? undefined : markerUrl}
+        markerStart={enableStartMarker ? startMarkerUrl : undefined}
+        markerEnd={enableEndMarker ? endMarkerUrl : undefined}
       />
       {arrowLabel && (
         <foreignObject

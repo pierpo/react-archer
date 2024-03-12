@@ -1,4 +1,4 @@
-export const endShapeDefaultProp = {
+export const shapeDefaultProp = {
   arrow: {
     arrowLength: 10,
     arrowThickness: 6,

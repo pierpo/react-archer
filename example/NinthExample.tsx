@@ -27,8 +27,8 @@ const FirstExample = () => {
         strokeColor="red"
         lineStyle="straight"
         offset={0}
-        startMarker
-        endMarker={false}
+        enableStartMarker
+        enableEndMarker={false}
       >
         <div style={rootStyle}>
           <ArcherElement

@@ -15,7 +15,7 @@ const boxStyle = {
   border: '1px solid black',
 };
 
-const FirstExample = () => {
+const TenthExample = () => {
   return (
     <div
       style={{
@@ -34,6 +34,11 @@ const FirstExample = () => {
                 sourceAnchor: 'bottom',
                 style: {
                   strokeDasharray: '5,5',
+                  startShape: {
+                    circle: {
+                      radius: 3,
+                    },
+                  },
                 },
               },
             ]}
@@ -53,6 +58,7 @@ const FirstExample = () => {
                 style: {
                   strokeColor: 'blue',
                   strokeWidth: 1,
+                  enableStartMarker: false,
                 },
                 label: (
                   <div
@@ -92,4 +98,4 @@ const FirstExample = () => {
   );
 };
 
-export default FirstExample;
+export default TenthExample;
