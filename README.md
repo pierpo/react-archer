@@ -100,9 +100,10 @@ export default App;
 | `offset` | `number` | Optional number for space between element and start/end of stroke
 | `svgContainerStyle` | `Style` | Style of the SVG container element. Useful if you want to add a z-index to your SVG container to draw the arrows under your elements, for example.
 | `children` | `React.Node` |
+| `startShape` | `Object` | An object containing the props to configure the "start shape" of the arrow. Can be one of `arrow` (default) or `circle`. See [`ShapeType`](flow-typed/archer-types.js) for a complete list of available options.
 | `endShape` | `Object` | An object containing the props to configure the "end shape" of the arrow. Can be one of `arrow` (default) or `circle`. See [`ShapeType`](flow-typed/archer-types.js) for a complete list of available options.
-| `startMarker` | `boolean` | Optional flag (default `false`) to also add a marker at the start of the arrow.
-| `endMarker` | `boolean` | Optional flag (default `true`) to remove the marker at the end of the arrow.
+| `enableStartMarker` | `boolean` | Optional flag (default `false`) to also add a marker at the start of the arrow.
+| `enableEndMarker` | `boolean` | Optional flag (default `true`) to remove the marker at the end of the arrow.
 
 #### Instance methods
 
@@ -144,9 +145,10 @@ The `ArcherStyle` type has the following shape:
   strokeDasharray: number,
   noCurves: boolean,
   lineStyle: string,
+  startShape: Object,
   endShape: Object,
-  startMarker: boolean,
-  endMarker: boolean,
+  enableStartMarker: boolean,
+  enableEndMarker: boolean,
 }
 ```
 

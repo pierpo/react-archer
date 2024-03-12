@@ -1,12 +1,12 @@
+import { render } from '@testing-library/react';
 import React from 'react';
+import Vector2 from '../geometry/Vector2';
 import SvgArrow, {
   computeArrowPointAccordingToArrowHead,
-  computeStartingAnchorPosition,
   computeEndingAnchorPosition,
   computeLabelDimensions,
+  computeStartingAnchorPosition,
 } from './SvgArrow';
-import Vector2 from '../geometry/Vector2';
-import { render } from '@testing-library/react';
 
 const expectAttribute = (attributes: NamedNodeMap, key: string, expectedValue: string) => {
   expect(attributes?.getNamedItem(key)?.value).toEqual(expectedValue);
@@ -231,13 +231,20 @@ describe('SvgArrow', () => {
       endingAnchorOrientation: 'top',
       strokeColor: 'blue',
       strokeWidth: 2,
-      arrowMarkerId: 'arrow123123',
+      startArrowMarkerId: 'arrow123123-start',
+      endArrowMarkerId: 'arrow123123-end',
       lineStyle: 'curve',
       endShape: {
         arrow: {
           arrowLength: 10,
         },
       },
+      startShape: {
+        arrow: {
+          arrowLength: 10,
+        },
+      },
+      enableEndMarker: true,
     } as const;
 
     it('should render path with proper coordinates', () => {
@@ -249,7 +256,7 @@ describe('SvgArrow', () => {
       const path = getBySelector('path');
       const attributes = path?.attributes;
       expectAttribute(attributes, 'd', 'M10,10 C10,10 30,10 30,10');
-      expectAttribute(attributes, 'marker-end', 'url(#arrow123123)');
+      expectAttribute(attributes, 'marker-end', 'url(#arrow123123-end)');
       expectAttribute(attributes, 'style', 'fill: none; stroke: blue; stroke-width: 2;');
     });
 
@@ -263,7 +270,7 @@ describe('SvgArrow', () => {
       const path = getBySelector('path');
       const attributes = path?.attributes;
       expectAttribute(attributes, 'd', 'M10,10 C10,10 30,10 30,10');
-      expectAttribute(attributes, 'marker-end', 'url(#arrow123123)');
+      expectAttribute(attributes, 'marker-end', 'url(#arrow123123-end)');
       expectAttribute(attributes, 'style', 'fill: none; stroke: blue; stroke-width: 2;');
     });
 
@@ -276,7 +283,7 @@ describe('SvgArrow', () => {
       const path = getBySelector('path');
       const attributes = path?.attributes;
       expectAttribute(attributes, 'd', 'M10,10 15.85786437626905,15.857864376269049');
-      expectAttribute(attributes, 'marker-end', 'url(#arrow123123)');
+      expectAttribute(attributes, 'marker-end', 'url(#arrow123123-end)');
       expectAttribute(attributes, 'style', 'fill: none; stroke: blue; stroke-width: 2;');
     });
   });

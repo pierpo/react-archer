@@ -1,17 +1,18 @@
 import React from 'react';
+import SvgArrow from '../../SvgArrow/SvgArrow';
 import Vector2 from '../../geometry/Vector2';
 import {
   getPointCoordinatesFromAnchorPosition,
   getPointFromElement,
 } from '../../geometry/rectHelper';
-import SvgArrow from '../../SvgArrow/SvgArrow';
 import { SourceToTargetType } from '../../types';
 import { createShapeObj, getMarkerId, getSourceToTargets } from '../ArcherContainer.helpers';
 import { ArcherContainerProps, SourceToTargetsArrayType } from '../ArcherContainer.types';
 
 interface CommonProps {
-  startMarker: ArcherContainerProps['startMarker'];
-  endMarker: ArcherContainerProps['endMarker'];
+  enableStartMarker: ArcherContainerProps['enableStartMarker'];
+  enableEndMarker: ArcherContainerProps['enableEndMarker'];
+  startShape: NonNullable<ArcherContainerProps['startShape']>;
   endShape: NonNullable<ArcherContainerProps['endShape']>;
   strokeColor: NonNullable<ArcherContainerProps['strokeColor']>;
   strokeWidth: NonNullable<ArcherContainerProps['strokeWidth']>;
@@ -30,10 +31,11 @@ const AdaptedArrow = (
     },
 ) => {
   const style = props.style || {};
-  const newStartMarker = style.startMarker || props.startMarker;
-  const newEndMarker = style.endMarker ?? props.endMarker ?? true;
+  const enableStartMarker = style.enableStartMarker ?? props.enableStartMarker ?? false;
+  const enableEndMarker = style.enableEndMarker ?? props.enableEndMarker ?? true;
 
-  const newEndShape = createShapeObj(style, props.endShape);
+  const newStartShape = createShapeObj(style, props.startShape, true);
+  const newEndShape = createShapeObj(style, props.endShape, false);
 
   const newStrokeColor = style.strokeColor || props.strokeColor;
   const newStrokeWidth = style.strokeWidth || props.strokeWidth;
@@ -80,11 +82,13 @@ const AdaptedArrow = (
       strokeWidth={newStrokeWidth}
       strokeDasharray={newStrokeDasharray}
       arrowLabel={props.label}
-      arrowMarkerId={getMarkerId(props.uniqueId, props.source, props.target)}
+      startArrowMarkerId={getMarkerId(props.uniqueId, props.source, props.target, true)}
+      endArrowMarkerId={getMarkerId(props.uniqueId, props.source, props.target, false)}
       lineStyle={newLineStyle}
       offset={newOffset}
-      enableStartMarker={!!newStartMarker}
-      disableEndMarker={!newEndMarker}
+      enableStartMarker={enableStartMarker}
+      enableEndMarker={enableEndMarker}
+      startShape={newStartShape}
       endShape={newEndShape}
     />
   );
@@ -116,8 +120,9 @@ export const SvgArrows = (
           className={currentRelation.className}
           label={currentRelation.label}
           style={currentRelation.style || {}}
-          startMarker={props.startMarker}
-          endMarker={props.endMarker}
+          enableStartMarker={props.enableStartMarker}
+          enableEndMarker={props.enableEndMarker}
+          startShape={props.startShape}
           endShape={props.endShape}
           strokeColor={props.strokeColor}
           strokeWidth={props.strokeWidth}

@@ -1,16 +1,16 @@
 import React, { useCallback, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import ResizeObserver from 'resize-observer-polyfill';
 import { SourceToTargetType } from '../types';
+import { shapeDefaultProp } from './ArcherContainer.constants';
 import { ArcherContainerContext, ArcherContainerContextProvider } from './ArcherContainer.context';
-import {
-  SourceToTargetsArrayType,
-  ArcherContainerProps,
-  ArcherContainerHandle,
-} from './ArcherContainer.types';
-import { SvgArrows } from './components/SvgArrows';
-import { endShapeDefaultProp } from './ArcherContainer.constants';
-import { ArrowMarkers } from './components/Markers';
 import { useObserveElements, useResizeListener } from './ArcherContainer.hooks';
+import {
+  ArcherContainerHandle,
+  ArcherContainerProps,
+  SourceToTargetsArrayType,
+} from './ArcherContainer.types';
+import { ArrowMarkers } from './components/Markers';
+import { SvgArrows } from './components/SvgArrows';
 
 const defaultSvgContainerStyle = {
   position: 'absolute',
@@ -24,17 +24,18 @@ const defaultSvgContainerStyle = {
 const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerProps>(
   (
     {
-      endShape = endShapeDefaultProp,
+      startShape = shapeDefaultProp,
+      endShape = shapeDefaultProp,
       strokeColor = '#f00',
       strokeWidth = 2,
       svgContainerStyle = {},
+      enableStartMarker = false,
+      enableEndMarker = true,
       noCurves,
       children,
       className,
-      endMarker,
       lineStyle,
       offset,
-      startMarker,
       strokeDasharray,
       style,
     }: ArcherContainerProps,
@@ -145,6 +146,9 @@ const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerP
           <svg style={_svgContainerStyle}>
             <defs>
               <ArrowMarkers
+                enableStartMarker={enableStartMarker}
+                enableEndMarker={enableEndMarker}
+                startShape={startShape}
                 endShape={endShape}
                 sourceToTargetsMap={sourceToTargetsMap}
                 strokeColor={strokeColor}
@@ -152,8 +156,9 @@ const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerP
               />
             </defs>
             <SvgArrows
-              startMarker={startMarker}
-              endMarker={endMarker}
+              enableStartMarker={enableStartMarker}
+              enableEndMarker={enableEndMarker}
+              startShape={startShape}
               endShape={endShape}
               strokeColor={strokeColor}
               strokeWidth={strokeWidth}

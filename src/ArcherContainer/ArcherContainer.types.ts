@@ -1,4 +1,4 @@
-import { ShapeType, ValidLineStyles, SourceToTargetType } from '../types';
+import { ShapeType, SourceToTargetType, ValidLineStyles } from '../types';
 import { ArcherContainerContextType } from './ArcherContainer.context';
 
 type FunctionChild = (context: React.Context<ArcherContainerContextType | null>) => React.ReactNode;
@@ -37,19 +37,24 @@ export type ArcherContainerProps = {
   offset?: number;
 
   /**
+   * Customize the start shape of the line. Defaults to a traditional "arrow" (triangle) shape.
+   */
+  startShape?: ShapeType;
+
+  /**
    * Customize the end shape of the line. Defaults to a traditional "arrow" (triangle) shape.
    */
   endShape?: ShapeType;
 
   /**
-   * Set this to true of you want to render a marker at the start of the line
+   * Set this to true if you want to render a marker at the start of the line
    */
-  startMarker?: boolean;
+  enableStartMarker?: boolean;
 
   /**
-   * Set this to false of you do not want to render a marker at the end of the line
+   * Set this to true if you want to render a marker at the end of the line
    */
-  endMarker?: boolean;
+  enableEndMarker?: boolean;
 
   /**
    * Define how the line is drawn, grid for angles, straight for direct line and curve for curves

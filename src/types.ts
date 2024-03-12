@@ -44,13 +44,14 @@ export type ShapeType = {
 };
 
 export type LineType = {
+  startShape?: ShapeType;
   endShape?: ShapeType;
   strokeColor?: string;
   strokeWidth?: number;
   strokeDasharray?: string;
   noCurves?: boolean;
-  startMarker?: boolean;
-  endMarker?: boolean;
+  enableStartMarker?: boolean;
+  enableEndMarker?: boolean;
   lineStyle?: ValidLineStyles;
 };
 

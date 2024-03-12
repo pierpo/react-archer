@@ -11,7 +11,21 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
       >
         <defs>
           <marker
-            id="arrow00001elem-leftelem-right"
+            id="arrow00001elem-leftelem-right-start"
+            markerHeight="6"
+            markerUnits="strokeWidth"
+            markerWidth="10"
+            orient="auto-start-reverse"
+            refX="0"
+            refY="3"
+          >
+            <path
+              d="M0,0 L0,6 L10,3 z"
+              fill="#f00"
+            />
+          </marker>
+          <marker
+            id="arrow00001elem-leftelem-right-end"
             markerHeight="6"
             markerUnits="strokeWidth"
             markerWidth="10"
@@ -30,8 +44,8 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
         >
           <path
             d="M-20,0 C0,0 0,0 20,0"
-            marker-end="url(#arrow00001elem-leftelem-right)"
-            marker-start="url(#arrow00001elem-leftelem-right)"
+            marker-end="url(#arrow00001elem-leftelem-right-end)"
+            marker-start="url(#arrow00001elem-leftelem-right-start)"
             style="fill: none; stroke: #f00; stroke-width: 2;"
           />
         </g>
@@ -62,7 +76,7 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
       >
         <defs>
           <marker
-            id="arrow00001elem-leftoh_20no"
+            id="arrow00001elem-leftoh_20no-start"
             markerHeight="6"
             markerUnits="strokeWidth"
             markerWidth="10"
@@ -103,7 +117,7 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
       >
         <defs>
           <marker
-            id="arrow00001elem-leftelem-right"
+            id="arrow00001elem-leftelem-right-end"
             markerHeight="6"
             markerUnits="strokeWidth"
             markerWidth="10"
@@ -120,7 +134,7 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
         <g>
           <path
             d="M0,0 C10,0 10,0 20,0"
-            marker-end="url(#arrow00001elem-leftelem-right)"
+            marker-end="url(#arrow00001elem-leftelem-right-end)"
             style="fill: none; stroke: #f00; stroke-width: 2;"
           />
         </g>
@@ -151,7 +165,21 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
       >
         <defs>
           <marker
-            id="arrow00001elem-leftelem-right"
+            id="arrow00001elem-leftelem-right-start"
+            markerHeight="6"
+            markerUnits="strokeWidth"
+            markerWidth="10"
+            orient="auto-start-reverse"
+            refX="0"
+            refY="3"
+          >
+            <path
+              d="M0,0 L0,6 L10,3 z"
+              fill="#f00"
+            />
+          </marker>
+          <marker
+            id="arrow00001elem-leftelem-right-end"
             markerHeight="6"
             markerUnits="strokeWidth"
             markerWidth="10"
@@ -168,8 +196,8 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
         <g>
           <path
             d="M-20,0 C0,0 0,0 20,0"
-            marker-end="url(#arrow00001elem-leftelem-right)"
-            marker-start="url(#arrow00001elem-leftelem-right)"
+            marker-end="url(#arrow00001elem-leftelem-right-end)"
+            marker-start="url(#arrow00001elem-leftelem-right-start)"
             style="fill: none; stroke: #f00; stroke-width: 2;"
           />
         </g>
@@ -200,7 +228,7 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
       >
         <defs>
           <marker
-            id="arrow00001elem-leftelem-right"
+            id="arrow00001elem-leftelem-right-start"
             markerHeight="6"
             markerUnits="strokeWidth"
             markerWidth="10"
@@ -217,7 +245,7 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
         <g>
           <path
             d="M-20,0 C-10,0 -10,0 0,0"
-            marker-start="url(#arrow00001elem-leftelem-right)"
+            marker-start="url(#arrow00001elem-leftelem-right-start)"
             style="fill: none; stroke: #f00; stroke-width: 2;"
           />
         </g>
@@ -248,7 +276,7 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
       >
         <defs>
           <marker
-            id="arrow00001elem-leftelem-right"
+            id="arrow00001elem-leftelem-right-end"
             markerHeight="44"
             markerUnits="strokeWidth"
             markerWidth="44"
@@ -269,7 +297,7 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
         <g>
           <path
             d="M0,0 C11,0 11,0 22,0"
-            marker-end="url(#arrow00001elem-leftelem-right)"
+            marker-end="url(#arrow00001elem-leftelem-right-end)"
             style="fill: none; stroke: #f00; stroke-width: 2;"
           />
         </g>
@@ -300,7 +328,7 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
       >
         <defs>
           <marker
-            id="arrow00001elem-rightelem-left"
+            id="arrow00001elem-rightelem-left-end"
             markerHeight="6"
             markerUnits="strokeWidth"
             markerWidth="10"
@@ -317,7 +345,7 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
         <g>
           <path
             d="M0,0 C-10,0 -10,0 -20,0"
-            marker-end="url(#arrow00001elem-rightelem-left)"
+            marker-end="url(#arrow00001elem-rightelem-left-end)"
             style="fill: none; stroke: #f00; stroke-width: 2;"
           />
         </g>
@@ -348,7 +376,7 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
       >
         <defs>
           <marker
-            id="arrow00001elem-leftelem-right"
+            id="arrow00001elem-leftelem-right-start"
             markerHeight="6"
             markerUnits="strokeWidth"
             markerWidth="10"
@@ -365,7 +393,7 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
         <g>
           <path
             d="M-20,0 C-10,0 -10,0 0,0"
-            marker-start="url(#arrow00001elem-leftelem-right)"
+            marker-start="url(#arrow00001elem-leftelem-right-start)"
             style="fill: none; stroke: #f00; stroke-width: 2;"
           />
           <foreignobject
@@ -385,6 +413,73 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
               </div>
             </div>
           </foreignobject>
+        </g>
+      </svg>
+      <div
+        style="height: 100%;"
+      >
+        <div>
+          element 1
+        </div>
+        <div>
+          element 2
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`ArcherContainer rendering an svg with the marker element used to draw an svg arrow should render the arrow at start with a circle end when provided and at end with a triangle when not provided 1`] = `
+<body>
+  <div>
+    <div
+      style="position: relative;"
+    >
+      <svg
+        style="position: absolute; width: 100%; height: 100%; top: 0px; left: 0px; pointer-events: none;"
+      >
+        <defs>
+          <marker
+            id="arrow00001elem-leftelem-right-start"
+            markerHeight="44"
+            markerUnits="strokeWidth"
+            markerWidth="44"
+            orient="auto-start-reverse"
+            refX="24"
+            refY="22"
+          >
+            <circle
+              cx="22"
+              cy="22"
+              fill="#c0ffee"
+              r="11"
+              stroke="tomato"
+              stroke-width="2"
+            />
+          </marker>
+          <marker
+            id="arrow00001elem-leftelem-right-end"
+            markerHeight="6"
+            markerUnits="strokeWidth"
+            markerWidth="10"
+            orient="auto-start-reverse"
+            refX="0"
+            refY="3"
+          >
+            <path
+              d="M0,0 L0,6 L10,3 z"
+              fill="#f00"
+            />
+          </marker>
+        </defs>
+        <g>
+          <path
+            d="M-22,0 C-1,0 -1,0 20,0"
+            marker-end="url(#arrow00001elem-leftelem-right-end)"
+            marker-start="url(#arrow00001elem-leftelem-right-start)"
+            style="fill: none; stroke: #f00; stroke-width: 2;"
+          />
         </g>
       </svg>
       <div
