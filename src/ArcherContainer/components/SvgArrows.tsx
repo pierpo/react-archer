@@ -1,4 +1,5 @@
 import React from 'react';
+import { Property } from 'csstype';
 import Vector2 from '../../geometry/Vector2';
 import {
   getPointCoordinatesFromAnchorPosition,
@@ -21,6 +22,8 @@ interface CommonProps {
   offset: ArcherContainerProps['offset'];
   uniqueId: string;
   refs: Record<string, HTMLElement>;
+  hitSlop?: number;
+  cursor?: Property.Cursor;
 }
 
 const AdaptedArrow = (
@@ -35,6 +38,9 @@ const AdaptedArrow = (
 
   const newEndShape = createShapeObj(style, props.endShape);
 
+  const domAttributes = props.domAttributes;
+  const cursor = props.cursor;
+  const hitSlop = props.hitSlop;
   const newStrokeColor = style.strokeColor || props.strokeColor;
   const newStrokeWidth = style.strokeWidth || props.strokeWidth;
   const newStrokeDasharray = style.strokeDasharray || props.strokeDasharray;
@@ -86,6 +92,9 @@ const AdaptedArrow = (
       enableStartMarker={!!newStartMarker}
       disableEndMarker={!newEndMarker}
       endShape={newEndShape}
+      domAttributes={domAttributes}
+      hitSlop={hitSlop}
+      cursor={cursor}
     />
   );
 };
@@ -116,6 +125,9 @@ export const SvgArrows = (
           className={currentRelation.className}
           label={currentRelation.label}
           style={currentRelation.style || {}}
+          domAttributes={currentRelation.domAttributes}
+          hitSlop={currentRelation.hitSlop}
+          cursor={currentRelation.cursor}
           startMarker={props.startMarker}
           endMarker={props.endMarker}
           endShape={props.endShape}

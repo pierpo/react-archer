@@ -1,3 +1,6 @@
+import { DOMAttributes } from 'react';
+import { Property } from 'csstype';
+
 export type ValidLineStyles = 'angle' | 'straight' | 'curve';
 
 export type AnchorPositionType = 'top' | 'bottom' | 'left' | 'right' | 'middle';
@@ -10,6 +13,11 @@ export type RelationType = {
   label?: React.ReactNode | null | undefined;
   className?: string;
   style?: LineType;
+  domAttributes?: DOMAttributes<SVGElement>;
+  /** Allows to make the mouse selectable arrow thicker */
+  hitSlop?: number;
+  /** Allows to customize the hovering cursor for a selectable arrow */
+  cursor?: Property.Cursor;
 };
 
 export type EntityRelationType = {
@@ -24,6 +32,9 @@ export type SourceToTargetType = {
   order: number;
   label?: React.ReactNode | null | undefined;
   style?: LineType;
+  domAttributes?: DOMAttributes<SVGElement>;
+  hitSlop?: number;
+  cursor?: Property.Cursor;
 };
 
 export type ArrowShapeType = {
