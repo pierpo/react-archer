@@ -62,6 +62,11 @@ export type ArcherContainerProps = {
    */
   noCurves?: boolean;
 
+  /**
+   * Set this to true if you want to draw the SVG arrows above your elements
+   */
+  isSvgOnTop?: boolean;
+
   children?: React.ReactNode | FunctionChild;
 };
 
