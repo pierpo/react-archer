@@ -20,6 +20,7 @@ interface CommonProps {
   noCurves: ArcherContainerProps['noCurves'];
   lineStyle: ArcherContainerProps['lineStyle'];
   offset: ArcherContainerProps['offset'];
+  ignoreNotFoundWarnings: ArcherContainerProps['ignoreNotFoundWarnings'];
   uniqueId: string;
   refs: Record<string, HTMLElement>;
   hitSlop?: number;
@@ -66,12 +67,18 @@ const AdaptedArrow = (
   );
 
   if (!startingPoint) {
-    console.warn('[React Archer] Could not find starting point of element! Not drawing the arrow.');
+    if (!props.ignoreNotFoundWarnings) {
+      console.warn(
+        '[React Archer] Could not find starting point of element! Not drawing the arrow.',
+      );
+    }
     return null;
   }
 
   if (!endingPoint) {
-    console.warn('[React Archer] Could not find target element! Not drawing the arrow.');
+    if (!props.ignoreNotFoundWarnings) {
+      console.warn('[React Archer] Could not find target element! Not drawing the arrow.');
+    }
     return null;
   }
 
@@ -137,6 +144,7 @@ export const SvgArrows = (
           noCurves={props.noCurves}
           lineStyle={props.lineStyle}
           offset={props.offset}
+          ignoreNotFoundWarnings={props.ignoreNotFoundWarnings}
           parentCoordinates={parentCoordinates}
           refs={props.refs}
           uniqueId={props.uniqueId}

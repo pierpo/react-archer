@@ -103,6 +103,7 @@ export default App;
 | `endShape` | `Object` | An object containing the props to configure the "end shape" of the arrow. Can be one of `arrow` (default) or `circle`. See [`ShapeType`](flow-typed/archer-types.js) for a complete list of available options.
 | `startMarker` | `boolean` | Optional flag (default `false`) to also add a marker at the start of the arrow.
 | `endMarker` | `boolean` | Optional flag (default `true`) to remove the marker at the end of the arrow.
+| `ignoreNotFoundWarnings` | `boolean` | Set this to true if you want to ignore warnings when a target or source is not found
 
 #### Instance methods
 
