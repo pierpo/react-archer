@@ -289,6 +289,59 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
 </body>
 `;
 
+
+exports[`ArcherContainer rendering an svg with the marker element used to draw an svg arrow should render the arrow with a circle end when provided in the container 1`] = `
+<body>
+  <div>
+    <div
+      style="position: relative;"
+    >
+      <svg
+        style="position: absolute; width: 100%; height: 100%; top: 0px; left: 0px; pointer-events: none;"
+      >
+        <defs>
+          <marker
+            id="arrow00001elem-leftelem-right"
+            markerHeight="44"
+            markerUnits="strokeWidth"
+            markerWidth="44"
+            orient="auto-start-reverse"
+            refX="24"
+            refY="22"
+          >
+            <circle
+              cx="22"
+              cy="22"
+              fill="#c0ffee"
+              r="11"
+              stroke="tomato"
+              stroke-width="2"
+            />
+          </marker>
+        </defs>
+        <g>
+          <path
+            d="M0,0 C11,0 11,0 22,0"
+            marker-end="url(#arrow00001elem-leftelem-right)"
+            style="fill: none; stroke: #f00; stroke-width: 2;"
+          />
+        </g>
+      </svg>
+      <div
+        style="height: 100%;"
+      >
+        <div>
+          element 1
+        </div>
+        <div>
+          element 2
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
 exports[`ArcherContainer rendering an svg with the marker element used to draw an svg arrow should render the arrow with an arrow end by default 1`] = `
 <body>
   <div>

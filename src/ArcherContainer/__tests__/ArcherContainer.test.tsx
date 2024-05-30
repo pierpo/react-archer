@@ -1,8 +1,8 @@
-import React from 'react';
 import { render } from '@testing-library/react';
-import ArcherContainer from '../ArcherContainer';
-import ArcherElement from '../../ArcherElement/ArcherElement';
+import React from 'react';
 import { act } from 'react-dom/test-utils';
+import ArcherElement from '../../ArcherElement/ArcherElement';
+import ArcherContainer from '../ArcherContainer';
 
 const originalConsoleWarn = console.warn;
 
@@ -76,6 +76,33 @@ describe('ArcherContainer', () => {
                     },
                   },
                 },
+              },
+            ]}
+          >
+            <div>element 1</div>
+          </ArcherElement>
+          <ArcherElement id="elem-right">
+            <div>element 2</div>
+          </ArcherElement>
+        </ArcherContainer>,
+      );
+      expect(screen.baseElement).toMatchSnapshot();
+    });
+
+    it('should render the arrow with a circle end when provided in the container', () => {
+      const screen = render(
+        <ArcherContainer
+          endShape={{
+            circle: { radius: 11, strokeWidth: 2, strokeColor: 'tomato', fillColor: '#c0ffee' },
+          }}
+        >
+          <ArcherElement
+            id="elem-left"
+            relations={[
+              {
+                sourceAnchor: 'left',
+                targetAnchor: 'right',
+                targetId: 'elem-right',
               },
             ]}
           >

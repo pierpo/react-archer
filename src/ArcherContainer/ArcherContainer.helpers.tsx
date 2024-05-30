@@ -1,24 +1,32 @@
 import {
-  ValidShapeTypes,
-  LineType,
-  SourceToTargetType,
-  ShapeType,
   EntityRelationType,
+  LineType,
+  ShapeType,
+  SourceToTargetType,
+  ValidShapeTypes,
 } from '../types';
 import { SourceToTargetsArrayType } from './ArcherContainer.types';
 
 const possibleShapes: Array<ValidShapeTypes> = ['arrow', 'circle'];
 
-export const getEndShapeFromStyle = (shapeObj: LineType) => {
-  if (!shapeObj.endShape) {
-    return possibleShapes[0];
+export const getEndShapeFromStyle = (shapeObj: LineType, shape: ShapeType) => {
+  if (shapeObj.endShape) {
+    const validShape = (Object.keys(shapeObj.endShape) as ValidShapeTypes[]).find((key) => {
+      return possibleShapes.includes(key);
+    });
+
+    if (validShape) {
+      return validShape;
+    }
   }
 
-  return (
-    (Object.keys(shapeObj.endShape) as ValidShapeTypes[]).filter((key) =>
-      possibleShapes.includes(key),
-    )[0] || possibleShapes[0]
-  );
+  if (shape.arrow) {
+    return 'arrow';
+  } else if (shape.circle) {
+    return 'circle';
+  }
+
+  return possibleShapes[0];
 };
 
 export const getSourceToTargets = (
@@ -35,7 +43,7 @@ export const getSourceToTargets = (
 };
 
 export const createShapeObj = (style: LineType, endShape: ShapeType) => {
-  const chosenEndShape = getEndShapeFromStyle(style);
+  const chosenEndShape = getEndShapeFromStyle(style, endShape);
   const shapeObjMap = {
     arrow: () => ({
       arrow: {
