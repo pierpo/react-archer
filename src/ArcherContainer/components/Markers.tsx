@@ -1,7 +1,7 @@
 import React from 'react';
 import { LineType, ShapeType, SourceToTargetType } from '../../types';
 import { endShapeDefaultProp } from '../ArcherContainer.constants';
-import { getEndShapeFromStyle, getSourceToTargets, getMarkerId } from '../ArcherContainer.helpers';
+import { getEndShapeFromStyle, getMarkerId, getSourceToTargets } from '../ArcherContainer.helpers';
 import { SourceToTargetsArrayType } from '../ArcherContainer.types';
 
 const circleMarker = (style: LineType, endShape: ShapeType) => () => {
@@ -79,7 +79,7 @@ const buildShape = ({
   refX: number;
   refY: number;
 } => {
-  const chosenEndShape = getEndShapeFromStyle(style);
+  const chosenEndShape = getEndShapeFromStyle(style, endShape);
 
   const shapeMap = {
     circle: circleMarker(style, endShape),
