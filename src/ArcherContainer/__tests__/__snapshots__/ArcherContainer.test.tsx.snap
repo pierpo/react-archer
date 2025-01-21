@@ -92,6 +92,47 @@ exports[`ArcherContainer rendering an svg with the marker element used to draw a
 </body>
 `;
 
+exports[`ArcherContainer rendering an svg with the marker element used to draw an svg arrow should render no arrow if id is not found and not raise a console.warn 1`] = `
+<body>
+  <div>
+    <div
+      style="position: relative;"
+    >
+      <svg
+        style="position: absolute; width: 100%; height: 100%; top: 0px; left: 0px; pointer-events: none;"
+      >
+        <defs>
+          <marker
+            id="arrow00001elem-leftoh_20no"
+            markerHeight="6"
+            markerUnits="strokeWidth"
+            markerWidth="10"
+            orient="auto-start-reverse"
+            refX="0"
+            refY="3"
+          >
+            <path
+              d="M0,0 L0,6 L10,3 z"
+              fill="#f00"
+            />
+          </marker>
+        </defs>
+      </svg>
+      <div
+        style="height: 100%;"
+      >
+        <div>
+          element 1
+        </div>
+        <div>
+          element 2
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
 exports[`ArcherContainer rendering an svg with the marker element used to draw an svg arrow should render simple elements 1`] = `
 <body>
   <div>
