@@ -106,6 +106,7 @@ export default App;
 | `endShape` | `Object` | An object containing the props to configure the "end shape" of the arrow. Can be one of `arrow` (default) or `circle`. See [`ShapeType`](flow-typed/archer-types.js) for a complete list of available options.
 | `startMarker` | `boolean` | Optional flag (default `false`) to also add a marker at the start of the arrow.
 | `endMarker` | `boolean` | Optional flag (default `true`) to remove the marker at the end of the arrow.
+| `isSvgOnTop` | `boolean` | Optional flag (default `false`) to make the svg container drawn on top.
 
 #### Instance methods
 
