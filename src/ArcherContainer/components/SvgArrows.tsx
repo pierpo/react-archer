@@ -1,5 +1,6 @@
 import React from 'react';
 import { Property } from 'csstype';
+import useUpdatableState from 'use-updatable-state';
 import Vector2 from '../../geometry/Vector2';
 import {
   getPointCoordinatesFromAnchorPosition,
@@ -26,12 +27,12 @@ interface CommonProps {
   cursor?: Property.Cursor;
 }
 
-const AdaptedArrow = (
+const AdaptedArrow = React.memo(function AdaptedArrow(
   props: Omit<SourceToTargetType, 'order'> &
     CommonProps & {
       parentCoordinates: Vector2;
     },
-) => {
+) {
   const style = props.style || {};
   const newStartMarker = style.startMarker || props.startMarker;
   const newEndMarker = style.endMarker ?? props.endMarker ?? true;
@@ -97,7 +98,7 @@ const AdaptedArrow = (
       cursor={cursor}
     />
   );
-};
+});
 
 export const SvgArrows = (
   props: {
@@ -105,7 +106,10 @@ export const SvgArrows = (
     sourceToTargetsMap: Record<string, SourceToTargetsArrayType>;
   } & CommonProps,
 ) => {
-  const parentCoordinates = getPointFromElement(props.parentCurrent);
+  const [parentCoordinates] = useUpdatableState(
+    getPointFromElement(props.parentCurrent),
+    (a, b) => a?.x === b?.x && a?.y === b?.y,
+  );
 
   if (!parentCoordinates) {
     // This happens when parent ref is not ready yet
