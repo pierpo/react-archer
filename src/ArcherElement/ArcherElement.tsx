@@ -18,7 +18,7 @@ type ArcherElementProps = {
 const ArcherElement = ({ id, relations = [], children }: ArcherElementProps) => {
   const encodedId = useMemo(() => encodeId(id), [id]);
   const context = useContext(ArcherContainerContext);
-  const ref = useRef<HTMLElement>();
+  const ref = useRef<HTMLElement | undefined>(undefined);
 
   const registerTransitions = useCallback(
     (newRelations: Array<RelationType>) => {

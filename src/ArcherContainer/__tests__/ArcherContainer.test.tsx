@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { act } from 'react';
 import { render } from '@testing-library/react';
 import ArcherContainer from '../ArcherContainer';
 import ArcherElement from '../../ArcherElement/ArcherElement';
-import { act } from 'react-dom/test-utils';
 
 const originalConsoleWarn = console.warn;
 

@@ -3,7 +3,7 @@ import isEqual from 'react-fast-compare';
 
 // https://stackoverflow.com/questions/54095994/react-useeffect-comparing-objects
 function useDeepCompareMemoize<T>(value: T): T | undefined {
-  const ref = useRef<T>();
+  const ref = useRef<T | undefined>(undefined);
   // it can be done by using useMemo as well
   // but useRef is rather cleaner and easier
 
