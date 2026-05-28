@@ -3,7 +3,6 @@ import tseslint from 'typescript-eslint';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import unusedImports from 'eslint-plugin-unused-imports';
-import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import cypress from 'eslint-plugin-cypress/flat';
 import globals from 'globals';
 
@@ -67,5 +66,4 @@ export default tseslint.config(
       '@typescript-eslint/no-require-imports': 'off',
     },
   },
-  prettierRecommended,
 );

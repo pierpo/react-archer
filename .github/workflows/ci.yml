@@ -25,6 +25,9 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
+      - name: Format check
+        run: yarn test:format
+
       - name: Lint
         run: yarn test:lint
 

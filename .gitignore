@@ -17,3 +17,8 @@ __diff_output__
 # IDE
 .idea
 .eslintcache
+
+# Cypress run artifacts (baselines under cypress/snapshots are committed)
+cypress/downloads
+cypress/screenshots
+cypress/videos
