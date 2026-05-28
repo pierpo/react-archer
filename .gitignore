@@ -5,6 +5,15 @@ coverage
 example-dist
 __diff_output__
 
+# Yarn (Corepack-managed, node-modules linker)
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
 # IDE
 .idea
 .eslintcache

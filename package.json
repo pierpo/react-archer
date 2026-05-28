@@ -26,6 +26,7 @@
   "bugs": {
     "url": "https://github.com/pierpo/react-archer/issues"
   },
+  "packageManager": "yarn@4.15.0",
   "dependencies": {
     "react-fast-compare": "^3.2.2",
     "resize-observer-polyfill": "^1.5.1"
