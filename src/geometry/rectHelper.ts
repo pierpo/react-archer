@@ -50,12 +50,9 @@ export const getPointFromElement = (element: HTMLDivElement | null | undefined):
 
 export const getPointCoordinatesFromAnchorPosition = (
   position: AnchorPositionType,
-  index: string,
   parentCoordinates: Vector2,
-  refs: Record<string, HTMLElement>,
+  rect: DOMRect | null | undefined,
 ): Vector2 | null => {
-  const rect = getRectFromElement(refs[index]);
-
   if (!rect) {
     return null;
   }
