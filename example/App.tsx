@@ -53,26 +53,29 @@ const App = () => {
   const [exampleId, setExampleId] = React.useState(1);
   const Example = getExample(exampleFromUrl || exampleId);
   return (
-    <div>
+    <div className="app">
       {!exampleFromUrl && (
-        <div>
-          <h2>Example {exampleId}</h2>
-          <p>Choose an example:</p>
-          {[...Array(10).keys()].map((value) => (
-            <button
-              key={value}
-              onClick={() => setExampleId(value + 1)}
-              style={{
-                marginRight: 8,
-              }}
-            >
-              {`Example ${value + 1}`}
-            </button>
-          ))}
-        </div>
+        <>
+          <header className="app__header">
+            <h1 className="app__title">react-archer</h1>
+            <p className="app__subtitle">Draw arrows between DOM elements in React</p>
+          </header>
+          <nav className="picker">
+            {[...Array(10).keys()].map((value) => (
+              <button
+                key={value}
+                onClick={() => setExampleId(value + 1)}
+                className={`btn${exampleId === value + 1 ? ' btn--active' : ''}`}
+              >
+                {`Example ${value + 1}`}
+              </button>
+            ))}
+          </nav>
+        </>
       )}
-      <hr />
-      <Example />
+      <div className="panel">
+        <Example />
+      </div>
     </div>
   );
 };

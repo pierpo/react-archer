@@ -1,12 +1,24 @@
-bundle.js
 node_modules
 dist
 lib
-index.html
 coverage
 example-dist
 __diff_output__
 
+# Yarn (Corepack-managed, node-modules linker)
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
 # IDE
 .idea
 .eslintcache
+
+# Cypress run artifacts (baselines under cypress/snapshots are committed)
+cypress/downloads
+cypress/screenshots
+cypress/videos

@@ -1,8 +1,7 @@
-import React from 'react';
+import { act } from 'react';
 import { render } from '@testing-library/react';
 import ArcherContainer from '../ArcherContainer';
 import ArcherElement from '../../ArcherElement/ArcherElement';
-import { act } from 'react-dom/test-utils';
 
 const originalConsoleWarn = console.warn;
 
@@ -184,7 +183,7 @@ describe('ArcherContainer', () => {
     });
 
     it('should render no arrow if id is not found', () => {
-      console.warn = jest.fn();
+      console.warn = vi.fn();
 
       const screen = render(
         <ArcherContainer startMarker endMarker={false}>
@@ -249,7 +248,7 @@ describe('ArcherContainer', () => {
 
       // Sadly all arrows return the same value for getBoundingClientRect
       // let's change the implementation, trigger a resize, then see that the values did change
-      element2.getBoundingClientRect = jest.fn().mockReturnValue({
+      element2.getBoundingClientRect = vi.fn().mockReturnValue({
         width: 20,
         height: 20,
         top: 0,

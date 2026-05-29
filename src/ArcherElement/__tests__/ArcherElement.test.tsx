@@ -1,14 +1,15 @@
 import * as React from 'react';
+import { vi, type Mock } from 'vitest';
 import ArcherElement from '../ArcherElement';
 import { RelationType } from '../../types';
 import { fireEvent, render } from '@testing-library/react';
 import { ArcherContainerContextProvider } from '../../ArcherContainer/ArcherContainer.context';
 
 describe('ArcherElement', () => {
-  let registerChildMock: jest.Mock<any, any>;
-  let unregisterChildMock: jest.Mock<any, any>;
-  let registerTransitionsMock: jest.Mock<any, any>;
-  let unregisterTransitionsMock: jest.Mock<any, any>;
+  let registerChildMock: Mock;
+  let unregisterChildMock: Mock;
+  let registerTransitionsMock: Mock;
+  let unregisterTransitionsMock: Mock;
 
   const children = <div>hi</div>;
   const defaultProps = {
@@ -87,10 +88,10 @@ describe('ArcherElement', () => {
   };
 
   beforeEach(() => {
-    registerChildMock = jest.fn();
-    unregisterChildMock = jest.fn();
-    registerTransitionsMock = jest.fn();
-    unregisterTransitionsMock = jest.fn();
+    registerChildMock = vi.fn();
+    unregisterChildMock = vi.fn();
+    registerTransitionsMock = vi.fn();
+    unregisterTransitionsMock = vi.fn();
   });
 
   it('should register and unregister child on mounting ref callback', () => {

@@ -254,7 +254,7 @@ describe('SvgArrow', () => {
     });
 
     // This test is not relevant, "angle" has no effect... probably because of some jsdom mocks
-    xit('should render path with no curves coordinates', () => {
+    it.skip('should render path with no curves coordinates', () => {
       render(
         <svg>
           <SvgArrow {...props} lineStyle="angle" />

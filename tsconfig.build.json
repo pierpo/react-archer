@@ -1,8 +1,8 @@
 {
-  "compilerOptions": {
-    "skipLibCheck": true
-  },
   "extends": "./tsconfig.json",
-  "include": ["src/"],
-  "exclude": ["**/*.test.*"]
+  "compilerOptions": {
+    "types": ["node"]
+  },
+  "include": ["src"],
+  "exclude": ["**/*.test.*", "src/**/__tests__/**"]
 }

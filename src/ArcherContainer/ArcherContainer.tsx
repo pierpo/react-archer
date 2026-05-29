@@ -1,5 +1,4 @@
 import React, { useCallback, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import ResizeObserver from 'resize-observer-polyfill';
 import { SourceToTargetType } from '../types';
 import { ArcherContainerContext, ArcherContainerContextProvider } from './ArcherContainer.context';
 import {
@@ -10,7 +9,11 @@ import {
 import { SvgArrows } from './components/SvgArrows';
 import { endShapeDefaultProp } from './ArcherContainer.constants';
 import { ArrowMarkers } from './components/Markers';
-import { useObserveElements, useResizeListener } from './ArcherContainer.hooks';
+import {
+  useArcherMeasurements,
+  useObserveElements,
+  useResizeListener,
+} from './ArcherContainer.hooks';
 
 const defaultSvgContainerStyle = {
   position: 'absolute',
@@ -44,17 +47,14 @@ const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerP
     const [sourceToTargetsMap, setSourceToTargetsMap] = useState<
       Record<string, SourceToTargetsArrayType>
     >({});
-    const observer = useRef<ResizeObserver>(
-      new ResizeObserver(() => {
-        refreshScreen();
-      }),
-    ).current;
 
     const parent = useRef<HTMLDivElement>(null);
 
-    const [, updateState] = React.useState<{}>();
-
     const uniqueId = useRef<string>(`arrow${Math.random().toString().slice(2)}`).current;
+
+    // Measurements live in state (computed in a layout effect), so render is
+    // pure. refreshScreen forces a re-measure — see useArcherMeasurements.
+    const { measurements, refreshScreen } = useArcherMeasurements(parent, refs, sourceToTargetsMap);
 
     useImperativeHandle(
       archerContainerRef,
@@ -63,12 +63,6 @@ const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerP
         arrowMarkerUniquePrefix: uniqueId,
       }),
     );
-
-    /**
-     * Use this to recompute all the arrow positions. Useful if arrows do not properly rerender
-     * after the viewport or some elements moved.
-     */
-    const refreshScreen = React.useCallback(() => updateState({}), []);
 
     const _registerTransitions = useCallback(
       (elementId: string, newSourceToTargets: SourceToTargetType[]): void => {
@@ -127,7 +121,7 @@ const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerP
 
     useResizeListener(refreshScreen);
 
-    useObserveElements(refs, observer);
+    useObserveElements(refs, refreshScreen);
 
     const contextValue = useMemo(
       () => ({
@@ -161,8 +155,8 @@ const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerP
               noCurves={noCurves}
               lineStyle={lineStyle}
               offset={offset}
-              parentCurrent={parent.current}
-              refs={refs}
+              parentCoordinates={measurements.parentCoordinates}
+              rects={measurements.rects}
               uniqueId={uniqueId}
               sourceToTargetsMap={sourceToTargetsMap}
             />

@@ -1,14 +1,12 @@
 import React from 'react';
 import { Property } from 'csstype';
 import Vector2 from '../../geometry/Vector2';
-import {
-  getPointCoordinatesFromAnchorPosition,
-  getPointFromElement,
-} from '../../geometry/rectHelper';
+import { getPointCoordinatesFromAnchorPosition } from '../../geometry/rectHelper';
 import SvgArrow from '../../SvgArrow/SvgArrow';
 import { SourceToTargetType } from '../../types';
 import { createShapeObj, getMarkerId, getSourceToTargets } from '../ArcherContainer.helpers';
 import { ArcherContainerProps, SourceToTargetsArrayType } from '../ArcherContainer.types';
+import { ElementRects } from '../ArcherContainer.hooks';
 
 interface CommonProps {
   startMarker: ArcherContainerProps['startMarker'];
@@ -21,7 +19,7 @@ interface CommonProps {
   lineStyle: ArcherContainerProps['lineStyle'];
   offset: ArcherContainerProps['offset'];
   uniqueId: string;
-  refs: Record<string, HTMLElement>;
+  rects: ElementRects;
   hitSlop?: number;
   cursor?: Property.Cursor;
 }
@@ -51,18 +49,16 @@ const AdaptedArrow = (
 
   const startingPoint = getPointCoordinatesFromAnchorPosition(
     props.source.anchor,
-    props.source.id,
     props.parentCoordinates,
-    props.refs,
+    props.rects[props.source.id],
   );
 
   const endingAnchorOrientation = props.target.anchor;
 
   const endingPoint = getPointCoordinatesFromAnchorPosition(
     props.target.anchor,
-    props.target.id,
     props.parentCoordinates,
-    props.refs,
+    props.rects[props.target.id],
   );
 
   if (!startingPoint) {
@@ -101,14 +97,14 @@ const AdaptedArrow = (
 
 export const SvgArrows = (
   props: {
-    parentCurrent: HTMLDivElement | null | undefined;
+    parentCoordinates: Vector2 | null;
     sourceToTargetsMap: Record<string, SourceToTargetsArrayType>;
   } & CommonProps,
 ) => {
-  const parentCoordinates = getPointFromElement(props.parentCurrent);
+  const parentCoordinates = props.parentCoordinates;
 
   if (!parentCoordinates) {
-    // This happens when parent ref is not ready yet
+    // This happens when the parent has not been measured yet
     return null;
   }
 
@@ -138,7 +134,7 @@ export const SvgArrows = (
           lineStyle={props.lineStyle}
           offset={props.offset}
           parentCoordinates={parentCoordinates}
-          refs={props.refs}
+          rects={props.rects}
           uniqueId={props.uniqueId}
         />
       ))}
