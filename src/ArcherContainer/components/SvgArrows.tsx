@@ -32,6 +32,10 @@ const AdaptedArrow = (
       parentCoordinates: Vector2;
     },
 ) => {
+  // Reads live DOM geometry (getBoundingClientRect) during render, so it must
+  // re-run on every render rather than be memoized by the React Compiler.
+  'use no memo';
+
   const style = props.style || {};
   const newStartMarker = style.startMarker || props.startMarker;
   const newEndMarker = style.endMarker ?? props.endMarker ?? true;
@@ -105,6 +109,10 @@ export const SvgArrows = (
     sourceToTargetsMap: Record<string, SourceToTargetsArrayType>;
   } & CommonProps,
 ) => {
+  // Measures the parent element during render; must not be memoized so arrows
+  // recompute whenever the layout changes.
+  'use no memo';
+
   const parentCoordinates = getPointFromElement(props.parentCurrent);
 
   if (!parentCoordinates) {

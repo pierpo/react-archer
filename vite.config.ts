@@ -6,7 +6,13 @@ import dts from 'vite-plugin-dts';
 // Library build configuration. See vite.example.config.ts for the demo app.
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      // React Compiler. target '18' is the library's minimum supported React,
+      // so the compiled output imports the cache from react-compiler-runtime.
+      babel: {
+        plugins: [['babel-plugin-react-compiler', { target: '18' }]],
+      },
+    }),
     dts({
       tsconfigPath: './tsconfig.build.json',
       include: ['src'],

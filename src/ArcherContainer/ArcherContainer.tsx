@@ -40,6 +40,11 @@ const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerP
     }: ArcherContainerProps,
     archerContainerRef,
   ) => {
+    // Reads parent.current during render and uses a throwaway updateState({}) in
+    // refreshScreen to force full re-renders (re-measuring the DOM). The React
+    // Compiler would optimize those away, so opt this component out.
+    'use no memo';
+
     const [refs, setRefs] = useState<Record<string, HTMLElement>>({});
     const [sourceToTargetsMap, setSourceToTargetsMap] = useState<
       Record<string, SourceToTargetsArrayType>
