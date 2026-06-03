@@ -40,6 +40,7 @@ const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerP
       startMarker,
       strokeDasharray,
       style,
+      isSvgOnTop = false,
     }: ArcherContainerProps,
     archerContainerRef,
   ) => {
@@ -133,9 +134,22 @@ const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerP
       [_registerTransitions, _unregisterTransitions, _registerChild, _unregisterChild],
     );
 
+    const content = (
+      <div
+        style={{
+          height: '100%',
+        }}
+        ref={parent}
+      >
+        {newChildren}
+      </div>
+    );
+
     return (
       <ArcherContainerContextProvider value={contextValue}>
         <div style={{ ...style, position: 'relative' }} className={className}>
+          {isSvgOnTop && content}
+
           <svg style={_svgContainerStyle}>
             <defs>
               <ArrowMarkers
@@ -162,14 +176,7 @@ const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerP
             />
           </svg>
 
-          <div
-            style={{
-              height: '100%',
-            }}
-            ref={parent}
-          >
-            {newChildren}
-          </div>
+          {!isSvgOnTop && content}
         </div>
       </ArcherContainerContextProvider>
     );
