@@ -1,0 +1,64 @@
+/* Page header, action links and footer. */
+
+.app__header {
+  flex: none;
+  margin-bottom: 24px;
+}
+
+.app__title {
+  margin: 0 0 8px;
+  font-size: clamp(36px, 6vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.app__subtitle {
+  margin: 0;
+  max-width: 46ch;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.app__links {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.app__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+
+.app__link--primary {
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  color: #fff;
+  box-shadow: var(--shadow-md);
+}
+
+.app__link--ghost {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--fg);
+  box-shadow: var(--shadow-sm);
+}
+
+.app__link:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}

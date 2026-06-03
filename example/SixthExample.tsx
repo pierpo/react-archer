@@ -10,10 +10,6 @@ const rowStyle = {
   display: 'flex',
   justifyContent: 'space-between',
 };
-const boxStyle = {
-  padding: '10px',
-  border: '1px solid black',
-};
 
 const SixthExample = () => (
   <div
@@ -22,7 +18,7 @@ const SixthExample = () => (
       margin: '50px',
     }}
   >
-    <ArcherContainer strokeColor="red">
+    <ArcherContainer strokeColor="#6366f1">
       {/* eslint-disable-next-line unused-imports/no-unused-vars -- this is for the example */}
       {(ArcherContext) => (
         <>
@@ -40,7 +36,7 @@ const SixthExample = () => (
                 },
               ]}
             >
-              <div style={boxStyle}>Root</div>
+              <div className="archer-box">Root</div>
             </ArcherElement>
           </div>
 
@@ -53,7 +49,7 @@ const SixthExample = () => (
                   targetAnchor: 'left',
                   sourceAnchor: 'right',
                   style: {
-                    strokeColor: 'blue',
+                    strokeColor: '#ec4899',
                     strokeWidth: 1,
                   },
                   label: (
@@ -68,11 +64,11 @@ const SixthExample = () => (
                 },
               ]}
             >
-              <div style={boxStyle}>Element 2</div>
+              <div className="archer-box">Element 2</div>
             </ArcherElement>
 
             <ArcherElement id="element3">
-              <div style={boxStyle}>Element 3</div>
+              <div className="archer-box">Element 3</div>
             </ArcherElement>
 
             <ArcherElement
@@ -86,7 +82,7 @@ const SixthExample = () => (
                 },
               ]}
             >
-              <div style={boxStyle}>Element 4</div>
+              <div className="archer-box">Element 4</div>
             </ArcherElement>
           </div>
         </>

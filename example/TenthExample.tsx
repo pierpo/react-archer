@@ -10,10 +10,6 @@ const rowStyle = {
   display: 'flex',
   justifyContent: 'space-between',
 };
-const boxStyle = {
-  padding: '10px',
-  border: '1px solid black',
-};
 
 const TenthExample = () => {
   const [isHovering, setIsHovering] = useState(false);
@@ -25,7 +21,7 @@ const TenthExample = () => {
         margin: '50px',
       }}
     >
-      <ArcherContainer strokeColor="red">
+      <ArcherContainer strokeColor="#6366f1">
         <div style={rootStyle}>
           <ArcherElement
             id="root"
@@ -36,7 +32,7 @@ const TenthExample = () => {
                 sourceAnchor: 'bottom',
                 style: {
                   strokeDasharray: '5,5',
-                  strokeColor: isHovering ? 'green' : 'blue',
+                  strokeColor: isHovering ? '#10b981' : '#ec4899',
                 },
                 domAttributes: {
                   // The hovering style could be achieved with CSS as well
@@ -56,7 +52,7 @@ const TenthExample = () => {
               },
             ]}
           >
-            <div style={boxStyle}>Hover my arrow</div>
+            <div className="archer-box">Hover my arrow</div>
           </ArcherElement>
         </div>
 
@@ -69,7 +65,7 @@ const TenthExample = () => {
                 targetAnchor: 'left',
                 sourceAnchor: 'right',
                 style: {
-                  strokeColor: 'blue',
+                  strokeColor: '#ec4899',
                   strokeWidth: 1,
                 },
                 label: (
@@ -84,11 +80,11 @@ const TenthExample = () => {
               },
             ]}
           >
-            <div style={boxStyle}>Element 2</div>
+            <div className="archer-box">Element 2</div>
           </ArcherElement>
 
           <ArcherElement id="element3">
-            <div style={boxStyle}>Element 3</div>
+            <div className="archer-box">Element 3</div>
           </ArcherElement>
 
           <ArcherElement
@@ -102,7 +98,7 @@ const TenthExample = () => {
               },
             ]}
           >
-            <div style={boxStyle}>Element 4</div>
+            <div className="archer-box">Element 4</div>
           </ArcherElement>
         </div>
       </ArcherContainer>

@@ -10,10 +10,6 @@ const rowStyle = {
   display: 'flex',
   justifyContent: 'space-between',
 };
-const boxStyle = {
-  padding: '10px',
-  border: '1px solid black',
-};
 
 const SeventhExample = () => {
   return (
@@ -23,7 +19,7 @@ const SeventhExample = () => {
         margin: '50px',
       }}
     >
-      <ArcherContainer strokeColor="red">
+      <ArcherContainer strokeColor="#6366f1">
         <div style={rootStyle}>
           <ArcherElement
             id="root"
@@ -35,10 +31,14 @@ const SeventhExample = () => {
                 // Draws this arrow on top
                 order: 100,
                 style: {
-                  strokeColor: 'blue',
+                  strokeColor: '#ec4899',
+                  strokeWidth: 2,
                   endShape: {
                     circle: {
-                      radius: 3,
+                      radius: 6,
+                      fillColor: '#f472b6',
+                      strokeColor: '#be185d',
+                      strokeWidth: 3,
                     },
                   },
                 },
@@ -48,29 +48,31 @@ const SeventhExample = () => {
                 targetAnchor: 'top',
                 sourceAnchor: 'bottom',
                 style: {
+                  strokeColor: '#10b981',
+                  strokeWidth: 2,
                   endShape: {
                     circle: {
-                      radius: 4,
-                      fillColor: '#c0ffee',
-                      strokeColor: 'black',
-                      strokeWidth: 2,
+                      radius: 6,
+                      fillColor: '#ffffff',
+                      strokeColor: '#10b981',
+                      strokeWidth: 3,
                     },
                   },
                 },
               },
             ]}
           >
-            <div style={boxStyle}>Root</div>
+            <div className="archer-box">Root</div>
           </ArcherElement>
         </div>
 
         <div style={rowStyle}>
           <ArcherElement id="element2">
-            <div style={boxStyle}>Element 2</div>
+            <div className="archer-box">Element 2</div>
           </ArcherElement>
 
           <ArcherElement id="element3">
-            <div style={boxStyle}>Element 3</div>
+            <div className="archer-box">Element 3</div>
           </ArcherElement>
         </div>
       </ArcherContainer>

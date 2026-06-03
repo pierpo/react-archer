@@ -1,0 +1,101 @@
+/* Design tokens, reset and page background. */
+
+:root {
+  --bg: #f7f8fb;
+  --bg-grid: rgba(52, 120, 246, 0.05);
+  --fg: #0f172a;
+  --muted: #64748b;
+  --border: #e3e7ef;
+  --card: #ffffff;
+  --accent: #3478f6;
+  --accent-2: #8b5cf6;
+  --accent-soft: rgba(52, 120, 246, 0.1);
+  --ring: rgba(52, 120, 246, 0.35);
+  --node-top: #ffffff;
+  --node-bottom: #eef2f9;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 24px 48px -12px rgba(15, 23, 42, 0.18);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b0f1a;
+    --bg-grid: rgba(139, 92, 246, 0.07);
+    --fg: #e8ecf4;
+    --muted: #94a3b8;
+    --border: #1e293b;
+    --card: #111827;
+    --accent: #5b9bff;
+    --accent-2: #a78bfa;
+    --accent-soft: rgba(91, 155, 255, 0.14);
+    --ring: rgba(91, 155, 255, 0.4);
+    --node-top: #1a2232;
+    --node-bottom: #131a27;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
+    --shadow-lg: 0 24px 48px -12px rgba(0, 0, 0, 0.6);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  color: var(--fg);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 1px 1px, var(--bg-grid) 1px, transparent 0),
+    radial-gradient(ellipse 80% 50% at 50% -10%, var(--accent-soft), transparent 70%);
+  background-size:
+    22px 22px,
+    100% 100%;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+.app {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 36px 24px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  grid-template-rows: 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 760px) {
+  .app {
+    display: block;
+    height: auto;
+  }
+
+  .layout {
+    display: block;
+  }
+}

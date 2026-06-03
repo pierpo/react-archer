@@ -10,10 +10,6 @@ const rowStyle = {
   display: 'flex',
   justifyContent: 'space-between',
 };
-const boxStyle = {
-  padding: '10px',
-  border: '1px solid black',
-};
 
 const FirstExample = () => {
   return (
@@ -23,7 +19,7 @@ const FirstExample = () => {
         margin: '50px',
       }}
     >
-      <ArcherContainer strokeColor="red">
+      <ArcherContainer strokeColor="#6366f1">
         <div style={rootStyle}>
           <ArcherElement
             id="root"
@@ -38,7 +34,7 @@ const FirstExample = () => {
               },
             ]}
           >
-            <div style={boxStyle}>Root</div>
+            <div className="archer-box">Root</div>
           </ArcherElement>
         </div>
 
@@ -51,7 +47,7 @@ const FirstExample = () => {
                 targetAnchor: 'left',
                 sourceAnchor: 'right',
                 style: {
-                  strokeColor: 'blue',
+                  strokeColor: '#ec4899',
                   strokeWidth: 1,
                 },
                 label: (
@@ -66,11 +62,11 @@ const FirstExample = () => {
               },
             ]}
           >
-            <div style={boxStyle}>Element 2</div>
+            <div className="archer-box">Element 2</div>
           </ArcherElement>
 
           <ArcherElement id="element3">
-            <div style={boxStyle}>Element 3</div>
+            <div className="archer-box">Element 3</div>
           </ArcherElement>
 
           <ArcherElement
@@ -84,7 +80,7 @@ const FirstExample = () => {
               },
             ]}
           >
-            <div style={boxStyle}>Element 4</div>
+            <div className="archer-box">Element 4</div>
           </ArcherElement>
         </div>
       </ArcherContainer>

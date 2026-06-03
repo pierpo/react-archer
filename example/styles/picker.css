@@ -1,0 +1,82 @@
+/* Example picker nav. */
+
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  align-self: start;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 14px 9px 9px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 0.14s ease,
+    border-color 0.14s ease,
+    color 0.14s ease,
+    box-shadow 0.14s ease;
+}
+
+@media (max-width: 760px) {
+  .picker {
+    flex-direction: row;
+    flex-wrap: wrap;
+    position: static;
+  }
+
+  .btn {
+    width: auto;
+  }
+}
+
+.btn__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  transition:
+    background 0.14s ease,
+    color 0.14s ease;
+}
+
+.btn:not(.btn--active):hover {
+  background: var(--card);
+  border-color: var(--border);
+  color: var(--fg);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+.btn--active {
+  border-color: transparent;
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  color: #fff;
+  box-shadow: var(--shadow-md);
+}
+
+.btn--active .btn__num {
+  background: #fff;
+  color: var(--accent);
+}
