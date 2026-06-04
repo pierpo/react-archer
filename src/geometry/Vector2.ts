@@ -11,7 +11,7 @@ class Vector2 {
     return new Vector2(this.x + vector.x, this.y + vector.y);
   }
 
-  substract(vector: Vector2) {
+  subtract(vector: Vector2) {
     return new Vector2(this.x - vector.x, this.y - vector.y);
   }
 }

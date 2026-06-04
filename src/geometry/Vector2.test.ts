@@ -15,10 +15,10 @@ describe('Vector2', () => {
     expect(result.y).toEqual(20);
   });
 
-  it('should substract two position vectors', () => {
+  it('should subtract two position vectors', () => {
     const p1 = new Vector2(10, 20);
     const p2 = new Vector2(5, 13);
-    const result = p1.substract(p2);
+    const result = p1.subtract(p2);
     expect(result.x).toEqual(5);
     expect(result.y).toEqual(7);
   });

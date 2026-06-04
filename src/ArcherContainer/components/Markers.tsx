@@ -3,27 +3,33 @@ import { LineType, ShapeType, SourceToTargetType } from '../../types';
 import { endShapeDefaultProp } from '../ArcherContainer.constants';
 import { getEndShapeFromStyle, getSourceToTargets, getMarkerId } from '../ArcherContainer.helpers';
 import { SourceToTargetsArrayType } from '../ArcherContainer.types';
+import { firstDefined } from '../../utils/firstDefined';
 
 const circleMarker = (style: LineType, endShape: ShapeType) => () => {
-  // TODO idea to merge params: we could use a deep merge function that keeps the first non-undefined values obtained
+  // Precedence: per-relation style -> container endShape -> hardcoded default.
+  const radius = firstDefined(
+    style.endShape?.circle?.radius,
+    endShape.circle?.radius,
+    endShapeDefaultProp.circle.radius,
+  )!;
 
-  const radius =
-    style.endShape?.circle?.radius || endShape.circle?.radius || endShapeDefaultProp.circle.radius;
+  const strokeWidth = firstDefined(
+    style.endShape?.circle?.strokeWidth,
+    endShape.circle?.strokeWidth,
+    endShapeDefaultProp.circle.strokeWidth,
+  )!;
 
-  const strokeWidth =
-    style.endShape?.circle?.strokeWidth ||
-    endShape.circle?.strokeWidth ||
-    endShapeDefaultProp.circle.strokeWidth;
+  const strokeColor = firstDefined(
+    style.endShape?.circle?.strokeColor,
+    endShape.circle?.strokeColor,
+    endShapeDefaultProp.circle.strokeColor,
+  );
 
-  const strokeColor =
-    style.endShape?.circle?.strokeColor ||
-    endShape.circle?.strokeColor ||
-    endShapeDefaultProp.circle.strokeColor;
-
-  const fillColor =
-    style.endShape?.circle?.fillColor ||
-    endShape.circle?.fillColor ||
-    endShapeDefaultProp.circle.fillColor;
+  const fillColor = firstDefined(
+    style.endShape?.circle?.fillColor,
+    endShape.circle?.fillColor,
+    endShapeDefaultProp.circle.fillColor,
+  );
 
   return {
     markerWidth: radius * 4,
@@ -45,14 +51,16 @@ const circleMarker = (style: LineType, endShape: ShapeType) => () => {
 
 const arrowMarker = (style: LineType, endShape: ShapeType, strokeColor: string) => () => {
   const newStrokeColor = style.strokeColor || strokeColor;
-  const newArrowLength =
-    style.endShape?.arrow?.arrowLength ??
-    endShape?.arrow?.arrowLength ??
-    endShapeDefaultProp.arrow.arrowLength;
-  const newArrowThickness =
-    style.endShape?.arrow?.arrowThickness ||
-    endShape?.arrow?.arrowThickness ||
-    endShapeDefaultProp.arrow.arrowThickness;
+  const newArrowLength = firstDefined(
+    style.endShape?.arrow?.arrowLength,
+    endShape?.arrow?.arrowLength,
+    endShapeDefaultProp.arrow.arrowLength,
+  )!;
+  const newArrowThickness = firstDefined(
+    style.endShape?.arrow?.arrowThickness,
+    endShape?.arrow?.arrowThickness,
+    endShapeDefaultProp.arrow.arrowThickness,
+  )!;
   const arrowPath = `M0,0 L0,${newArrowThickness} L${newArrowLength},${newArrowThickness / 2} z`;
 
   return {

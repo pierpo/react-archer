@@ -8,7 +8,14 @@ import globals from 'globals';
 
 export default tseslint.config(
   {
-    ignores: ['lib/**', 'example-dist/**', 'node_modules/**', '.yarn/**', 'docs-site/**'],
+    ignores: [
+      'lib/**',
+      'example-dist/**',
+      'node_modules/**',
+      '.yarn/**',
+      'docs-site/**',
+      'coverage/**',
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
