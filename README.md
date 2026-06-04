@@ -121,8 +121,8 @@ The `Relation` type has the following shape:
 ```javascript
 {
   targetId: string,
-  targetAnchor: 'top' | 'bottom' | 'left' | 'right' | 'middle',
-  sourceAnchor: 'top' | 'bottom' | 'left' | 'right' | 'middle',
+  targetAnchor?: 'top' | 'bottom' | 'left' | 'right' | 'middle' | 'auto', // defaults to 'auto'
+  sourceAnchor?: 'top' | 'bottom' | 'left' | 'right' | 'middle' | 'auto', // defaults to 'auto'
   label: React.Node,
   order?: number, // higher order means arrow will be drawn on top of the others
   className?: string, // CSS class selectors on the SVG arrow

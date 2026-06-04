@@ -1,7 +1,10 @@
 import React from 'react';
 import { Property } from 'csstype';
 import Vector2 from '../../geometry/Vector2';
-import { getPointCoordinatesFromAnchorPosition } from '../../geometry/rectHelper';
+import {
+  getPointCoordinatesFromAnchorPosition,
+  resolveAutoAnchor,
+} from '../../geometry/rectHelper';
 import SvgArrow from '../../SvgArrow/SvgArrow';
 import { SourceToTargetType } from '../../types';
 import { createShapeObj, getMarkerId, getSourceToTargets } from '../ArcherContainer.helpers';
@@ -45,20 +48,32 @@ const AdaptedArrow = (
   const newNoCurves = !!(style.noCurves || props.noCurves);
   const newLineStyle = style.lineStyle || props.lineStyle || (newNoCurves ? 'angle' : 'curve');
   const newOffset = props.offset || 0;
-  const startingAnchorOrientation = props.source.anchor;
+
+  const sourceRect = props.rects[props.source.id];
+  const targetRect = props.rects[props.target.id];
+
+  // Resolve 'auto' anchors here, where both rects are available: each endpoint anchors to
+  // the edge that faces the other element, so arrows re-orient as elements move.
+  const startingAnchorOrientation =
+    props.source.anchor === 'auto'
+      ? resolveAutoAnchor(sourceRect, targetRect)
+      : props.source.anchor;
 
   const startingPoint = getPointCoordinatesFromAnchorPosition(
-    props.source.anchor,
+    startingAnchorOrientation,
     props.parentCoordinates,
-    props.rects[props.source.id],
+    sourceRect,
   );
 
-  const endingAnchorOrientation = props.target.anchor;
+  const endingAnchorOrientation =
+    props.target.anchor === 'auto'
+      ? resolveAutoAnchor(targetRect, sourceRect)
+      : props.target.anchor;
 
   const endingPoint = getPointCoordinatesFromAnchorPosition(
-    props.target.anchor,
+    endingAnchorOrientation,
     props.parentCoordinates,
-    props.rects[props.target.id],
+    targetRect,
   );
 
   if (!startingPoint) {

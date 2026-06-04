@@ -9,6 +9,7 @@ import SeventhExample from './SeventhExample';
 import EighthExample from './EighthExample';
 import NinthExample from './NinthExample';
 import TenthExample from './TenthExample';
+import EleventhExample from './EleventhExample';
 
 const EXAMPLES = [
   { Component: FirstExample, name: 'Basic arrows' },
@@ -21,6 +22,7 @@ const EXAMPLES = [
   { Component: EighthExample, name: 'Start markers' },
   { Component: NinthExample, name: 'Styled relations' },
   { Component: TenthExample, name: 'Interactive' },
+  { Component: EleventhExample, name: 'Drag & drop' },
 ] as const;
 
 const getExample = (id: number) => EXAMPLES[id - 1] ?? EXAMPLES[1];
