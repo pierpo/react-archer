@@ -15,7 +15,7 @@ import {
   useResizeListener,
 } from './ArcherContainer.hooks';
 
-const defaultSvgContainerStyle = {
+const defaultSvgContainerStyle: React.CSSProperties = {
   position: 'absolute',
   width: '100%',
   height: '100%',
@@ -104,7 +104,7 @@ const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerP
     }, []);
 
     const _svgContainerStyle = useMemo(
-      (): Record<string, any> => ({
+      (): React.CSSProperties => ({
         ...defaultSvgContainerStyle,
         ...svgContainerStyle,
       }),

@@ -1,7 +1,8 @@
 import React, { DOMAttributes } from 'react';
 import { Property } from 'csstype';
 import Vector2 from '../geometry/Vector2';
-import { AnchorPositionType, ValidLineStyles } from '../types';
+import { AnchorPositionType, ShapeType, ValidLineStyles } from '../types';
+import { endShapeDefaultProp } from '../ArcherContainer/ArcherContainer.constants';
 import { computeArrowDirectionVector } from './SvgArrow.helper';
 
 type Props = {
@@ -19,7 +20,7 @@ type Props = {
   offset?: number;
   enableStartMarker?: boolean;
   disableEndMarker?: boolean;
-  endShape: Record<string, any>;
+  endShape: ShapeType;
   domAttributes?: DOMAttributes<SVGElement>;
   hitSlop?: number;
   cursor?: Property.Cursor;
@@ -217,8 +218,8 @@ const SvgArrow = ({
   cursor = 'pointer',
 }: Props) => {
   const actualArrowLength = endShape.circle
-    ? endShape.circle.radius * 2
-    : endShape.arrow.arrowLength * 2;
+    ? (endShape.circle.radius ?? endShapeDefaultProp.circle.radius) * 2
+    : (endShape.arrow?.arrowLength ?? endShapeDefaultProp.arrow.arrowLength) * 2;
 
   // Starting point with arrow
   const { xPoint: xStart, yPoint: yStart } = computeArrowPointAccordingToArrowHead(
