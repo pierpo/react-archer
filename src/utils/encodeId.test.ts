@@ -17,4 +17,9 @@ describe('encodeId', () => {
   it('encodes unicode characters', () => {
     expect(encodeId('é')).toEqual('_C3_A9');
   });
+
+  it('replaces colons so useId() output is SVG-selector-safe', () => {
+    // useId() returns ids like ":r1:"; colons are invalid in url(#...) references.
+    expect(encodeId(':r1:')).toEqual('_r1_');
+  });
 });

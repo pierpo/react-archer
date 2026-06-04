@@ -1,4 +1,4 @@
-import React, { useCallback, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useId, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { SourceToTargetType } from '../types';
 import { ArcherContainerContext, ArcherContainerContextProvider } from './ArcherContainer.context';
 import {
@@ -14,6 +14,7 @@ import {
   useObserveElements,
   useResizeListener,
 } from './ArcherContainer.hooks';
+import { encodeId } from '../utils/encodeId';
 
 const defaultSvgContainerStyle: React.CSSProperties = {
   position: 'absolute',
@@ -50,7 +51,9 @@ const ArcherContainer = React.forwardRef<ArcherContainerHandle, ArcherContainerP
 
     const parent = useRef<HTMLDivElement>(null);
 
-    const uniqueId = useRef<string>(`arrow${Math.random().toString().slice(2)}`).current;
+    // useId() is SSR-safe and deterministic. It can contain colons, which are
+    // invalid in the url(#...) marker references, so sanitize it.
+    const uniqueId = encodeId(useId());
 
     // Measurements live in state (computed in a layout effect), so render is
     // pure. refreshScreen forces a re-measure — see useArcherMeasurements.
