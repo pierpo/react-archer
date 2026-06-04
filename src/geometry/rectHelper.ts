@@ -89,5 +89,5 @@ export const getPointCoordinatesFromAnchorPosition = (
     return null;
   }
 
-  return absolutePosition.substract(parentCoordinates);
+  return absolutePosition.subtract(parentCoordinates);
 };
