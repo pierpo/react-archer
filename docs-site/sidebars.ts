@@ -16,6 +16,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'examples/basic-arrows',
         'examples/dynamic-elements',
+        'examples/angle-lines',
         'examples/straight-lines',
         'examples/anchor-offsets',
         'examples/middle-anchor',

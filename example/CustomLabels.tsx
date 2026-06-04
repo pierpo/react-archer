@@ -12,7 +12,7 @@ const rowStyle = {
   justifyContent: 'space-between',
 };
 
-const SixthExample = () => (
+const CustomLabels = () => (
   <div
     style={{
       height: '500px',
@@ -88,4 +88,4 @@ const SixthExample = () => (
   </div>
 );
 
-export default SixthExample;
+export default CustomLabels;

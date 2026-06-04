@@ -87,7 +87,7 @@ const useNodeDragAndDrop = ({
   };
 };
 
-const EleventhExample = () => {
+const DragAndDrop = () => {
   const archerRef = useRef<ArcherContainerHandle>(null);
 
   // Moving a node only changes its position, not its size, so the
@@ -148,4 +148,4 @@ const EleventhExample = () => {
   );
 };
 
-export default EleventhExample;
+export default DragAndDrop;

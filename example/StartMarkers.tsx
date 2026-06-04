@@ -12,7 +12,7 @@ const rowStyle = {
   justifyContent: 'space-between',
 };
 
-const FirstExample = () => {
+const StartMarkers = () => {
   return (
     <div
       style={{
@@ -20,7 +20,7 @@ const FirstExample = () => {
         margin: '50px',
       }}
     >
-      <ArcherContainer strokeColor="#6366f1">
+      <ArcherContainer strokeColor="#6366f1" startMarker>
         <div style={rootStyle}>
           <ArcherElement
             id="root"
@@ -85,4 +85,4 @@ const FirstExample = () => {
   );
 };
 
-export default FirstExample;
+export default StartMarkers;

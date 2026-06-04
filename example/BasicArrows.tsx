@@ -12,7 +12,7 @@ const rowStyle = {
   justifyContent: 'space-between',
 };
 
-const SeventhExample = () => {
+const BasicArrows = () => {
   return (
     <div
       style={{
@@ -29,36 +29,8 @@ const SeventhExample = () => {
                 targetId: 'element2',
                 targetAnchor: 'top',
                 sourceAnchor: 'bottom',
-                // Draws this arrow on top
-                order: 100,
                 style: {
-                  strokeColor: '#ec4899',
-                  strokeWidth: 2,
-                  endShape: {
-                    circle: {
-                      radius: 6,
-                      fillColor: '#f472b6',
-                      strokeColor: '#be185d',
-                      strokeWidth: 3,
-                    },
-                  },
-                },
-              },
-              {
-                targetId: 'element3',
-                targetAnchor: 'top',
-                sourceAnchor: 'bottom',
-                style: {
-                  strokeColor: '#10b981',
-                  strokeWidth: 2,
-                  endShape: {
-                    circle: {
-                      radius: 6,
-                      fillColor: '#ffffff',
-                      strokeColor: '#10b981',
-                      strokeWidth: 3,
-                    },
-                  },
+                  strokeDasharray: '5,5',
                 },
               },
             ]}
@@ -68,12 +40,44 @@ const SeventhExample = () => {
         </div>
 
         <div style={rowStyle}>
-          <ArcherElement id="element2">
+          <ArcherElement
+            id="element2"
+            relations={[
+              {
+                targetId: 'element3',
+                style: {
+                  strokeColor: '#ec4899',
+                  strokeWidth: 1,
+                },
+                label: (
+                  <div
+                    style={{
+                      marginTop: '-20px',
+                    }}
+                  >
+                    Arrow 2
+                  </div>
+                ),
+              },
+            ]}
+          >
             <Box>Element 2</Box>
           </ArcherElement>
 
           <ArcherElement id="element3">
             <Box>Element 3</Box>
+          </ArcherElement>
+
+          <ArcherElement
+            id="element4"
+            relations={[
+              {
+                targetId: 'root',
+                label: 'Arrow 3',
+              },
+            ]}
+          >
+            <Box>Element 4</Box>
           </ArcherElement>
         </div>
       </ArcherContainer>
@@ -81,4 +85,4 @@ const SeventhExample = () => {
   );
 };
 
-export default SeventhExample;
+export default BasicArrows;

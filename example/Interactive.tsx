@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ArcherContainer from '../src/ArcherContainer/ArcherContainer';
 import ArcherElement from '../src/ArcherElement/ArcherElement';
 import Box from './components/Box';
@@ -12,7 +12,9 @@ const rowStyle = {
   justifyContent: 'space-between',
 };
 
-const FirstExample = () => {
+const Interactive = () => {
+  const [isHovering, setIsHovering] = useState(false);
+
   return (
     <div
       style={{
@@ -20,7 +22,7 @@ const FirstExample = () => {
         margin: '50px',
       }}
     >
-      <ArcherContainer strokeColor="#6366f1" lineStyle="straight" offset={0} startMarker>
+      <ArcherContainer strokeColor="#6366f1">
         <div style={rootStyle}>
           <ArcherElement
             id="root"
@@ -31,11 +33,27 @@ const FirstExample = () => {
                 sourceAnchor: 'bottom',
                 style: {
                   strokeDasharray: '5,5',
+                  strokeColor: isHovering ? '#10b981' : '#ec4899',
                 },
+                domAttributes: {
+                  // The hovering style could be achieved with CSS as well
+                  onMouseOver: () => {
+                    setIsHovering(true);
+                  },
+                  onMouseOut: () => {
+                    setIsHovering(false);
+                  },
+                  // The click however needs a props, obviously
+                  onClick: () => {
+                    console.log('you clicked me!');
+                  },
+                },
+                hitSlop: 30,
+                cursor: 'grab',
               },
             ]}
           >
-            <Box>Root</Box>
+            <Box>Hover my arrow</Box>
           </ArcherElement>
         </div>
 
@@ -85,4 +103,4 @@ const FirstExample = () => {
   );
 };
 
-export default FirstExample;
+export default Interactive;

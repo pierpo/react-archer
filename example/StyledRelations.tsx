@@ -12,7 +12,7 @@ const rowStyle = {
   justifyContent: 'space-between',
 };
 
-const FifthExample = () => {
+const StyledRelations = () => {
   return (
     <div
       style={{
@@ -20,15 +20,21 @@ const FifthExample = () => {
         margin: '50px',
       }}
     >
-      <ArcherContainer strokeColor="#6366f1">
+      <ArcherContainer
+        strokeColor="#6366f1"
+        lineStyle="straight"
+        offset={0}
+        startMarker
+        endMarker={false}
+      >
         <div style={rootStyle}>
           <ArcherElement
             id="root"
             relations={[
               {
                 targetId: 'element2',
-                targetAnchor: 'middle',
-                sourceAnchor: 'middle',
+                targetAnchor: 'top',
+                sourceAnchor: 'bottom',
                 style: {
                   strokeDasharray: '5,5',
                 },
@@ -85,4 +91,4 @@ const FifthExample = () => {
   );
 };
 
-export default FifthExample;
+export default StyledRelations;

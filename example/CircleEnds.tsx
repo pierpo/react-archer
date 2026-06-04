@@ -12,7 +12,7 @@ const rowStyle = {
   justifyContent: 'space-between',
 };
 
-const FirstExample = () => {
+const CircleEnds = () => {
   return (
     <div
       style={{
@@ -20,13 +20,7 @@ const FirstExample = () => {
         margin: '50px',
       }}
     >
-      <ArcherContainer
-        strokeColor="#6366f1"
-        lineStyle="straight"
-        offset={0}
-        startMarker
-        endMarker={false}
-      >
+      <ArcherContainer strokeColor="#6366f1">
         <div style={rootStyle}>
           <ArcherElement
             id="root"
@@ -35,8 +29,36 @@ const FirstExample = () => {
                 targetId: 'element2',
                 targetAnchor: 'top',
                 sourceAnchor: 'bottom',
+                // Draws this arrow on top
+                order: 100,
                 style: {
-                  strokeDasharray: '5,5',
+                  strokeColor: '#ec4899',
+                  strokeWidth: 2,
+                  endShape: {
+                    circle: {
+                      radius: 6,
+                      fillColor: '#f472b6',
+                      strokeColor: '#be185d',
+                      strokeWidth: 3,
+                    },
+                  },
+                },
+              },
+              {
+                targetId: 'element3',
+                targetAnchor: 'top',
+                sourceAnchor: 'bottom',
+                style: {
+                  strokeColor: '#10b981',
+                  strokeWidth: 2,
+                  endShape: {
+                    circle: {
+                      radius: 6,
+                      fillColor: '#ffffff',
+                      strokeColor: '#10b981',
+                      strokeWidth: 3,
+                    },
+                  },
                 },
               },
             ]}
@@ -46,44 +68,12 @@ const FirstExample = () => {
         </div>
 
         <div style={rowStyle}>
-          <ArcherElement
-            id="element2"
-            relations={[
-              {
-                targetId: 'element3',
-                style: {
-                  strokeColor: '#ec4899',
-                  strokeWidth: 1,
-                },
-                label: (
-                  <div
-                    style={{
-                      marginTop: '-20px',
-                    }}
-                  >
-                    Arrow 2
-                  </div>
-                ),
-              },
-            ]}
-          >
+          <ArcherElement id="element2">
             <Box>Element 2</Box>
           </ArcherElement>
 
           <ArcherElement id="element3">
             <Box>Element 3</Box>
-          </ArcherElement>
-
-          <ArcherElement
-            id="element4"
-            relations={[
-              {
-                targetId: 'root',
-                label: 'Arrow 3',
-              },
-            ]}
-          >
-            <Box>Element 4</Box>
           </ArcherElement>
         </div>
       </ArcherContainer>
@@ -91,4 +81,4 @@ const FirstExample = () => {
   );
 };
 
-export default FirstExample;
+export default CircleEnds;

@@ -2,7 +2,7 @@ import React from 'react';
 import ArcherContainer from '../src/ArcherContainer/ArcherContainer';
 import ArcherElement from '../src/ArcherElement/ArcherElement';
 import Box from './components/Box';
-import controls from './SecondExample.module.css';
+import controls from './DynamicElements.module.css';
 const rootStyle = {
   display: 'flex',
   justifyContent: 'center',
@@ -13,7 +13,7 @@ const rowStyle = {
   justifyContent: 'space-between',
 };
 
-const SecondExample = () => {
+const DynamicElements = () => {
   const [nbElements, setNbElements] = React.useState(3);
   const [labels, setLabels] = React.useState('hello');
   return (
@@ -97,4 +97,4 @@ const SecondExample = () => {
   );
 };
 
-export default SecondExample;
+export default DynamicElements;

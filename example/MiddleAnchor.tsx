@@ -12,7 +12,7 @@ const rowStyle = {
   justifyContent: 'space-between',
 };
 
-const FourthExample = () => {
+const MiddleAnchor = () => {
   return (
     <div
       style={{
@@ -20,15 +20,15 @@ const FourthExample = () => {
         margin: '50px',
       }}
     >
-      <ArcherContainer strokeColor="#6366f1" offset={10}>
+      <ArcherContainer strokeColor="#6366f1">
         <div style={rootStyle}>
           <ArcherElement
             id="root"
             relations={[
               {
                 targetId: 'element2',
-                targetAnchor: 'top',
-                sourceAnchor: 'bottom',
+                targetAnchor: 'middle',
+                sourceAnchor: 'middle',
                 style: {
                   strokeDasharray: '5,5',
                 },
@@ -85,4 +85,4 @@ const FourthExample = () => {
   );
 };
 
-export default FourthExample;
+export default MiddleAnchor;

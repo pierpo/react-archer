@@ -12,7 +12,7 @@ const rowStyle = {
   justifyContent: 'space-between',
 };
 
-const ThirdExample = () => {
+const AngleLines = () => {
   return (
     <div
       style={{
@@ -85,4 +85,4 @@ const ThirdExample = () => {
   );
 };
 
-export default ThirdExample;
+export default AngleLines;

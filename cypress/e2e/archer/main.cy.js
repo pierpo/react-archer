@@ -4,9 +4,9 @@ context('React Archer', () => {
     cy.contains('Root');
   });
 
-  describe('First example page', () => {
+  describe('Basic arrows', () => {
     beforeEach(() => {
-      cy.visit('/?example=1');
+      cy.visit('/?example=basic-arrows');
     });
 
     it('should draw arrows', () => {
@@ -14,9 +14,9 @@ context('React Archer', () => {
     });
   });
 
-  describe('Second example page', () => {
+  describe('Dynamic elements', () => {
     beforeEach(() => {
-      cy.visit('/?example=2');
+      cy.visit('/?example=dynamic-elements');
     });
 
     it('should draw arrows', () => {
@@ -34,19 +34,29 @@ context('React Archer', () => {
     });
   });
 
-  describe('Third example page', () => {
+  describe('Angle lines', () => {
     beforeEach(() => {
-      cy.visit('/?example=3');
+      cy.visit('/?example=angle-lines');
     });
 
-    it('should draw non curvy arrows', () => {
+    it('should draw arrows with right angles', () => {
       cy.matchImageSnapshot();
     });
   });
 
-  describe('Fourth example page', () => {
+  describe('Straight lines', () => {
     beforeEach(() => {
-      cy.visit('/?example=4');
+      cy.visit('/?example=straight-lines');
+    });
+
+    it('should draw straight arrows', () => {
+      cy.matchImageSnapshot();
+    });
+  });
+
+  describe('Anchor offsets', () => {
+    beforeEach(() => {
+      cy.visit('/?example=anchor-offsets');
     });
 
     it('should draw arrows with an offset', () => {
@@ -54,9 +64,9 @@ context('React Archer', () => {
     });
   });
 
-  describe('Fifth example page', () => {
+  describe('Middle anchor', () => {
     beforeEach(() => {
-      cy.visit('/?example=5');
+      cy.visit('/?example=middle-anchor');
     });
 
     it('should draw arrows with a middle anchor', () => {
@@ -64,29 +74,9 @@ context('React Archer', () => {
     });
   });
 
-  describe('Seventh example page', () => {
+  describe('Custom labels', () => {
     beforeEach(() => {
-      cy.visit('/?example=7');
-    });
-
-    it('should draw arrows with circle end shapes', () => {
-      cy.matchImageSnapshot();
-    });
-  });
-
-  describe('Eigth example page', () => {
-    beforeEach(() => {
-      cy.visit('/?example=8');
-    });
-
-    it('should draw arrows with straight lines and start markers', () => {
-      cy.matchImageSnapshot();
-    });
-  });
-
-  describe('Sixth example page', () => {
-    beforeEach(() => {
-      cy.visit('/?example=6');
+      cy.visit('/?example=custom-labels');
     });
 
     it('should draw arrows with custom labels', () => {
@@ -94,9 +84,29 @@ context('React Archer', () => {
     });
   });
 
-  describe('Ninth example page', () => {
+  describe('Circle ends', () => {
     beforeEach(() => {
-      cy.visit('/?example=9');
+      cy.visit('/?example=circle-ends');
+    });
+
+    it('should draw arrows with circle end shapes', () => {
+      cy.matchImageSnapshot();
+    });
+  });
+
+  describe('Start markers', () => {
+    beforeEach(() => {
+      cy.visit('/?example=start-markers');
+    });
+
+    it('should draw arrows with start markers', () => {
+      cy.matchImageSnapshot();
+    });
+  });
+
+  describe('Styled relations', () => {
+    beforeEach(() => {
+      cy.visit('/?example=styled-relations');
     });
 
     it('should draw arrows with styled relations', () => {
@@ -104,9 +114,9 @@ context('React Archer', () => {
     });
   });
 
-  describe('Tenth example page', () => {
+  describe('Interactive', () => {
     beforeEach(() => {
-      cy.visit('/?example=10');
+      cy.visit('/?example=interactive');
     });
 
     it('should draw interactive arrows', () => {
@@ -114,9 +124,9 @@ context('React Archer', () => {
     });
   });
 
-  describe('Eleventh example page', () => {
+  describe('Drag & drop', () => {
     beforeEach(() => {
-      cy.visit('/?example=11');
+      cy.visit('/?example=drag-and-drop');
     });
 
     it('should draw draggable arrows on their initial layout', () => {
