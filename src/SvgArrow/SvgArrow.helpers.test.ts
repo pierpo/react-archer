@@ -1,4 +1,4 @@
-import { computeArrowDirectionVector } from './SvgArrow.helper';
+import { computeArrowDirectionVector } from './SvgArrow.helpers';
 
 describe('computeArrowDirectionVector', () => {
   it('points left', () => {
