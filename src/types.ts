@@ -3,12 +3,14 @@ import { Property } from 'csstype';
 
 export type ValidLineStyles = 'angle' | 'straight' | 'curve';
 
-export type AnchorPositionType = 'top' | 'bottom' | 'left' | 'right' | 'middle';
+export type AnchorPositionType = 'top' | 'bottom' | 'left' | 'right' | 'middle' | 'auto';
 
 export type RelationType = {
   targetId: string;
-  targetAnchor: AnchorPositionType;
-  sourceAnchor: AnchorPositionType;
+  /** Defaults to `'auto'`, which picks the facing edge based on the live positions. */
+  targetAnchor?: AnchorPositionType;
+  /** Defaults to `'auto'`, which picks the facing edge based on the live positions. */
+  sourceAnchor?: AnchorPositionType;
   order?: number;
   label?: React.ReactNode | null | undefined;
   className?: string;

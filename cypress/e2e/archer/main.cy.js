@@ -83,4 +83,44 @@ context('React Archer', () => {
       cy.matchImageSnapshot();
     });
   });
+
+  describe('Sixth example page', () => {
+    beforeEach(() => {
+      cy.visit('/?example=6');
+    });
+
+    it('should draw arrows with custom labels', () => {
+      cy.matchImageSnapshot();
+    });
+  });
+
+  describe('Ninth example page', () => {
+    beforeEach(() => {
+      cy.visit('/?example=9');
+    });
+
+    it('should draw arrows with styled relations', () => {
+      cy.matchImageSnapshot();
+    });
+  });
+
+  describe('Tenth example page', () => {
+    beforeEach(() => {
+      cy.visit('/?example=10');
+    });
+
+    it('should draw interactive arrows', () => {
+      cy.matchImageSnapshot();
+    });
+  });
+
+  describe('Eleventh example page', () => {
+    beforeEach(() => {
+      cy.visit('/?example=11');
+    });
+
+    it('should draw draggable arrows on their initial layout', () => {
+      cy.matchImageSnapshot();
+    });
+  });
 });

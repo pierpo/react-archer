@@ -48,6 +48,32 @@ export const getPointFromElement = (element: HTMLDivElement | null | undefined):
   return rectToPoint(rectp);
 };
 
+/**
+ * Resolves an `'auto'` anchor to a concrete edge: the side of `ownRect` that faces
+ * `otherRect`. Picks left/right when the horizontal gap dominates, top/bottom otherwise,
+ * so the arrow always takes the natural short path between the two elements. On a perfect
+ * diagonal, the vertical axis (top/bottom) wins.
+ */
+export const resolveAutoAnchor = (
+  ownRect: DOMRect | null | undefined,
+  otherRect: DOMRect | null | undefined,
+): AnchorPositionType => {
+  if (!ownRect || !otherRect) {
+    return 'middle';
+  }
+
+  const dx = otherRect.left + otherRect.width / 2 - (ownRect.left + ownRect.width / 2);
+  const dy = otherRect.top + otherRect.height / 2 - (ownRect.top + ownRect.height / 2);
+
+  const horizontalWins = Math.abs(dx) > Math.abs(dy);
+
+  if (horizontalWins) {
+    return dx >= 0 ? 'right' : 'left';
+  }
+
+  return dy >= 0 ? 'bottom' : 'top';
+};
+
 export const getPointCoordinatesFromAnchorPosition = (
   position: AnchorPositionType,
   parentCoordinates: Vector2,

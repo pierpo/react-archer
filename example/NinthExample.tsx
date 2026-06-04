@@ -50,8 +50,6 @@ const FirstExample = () => {
             relations={[
               {
                 targetId: 'element3',
-                targetAnchor: 'left',
-                sourceAnchor: 'right',
                 style: {
                   strokeColor: '#ec4899',
                   strokeWidth: 1,
@@ -80,8 +78,6 @@ const FirstExample = () => {
             relations={[
               {
                 targetId: 'root',
-                targetAnchor: 'right',
-                sourceAnchor: 'left',
                 label: 'Arrow 3',
               },
             ]}

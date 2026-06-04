@@ -19,8 +19,8 @@ export const generateSourceToTarget = (
   return relations.map(
     ({
       targetId,
-      sourceAnchor,
-      targetAnchor,
+      sourceAnchor = 'auto',
+      targetAnchor = 'auto',
       label,
       className,
       style,
