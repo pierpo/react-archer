@@ -61,16 +61,21 @@ export function computeStartingAnchorPosition(
   xAnchor1: number;
   yAnchor1: number;
 } {
+  // Offset the control point along the anchor's outward direction rather than the raw
+  // signed distance. This keeps the path tangent (and thus the marker) pointing the right
+  // way even when the elements overlap and the edge points end up in reversed order.
+  const { arrowX, arrowY } = computeArrowDirectionVector(startingAnchorOrientation);
+
   if (startingAnchorOrientation === 'top' || startingAnchorOrientation === 'bottom') {
     return {
       xAnchor1: xStart,
-      yAnchor1: yStart + (yEnd - yStart) / 2,
+      yAnchor1: yStart + (arrowY * Math.abs(yEnd - yStart)) / 2,
     };
   }
 
   if (startingAnchorOrientation === 'left' || startingAnchorOrientation === 'right') {
     return {
-      xAnchor1: xStart + (xEnd - xStart) / 2,
+      xAnchor1: xStart + (arrowX * Math.abs(xEnd - xStart)) / 2,
       yAnchor1: yStart,
     };
   }
@@ -91,16 +96,21 @@ export function computeEndingAnchorPosition(
   xAnchor2: number;
   yAnchor2: number;
 } {
+  // Offset the control point along the anchor's outward direction rather than the raw
+  // signed distance. This keeps the path tangent (and thus the marker) pointing the right
+  // way even when the elements overlap and the edge points end up in reversed order.
+  const { arrowX, arrowY } = computeArrowDirectionVector(endingAnchorOrientation);
+
   if (endingAnchorOrientation === 'top' || endingAnchorOrientation === 'bottom') {
     return {
       xAnchor2: xEnd,
-      yAnchor2: yEnd - (yEnd - yStart) / 2,
+      yAnchor2: yEnd + (arrowY * Math.abs(yEnd - yStart)) / 2,
     };
   }
 
   if (endingAnchorOrientation === 'left' || endingAnchorOrientation === 'right') {
     return {
-      xAnchor2: xEnd - (xEnd - xStart) / 2,
+      xAnchor2: xEnd + (arrowX * Math.abs(xEnd - xStart)) / 2,
       yAnchor2: yEnd,
     };
   }

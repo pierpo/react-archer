@@ -150,7 +150,7 @@ describe('SvgArrow', () => {
         },
         expected: {
           xAnchor2: 5,
-          yAnchor2: 11,
+          yAnchor2: -7,
         },
       },
       {
@@ -163,8 +163,25 @@ describe('SvgArrow', () => {
           endingAnchor: 'left',
         },
         expected: {
-          xAnchor2: 7.5,
+          xAnchor2: 2.5,
           yAnchor2: 2,
+        },
+      },
+      {
+        // Overlapping vertical pair: the source's bottom edge (yStart) sits BELOW the
+        // target's top edge (yEnd). The control point must still land above yEnd so the
+        // end tangent points down into the 'top' edge and the marker is not reversed.
+        message: 3,
+        input: {
+          xStart: 0,
+          yStart: 30,
+          xEnd: 0,
+          yEnd: 10,
+          endingAnchor: 'top',
+        },
+        expected: {
+          xAnchor2: 0,
+          yAnchor2: 0,
         },
       },
     ] as const;
