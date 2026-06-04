@@ -1,10 +1,11 @@
 import React from 'react';
-import SvgArrow, {
+import SvgArrow from './SvgArrow';
+import {
   computeArrowPointAccordingToArrowHead,
   computeStartingAnchorPosition,
   computeEndingAnchorPosition,
   computeLabelDimensions,
-} from './SvgArrow';
+} from './SvgArrow.helpers';
 import Vector2 from '../geometry/Vector2';
 import { render } from '@testing-library/react';
 
