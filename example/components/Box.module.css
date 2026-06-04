@@ -1,6 +1,6 @@
-/* Shared styling for the nodes drawn inside the ArcherContainers. */
+.box {
+  composes: tokens from './tokens.module.css';
 
-.archer-box {
   display: inline-flex;
   align-items: center;
   justify-content: center;

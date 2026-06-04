@@ -1,6 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import ArcherContainer from '../src/ArcherContainer/ArcherContainer';
 import ArcherElement from '../src/ArcherElement/ArcherElement';
+import Box from './components/Box';
 import type { ArcherContainerHandle } from '../src/ArcherContainer/ArcherContainer.types';
 
 type Node = {
@@ -123,11 +124,10 @@ const EleventhExample = () => {
 
             return (
               <ArcherElement key={node.id} id={node.id} relations={relations}>
-                <div
+                <Box
                   onPointerDown={(event) => handlePointerDown(event, node)}
                   onPointerMove={handlePointerMove}
                   onPointerUp={handlePointerUp}
-                  className="archer-box"
                   style={{
                     position: 'absolute',
                     left: `${node.x}px`,
@@ -138,7 +138,7 @@ const EleventhExample = () => {
                   }}
                 >
                   {node.label}
-                </div>
+                </Box>
               </ArcherElement>
             );
           })}

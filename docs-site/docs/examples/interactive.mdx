@@ -1,0 +1,16 @@
+---
+id: interactive
+title: Interactive
+sidebar_label: Interactive
+sidebar_position: 10
+---
+
+import LiveExample from '@site/src/components/LiveExample';
+import Example from '@site/../example/TenthExample';
+import ExampleSource from '!!raw-loader!@site/../example/TenthExample.tsx';
+
+# Interactive
+
+Make arrows selectable with `domAttributes`, `cursor` and `hitSlop`.
+
+<LiveExample component={Example} source={ExampleSource} title="TenthExample.tsx" />

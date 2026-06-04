@@ -1,6 +1,7 @@
 import React from 'react';
 import ArcherContainer from '../src/ArcherContainer/ArcherContainer';
 import ArcherElement from '../src/ArcherElement/ArcherElement';
+import Box from './components/Box';
 const rootStyle = {
   display: 'flex',
   justifyContent: 'center',
@@ -40,7 +41,7 @@ const FirstExample = () => {
               },
             ]}
           >
-            <div className="archer-box">Root</div>
+            <Box>Root</Box>
           </ArcherElement>
         </div>
 
@@ -66,11 +67,11 @@ const FirstExample = () => {
               },
             ]}
           >
-            <div className="archer-box">Element 2</div>
+            <Box>Element 2</Box>
           </ArcherElement>
 
           <ArcherElement id="element3">
-            <div className="archer-box">Element 3</div>
+            <Box>Element 3</Box>
           </ArcherElement>
 
           <ArcherElement
@@ -82,7 +83,7 @@ const FirstExample = () => {
               },
             ]}
           >
-            <div className="archer-box">Element 4</div>
+            <Box>Element 4</Box>
           </ArcherElement>
         </div>
       </ArcherContainer>

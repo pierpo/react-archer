@@ -44,30 +44,6 @@ const App = () => {
 
   return (
     <div className="app">
-      <header className="app__header">
-        <h1 className="app__title">react-archer</h1>
-        <p className="app__subtitle">
-          Draw beautiful arrows between DOM elements in React — declaratively.
-        </p>
-        <div className="app__links">
-          <a
-            className="app__link app__link--primary"
-            href="https://github.com/pierpo/react-archer"
-            target="_blank"
-            rel="noreferrer"
-          >
-            ★ GitHub
-          </a>
-          <a
-            className="app__link app__link--ghost"
-            href="https://www.npmjs.com/package/react-archer"
-            target="_blank"
-            rel="noreferrer"
-          >
-            npm
-          </a>
-        </div>
-      </header>
       <div className="layout">
         <nav className="picker">
           {EXAMPLES.map(({ name }, index) => (

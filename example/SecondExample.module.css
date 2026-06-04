@@ -1,6 +1,9 @@
-/* Interactive demo controls (used by the "Dynamic elements" example). */
+/* Interactive controls for the "Dynamic elements" example. Self-contained: the
+   tokens are composed in, so the controls look right in any host. */
 
 .controls {
+  composes: tokens from './components/tokens.module.css';
+
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
@@ -13,13 +16,13 @@
   box-shadow: var(--shadow-sm);
 }
 
-.controls__field {
+.field {
   display: flex;
   flex-direction: column;
   gap: 7px;
 }
 
-.controls__label {
+.label {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -27,7 +30,7 @@
   color: var(--muted);
 }
 
-.controls__input {
+.input {
   width: 220px;
   max-width: 100%;
   padding: 9px 13px;
@@ -42,17 +45,17 @@
     box-shadow 0.14s ease;
 }
 
-.controls__input::placeholder {
+.input::placeholder {
   color: var(--muted);
 }
 
-.controls__input:focus {
+.input:focus {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--ring);
 }
 
-.controls__stepper {
+.stepper {
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -62,7 +65,7 @@
   background: var(--card);
 }
 
-.controls__step {
+.step {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -81,16 +84,16 @@
     transform 0.1s ease;
 }
 
-.controls__step:hover {
+.step:hover {
   background: var(--accent);
   color: #fff;
 }
 
-.controls__step:active {
+.step:active {
   transform: scale(0.92);
 }
 
-.controls__count {
+.count {
   min-width: 28px;
   text-align: center;
   font-size: 15px;

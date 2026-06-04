@@ -1,6 +1,8 @@
 import React from 'react';
 import ArcherContainer from '../src/ArcherContainer/ArcherContainer';
 import ArcherElement from '../src/ArcherElement/ArcherElement';
+import Box from './components/Box';
+import controls from './SecondExample.module.css';
 const rootStyle = {
   display: 'flex',
   justifyContent: 'center',
@@ -21,15 +23,15 @@ const SecondExample = () => {
         margin: '50px',
       }}
     >
-      <div className="controls">
-        <div className="controls__field">
-          <label className="controls__label" htmlFor="change-labels-input">
+      <div className={controls.controls}>
+        <div className={controls.field}>
+          <label className={controls.label} htmlFor="change-labels-input">
             Change labels
           </label>
           <input
             id="change-labels-input"
             data-cy="change-labels-input"
-            className="controls__input"
+            className={controls.input}
             type="text"
             placeholder="Type a label…"
             onChange={(event) => {
@@ -37,20 +39,20 @@ const SecondExample = () => {
             }}
           />
         </div>
-        <div className="controls__field">
-          <span className="controls__label">Elements</span>
-          <div className="controls__stepper">
+        <div className={controls.field}>
+          <span className={controls.label}>Elements</span>
+          <div className={controls.stepper}>
             <button
-              className="controls__step"
+              className={controls.step}
               aria-label="Remove element"
               onClick={() => setNbElements(nbElements > 1 ? nbElements - 1 : 0)}
             >
               −
             </button>
-            <span className="controls__count">{nbElements}</span>
+            <span className={controls.count}>{nbElements}</span>
             <button
               data-cy="add-element"
-              className="controls__step"
+              className={controls.step}
               aria-label="Add element"
               onClick={() => setNbElements(nbElements + 1)}
             >
@@ -62,7 +64,7 @@ const SecondExample = () => {
       <ArcherContainer strokeColor="#6366f1">
         <div style={rootStyle}>
           <ArcherElement id="root with spaces et accents héhéhéhé">
-            <div className="archer-box">Root</div>
+            <Box>Root</Box>
           </ArcherElement>
         </div>
 
@@ -86,7 +88,7 @@ const SecondExample = () => {
                   },
                 ]}
               >
-                <div className="archer-box">Element {i}</div>
+                <Box>Element {i}</Box>
               </ArcherElement>
             ))}
         </div>
