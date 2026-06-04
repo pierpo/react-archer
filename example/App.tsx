@@ -1,80 +1,62 @@
 import React from 'react';
-import FirstExample from './FirstExample';
-import SecondExample from './SecondExample';
-import ThirdExample from './ThirdExample';
-import FourthExample from './FourthExample';
-import FifthExample from './FifthExample';
-import SixthExample from './SixthExample';
-import SeventhExample from './SeventhExample';
-import EighthExample from './EighthExample';
-import NinthExample from './NinthExample';
-import TenthExample from './TenthExample';
-import EleventhExample from './EleventhExample';
+import BasicArrows from './BasicArrows';
+import DynamicElements from './DynamicElements';
+import AngleLines from './AngleLines';
+import StraightLines from './StraightLines';
+import AnchorOffsets from './AnchorOffsets';
+import MiddleAnchor from './MiddleAnchor';
+import CustomLabels from './CustomLabels';
+import CircleEnds from './CircleEnds';
+import StartMarkers from './StartMarkers';
+import StyledRelations from './StyledRelations';
+import Interactive from './Interactive';
+import DragAndDrop from './DragAndDrop';
 
 const EXAMPLES = [
-  { Component: FirstExample, name: 'Basic arrows' },
-  { Component: SecondExample, name: 'Dynamic elements' },
-  { Component: ThirdExample, name: 'Straight lines' },
-  { Component: FourthExample, name: 'Anchor offsets' },
-  { Component: FifthExample, name: 'Middle anchor' },
-  { Component: SixthExample, name: 'Custom labels' },
-  { Component: SeventhExample, name: 'Circle ends' },
-  { Component: EighthExample, name: 'Start markers' },
-  { Component: NinthExample, name: 'Styled relations' },
-  { Component: TenthExample, name: 'Interactive' },
-  { Component: EleventhExample, name: 'Drag & drop' },
+  { slug: 'basic-arrows', name: 'Basic arrows', Component: BasicArrows },
+  { slug: 'dynamic-elements', name: 'Dynamic elements', Component: DynamicElements },
+  { slug: 'angle-lines', name: 'Angle lines', Component: AngleLines },
+  { slug: 'straight-lines', name: 'Straight lines', Component: StraightLines },
+  { slug: 'anchor-offsets', name: 'Anchor offsets', Component: AnchorOffsets },
+  { slug: 'middle-anchor', name: 'Middle anchor', Component: MiddleAnchor },
+  { slug: 'custom-labels', name: 'Custom labels', Component: CustomLabels },
+  { slug: 'circle-ends', name: 'Circle ends', Component: CircleEnds },
+  { slug: 'start-markers', name: 'Start markers', Component: StartMarkers },
+  { slug: 'styled-relations', name: 'Styled relations', Component: StyledRelations },
+  { slug: 'interactive', name: 'Interactive', Component: Interactive },
+  { slug: 'drag-and-drop', name: 'Drag & drop', Component: DragAndDrop },
 ] as const;
 
-const getExample = (id: number) => EXAMPLES[id - 1] ?? EXAMPLES[1];
-
 const App = () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const exampleFromUrl = Number(urlParams.get('example'));
-  const [exampleId, setExampleId] = React.useState(1);
-  const { Component: Example } = getExample(exampleFromUrl || exampleId);
+  const slugFromUrl = new URLSearchParams(window.location.search).get('example');
+  const exampleFromUrl = EXAMPLES.find((example) => example.slug === slugFromUrl);
+  const [selectedSlug, setSelectedSlug] = React.useState<(typeof EXAMPLES)[number]['slug']>(
+    EXAMPLES[0].slug,
+  );
+
+  // Single-example mode (used by the e2e tests): render only the example.
   if (exampleFromUrl) {
+    const { Component } = exampleFromUrl;
     return (
       <div className="app">
         <div className="panel">
-          <Example />
+          <Component />
         </div>
       </div>
     );
   }
 
+  const { Component } = EXAMPLES.find((example) => example.slug === selectedSlug) ?? EXAMPLES[0];
+
   return (
     <div className="app">
-      <header className="app__header">
-        <h1 className="app__title">react-archer</h1>
-        <p className="app__subtitle">
-          Draw beautiful arrows between DOM elements in React — declaratively.
-        </p>
-        <div className="app__links">
-          <a
-            className="app__link app__link--primary"
-            href="https://github.com/pierpo/react-archer"
-            target="_blank"
-            rel="noreferrer"
-          >
-            ★ GitHub
-          </a>
-          <a
-            className="app__link app__link--ghost"
-            href="https://www.npmjs.com/package/react-archer"
-            target="_blank"
-            rel="noreferrer"
-          >
-            npm
-          </a>
-        </div>
-      </header>
       <div className="layout">
         <nav className="picker">
-          {EXAMPLES.map(({ name }, index) => (
+          {EXAMPLES.map(({ slug, name }, index) => (
             <button
-              key={name}
-              onClick={() => setExampleId(index + 1)}
-              className={`btn${exampleId === index + 1 ? ' btn--active' : ''}`}
+              key={slug}
+              onClick={() => setSelectedSlug(slug)}
+              className={`btn${selectedSlug === slug ? ' btn--active' : ''}`}
             >
               <span className="btn__num">{index + 1}</span>
               {name}
@@ -82,7 +64,7 @@ const App = () => {
           ))}
         </nav>
         <div className="panel">
-          <Example />
+          <Component />
         </div>
       </div>
     </div>

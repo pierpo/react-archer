@@ -1,0 +1,40 @@
+---
+id: intro
+title: Getting started
+slug: /
+sidebar_position: 1
+---
+
+import LiveExample from '@site/src/components/LiveExample';
+import BasicArrows from '@site/../example/BasicArrows';
+import BasicArrowsSource from '!!raw-loader!@site/../example/BasicArrows.tsx';
+
+# react-archer
+
+🏹 Draw arrows between DOM elements in React 🖋
+
+`react-archer` lets you declaratively draw arrows between elements. Wrap your
+layout in an `ArcherContainer`, mark the endpoints with `ArcherElement`, and
+describe the connections with `relations` — the library measures the DOM and
+draws the SVG arrows for you.
+
+## Installation
+
+```bash npm2yarn
+npm install react-archer --save
+```
+
+## Quick start
+
+The example below is **live** — it is the same component that runs in the
+project's example app, rendered right here in the docs:
+
+<LiveExample
+  component={BasicArrows}
+  source={BasicArrowsSource}
+  title="BasicArrows.tsx"
+/>
+
+Head over to [Examples](./examples/basic-arrows.mdx) for more advanced scenarios (dynamic
+elements, custom anchors, styled relations, interactive arrows, drag & drop), or
+to the [API reference](./api/archer-container.md) for the full list of props.

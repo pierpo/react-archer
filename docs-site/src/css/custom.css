@@ -1,0 +1,64 @@
+/**
+ * react-archer documentation theme.
+ */
+
+/* Indigo theme matching the examples' arrow color (strokeColor #6366f1). */
+:root {
+  --ifm-color-primary: #6366f1;
+  --ifm-color-primary-dark: #4a4dee;
+  --ifm-color-primary-darker: #3d40ed;
+  --ifm-color-primary-darkest: #1f22d8;
+  --ifm-color-primary-light: #7c7ef4;
+  --ifm-color-primary-lighter: #898cf5;
+  --ifm-color-primary-lightest: #aeb0f9;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(99, 102, 241, 0.1);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #818cf8;
+  --ifm-color-primary-dark: #5f6df5;
+  --ifm-color-primary-darker: #4e5ef4;
+  --ifm-color-primary-darkest: #2735f0;
+  --ifm-color-primary-light: #a3abfb;
+  --ifm-color-primary-lighter: #b4bafc;
+  --ifm-color-primary-lightest: #dadefe;
+  --docusaurus-highlighted-code-line-bg: rgba(129, 140, 248, 0.15);
+}
+
+/* ---- Navbar ------------------------------------------------------------- */
+
+.navbar {
+  /* A subtle, blurred translucent bar that reads cleanly over the page. */
+  backdrop-filter: saturate(150%) blur(8px);
+  background-color: color-mix(in srgb, var(--ifm-navbar-background-color) 88%, transparent);
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  box-shadow: none;
+}
+
+.navbar__brand:hover {
+  opacity: 0.85;
+}
+
+/* GitHub link rendered as a themed icon button (no visible text). */
+.navbar-github-link {
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+}
+
+.navbar-github-link::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 24px;
+  background-color: var(--ifm-navbar-link-color);
+  transition: background-color var(--ifm-transition-fast);
+  --github-icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E");
+  -webkit-mask: var(--github-icon) no-repeat center / contain;
+  mask: var(--github-icon) no-repeat center / contain;
+}
+
+.navbar-github-link:hover::before {
+  background-color: var(--ifm-navbar-link-hover-color);
+}

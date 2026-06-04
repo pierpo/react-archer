@@ -1,0 +1,31 @@
+.wrapper {
+  margin-bottom: 2rem;
+}
+
+.stage {
+  position: relative;
+  overflow: auto;
+  border: 1px solid color-mix(in srgb, var(--ifm-color-primary) 25%, var(--ifm-color-emphasis-200));
+  border-radius: 14px;
+  background-color: var(--ifm-background-surface-color);
+  /* Blue-tinted dotted grid, matching the examples' canvas. */
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    color-mix(in srgb, var(--ifm-color-primary) 28%, transparent) 1px,
+    transparent 0
+  );
+  background-size: 22px 22px;
+  margin-bottom: 0.75rem;
+}
+
+/* The example components carry their own large margins/heights, so we let the
+   stage grow with the content rather than constraining it. */
+.stage > * {
+  min-width: max-content;
+}
+
+.fallback {
+  padding: 2rem;
+  text-align: center;
+  color: var(--ifm-color-emphasis-600);
+}

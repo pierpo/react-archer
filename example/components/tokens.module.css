@@ -1,0 +1,38 @@
+/**
+ * Design tokens for the example presentation components.
+ *
+ * Defined as a CSS Module class so components can pull them in with
+ * `composes: tokens from './tokens.module.css'` — the tokens travel with the
+ * component into any host (the Vite demo app and the Docusaurus docs alike),
+ * with no reliance on a global `:root` stylesheet.
+ */
+
+.tokens {
+  --border: #e3e7ef;
+  --card: #ffffff;
+  --fg: #0f172a;
+  --muted: #64748b;
+  --accent: #3478f6;
+  --accent-soft: rgba(52, 120, 246, 0.1);
+  --ring: rgba(52, 120, 246, 0.35);
+  --node-top: #ffffff;
+  --node-bottom: #eef2f9;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+@media (prefers-color-scheme: dark) {
+  .tokens {
+    --border: #1e293b;
+    --card: #111827;
+    --fg: #e8ecf4;
+    --muted: #94a3b8;
+    --accent: #5b9bff;
+    --accent-soft: rgba(91, 155, 255, 0.14);
+    --ring: rgba(91, 155, 255, 0.4);
+    --node-top: #1a2232;
+    --node-bottom: #131a27;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
+  }
+}

@@ -1,0 +1,51 @@
+name: Deploy docs
+
+on:
+  # Deploy on every push to master...
+  push:
+    branches: [master]
+  # ...and allow manual runs from the Actions tab.
+  workflow_dispatch:
+
+# Allow the workflow to push to the gh-pages branch.
+permissions:
+  contents: write
+
+# Avoid concurrent deployments stepping on each other.
+concurrency:
+  group: deploy-docs
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: docs-site
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+          cache-dependency-path: docs-site/yarn.lock
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build docs site
+        run: yarn build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs-site/build
+          # The docs site replaces the previous standalone demo at
+          # https://pierpo.github.io/react-archer/
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
