@@ -34,7 +34,15 @@ jobs:
           cache: yarn
           cache-dependency-path: docs-site/yarn.lock
 
-      - name: Install dependencies
+      # The docs build compiles the library source (../src), which imports the
+      # library's runtime deps (resize-observer-polyfill, react-fast-compare,
+      # react-compiler-runtime). Those live in the root node_modules, so install
+      # the root project too — not just the docs site.
+      - name: Install root dependencies
+        working-directory: .
+        run: yarn install --immutable
+
+      - name: Install docs dependencies
         run: yarn install --immutable
 
       - name: Build docs site
