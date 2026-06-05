@@ -6,5 +6,5 @@
   "printWidth": 100,
   "bracketSpacing": true,
   "sortPackageJson": false,
-  "ignorePatterns": ["docs-site/**"]
+  "ignorePatterns": ["docs-site/**", "CHANGELOG.md"]
 }
