@@ -47,7 +47,8 @@
     "test:format": "oxfmt --check .",
     "test:watch": "vitest",
     "format": "oxfmt .",
-    "test": "yarn test:format && yarn test:lint && yarn test:types && yarn test:unit"
+    "test": "yarn test:format && yarn test:lint && yarn test:types && yarn test:unit",
+    "release": "release-it"
   },
   "peerDependencies": {
     "@types/react": "^18 || ^19",
@@ -60,6 +61,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
+    "@release-it/conventional-changelog": "^11.0.1",
     "@simonsmith/cypress-image-snapshot": "^9.1.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.1.0",
@@ -80,7 +82,7 @@
     "oxfmt": "^0.52.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "release-it": "12.4.3",
+    "release-it": "^20.2.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.18.1",
     "vite": "^7.0.0",
