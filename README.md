@@ -73,3 +73,10 @@ yarn start        # run the example app at http://localhost:8080
 yarn test         # format, lint, typecheck and unit tests
 yarn test:e2e     # Cypress end-to-end tests
 ```
+
+### Commit & PR conventions
+
+PR titles must follow [Conventional Commits](https://www.conventionalcommits.org/)
+(e.g. `feat: ...`, `fix: ...`, `chore: ...`, `docs: ...`). PRs are squash-merged
+using their title, so this title becomes the commit on `master` and feeds the
+changelog. A CI check validates the PR title.
