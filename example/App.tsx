@@ -11,6 +11,7 @@ import StartMarkers from './StartMarkers';
 import StyledRelations from './StyledRelations';
 import Interactive from './Interactive';
 import DragAndDrop from './DragAndDrop';
+import ConnectByDragging from './ConnectByDragging';
 
 const EXAMPLES = [
   { slug: 'basic-arrows', name: 'Basic arrows', Component: BasicArrows },
@@ -25,6 +26,7 @@ const EXAMPLES = [
   { slug: 'styled-relations', name: 'Styled relations', Component: StyledRelations },
   { slug: 'interactive', name: 'Interactive', Component: Interactive },
   { slug: 'drag-and-drop', name: 'Drag & drop', Component: DragAndDrop },
+  { slug: 'connect-by-dragging', name: 'Connect by dragging', Component: ConnectByDragging },
 ] as const;
 
 const App = () => {
