@@ -17,6 +17,7 @@ export default defineConfig({
       tsconfigPath: './tsconfig.build.json',
       include: ['src'],
       exclude: ['src/**/*.test.*', 'src/**/__tests__/**'],
+      rollupTypes: true,
     }),
   ],
   build: {
